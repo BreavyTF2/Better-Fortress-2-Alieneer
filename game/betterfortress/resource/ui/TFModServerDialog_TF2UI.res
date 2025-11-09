@@ -122,10 +122,10 @@
 		"sound_released"	"UI/buttonclickrelease.wav"
 	}
 	
-	"PageOne"
+	"#GameUI_Server"
 	{
 		"ControlName"		"CPanelListPanel"
-		"fieldName"		"PageOne"
+		"fieldName"		"#GameUI_Server"
 		"xpos"		"10"
 		"ypos"		"40"
 		"wide"		"480"
@@ -144,48 +144,11 @@
 			"ControlName"		"EditablePanel"
 			"fieldName"			"PageOneEmbedded"
 			
-			"category1"
-			{
-				"tall"			"20"
-			}
-			"hostname"
-			{
-				"tall"			"20"
-			}
-			"sv_tags"
-			{
-				"tall"			"20"
-			}
-			"category2"
-			{
-				"tall"			"20"
-			}
-			
-			"maxplayers"
-			{
-				"tall"			"20"
-			}
-			"tf_bot_quota"
-			{
-				"tall"			"20"
-			}
-			"tf_bot_difficulty"
-			{
-				"tall"			"20"
-			}
-			"category3"
-			{
-				"tall"			"20"
-			}
-			"cl_map"
-			{
-				"tall"			"20"
-			}
 			"map_preview"
 			{
 				"tall"			"45"
 				"border"		"none"
-			}
+			}	
 			
 			"map_preview_border"
 			{
@@ -197,8 +160,7 @@
 				"ypos"			"220"
 				"wide"			"74"
 				"tall"			"60"
-			}
-			
+			}	
 			"map_preview_img"
 			{
 				"ControlName"	"ImagePanel"
@@ -212,29 +174,13 @@
 				"wide"			"64"
 				"tall"			"43"
 			}
-			"category4"
-			{
-				"tall"			"20"
-			}
-			"sv_use_steam_networking"
-			{
-				"tall"			"20"
-			}
-			"hide_server"
-			{
-				"tall"			"20"
-			}
-			"sv_friendsonly"
-			{
-				"tall"			"20"
-			}
 		}
 	}
 	
-	"PageTwo"
+	"#Replay_Contest_Rules"
 	{
 		"ControlName"		"CPanelListPanel"
-		"fieldName"		"PageTwo"
+		"fieldName"		"#Replay_Contest_Rules"
 		"xpos"		"10"
 		"ypos"		"40"
 		"wide"		"480"
@@ -247,10 +193,10 @@
 		"bgcolor_override"	"0 0 0 0"
 	}
 	
-	"PageThree"
+	"#GameUI_GameMenu_Options"
 	{
 		"ControlName"		"CPanelListPanel"
-		"fieldName"		"PageThree"
+		"fieldName"		"#GameUI_GameMenu_Options"
 		"xpos"		"10"
 		"ypos"		"40"
 		"wide"		"480"

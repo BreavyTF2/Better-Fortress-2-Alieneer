@@ -1,0 +1,108 @@
+// I rewrote the system as the existing one does not have an easy way of supporting multiple tabs
+OPTIONS
+{
+	"#GameUI_Server"	// Denotes a tab
+	{
+		"category1"
+		{
+			"label"	"SERVER PROFILE"
+			"type"	"CATEGORY"
+		}
+		"hostname"	// The cvar name
+		{
+			"label"	"#GameUI_ServerName"	// The label that shows up in-game
+			"type"	"STRING"
+			"val"	"Better Fortress 2"
+		}
+		"sv_tags"
+		{
+			"label"	"TAGS"
+			"type"	"STRING"
+			"val"	""
+		}
+		"category2"
+		{
+			"label"	"SERVER SLOTS AND BOTS"
+			"type"	"CATEGORY"
+		}
+		"maxplayers"
+		{
+			"label"	"#GameUI_MaxPlayers"
+			"type"	"STRING"
+			"val"	"32"
+		}
+		"tf_bot_quota"
+		{
+			"label"	"MAX BOTS:"
+			"type"	"STRING"
+			"val"	"0"
+		}
+		"tf_bot_difficulty"
+		{
+			"label"	"#TF_Bot_Difficulty"
+			"type"	"LIST"
+			"options"
+			{
+				"#TF_Bot_Difficulty0"	"0"
+				"#TF_Bot_Difficulty1"	"1"
+				"#TF_Bot_Difficulty2"	"2"
+				"#TF_Bot_Difficulty3"	"3"
+			}
+			"val"	"0"
+		}
+		"category3"
+		{
+			"label"	"#GameUI_Map"
+			"type"	"CATEGORY"
+		}
+		"cl_map"
+		{
+			"label"	"#GameUI_Map"
+			"type"	"LIST"
+			"options"
+			{
+				"#GameUI_RandomMap"		"RANDOMMAP"
+			}
+			"val"	"#GameUI_RandomMap"
+		}
+		"map_preview"
+		{
+			"label"	""
+			"type"	"CATEGORY"
+		}
+		"category4"
+		{
+			"label"	"#IT_OtherOptions"
+			"type"	"CATEGORY"
+		}
+		"sv_use_steam_networking"
+		{
+			"label"	"#Start_Server_SteamNetworking"
+			"type"	"LIST"
+			"options"
+			{
+				"#Server_Visibility_Local"		"0"
+				"#Start_Server_SteamNetworking"	"1"
+			}
+			"val"	"#Server_Visibility_Local"
+		}
+	}
+	"#Replay_Contest_Rules"
+	{
+		"category1"
+		{
+			"label"	"TEST"
+			"type"	"CATEGORY"
+		}
+		"sv_cheats"
+		{
+			"label"	"cheats"
+			"type"	"BOOL"
+			"val"	""
+		}
+	}
+	"#GameUI_GameMenu_Options"
+	{
+		
+	}
+}

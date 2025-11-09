@@ -27,4 +27,5 @@
 	"TAAAAAAAANK!"
 	"After 9 minutes of development, hopefully it's not a broken mess!"
 	"2 People with passion against the entire sourcemod community \n We are going to die after this right?"
+	"now with extra control points!"
 }

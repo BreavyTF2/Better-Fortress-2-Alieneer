@@ -4755,6 +4755,20 @@ void CBaseEntity::InputKill( inputdata_t &inputdata )
 		SetOwnerEntity( NULL );
 	}
 
+	if ( IsPlayer() )
+	{
+		CBasePlayer *pPlayer = (CBasePlayer *) this;
+		if ( pPlayer->IsBot() )
+		{
+			if ( pPlayer )
+			{
+				pPlayer->Remove();
+				engine->ServerCommand( UTIL_VarArgs( "kickid %d\n", pPlayer->GetUserID() ) );
+			}
+		}
+		return;
+	}
+
 	UTIL_Remove( this );
 }
 
@@ -4773,6 +4787,20 @@ void CBaseEntity::InputKillHierarchy( inputdata_t &inputdata )
 	{
 		pOwner->DeathNotice( this );
 		SetOwnerEntity( NULL );
+	}
+
+	if ( IsPlayer() )
+	{
+		CBasePlayer *pPlayer = (CBasePlayer *) this;
+		if ( pPlayer->IsBot() )
+		{
+			if ( pPlayer )
+			{
+				pPlayer->Remove();
+				engine->ServerCommand( UTIL_VarArgs( "kickid %d\n", pPlayer->GetUserID() ) );
+			}
+		}
+		return;
 	}
 
 	UTIL_Remove( this );

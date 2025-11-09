@@ -123,4 +123,16 @@ DESCRIPTION INFO_OPTIONS
 		{ BOOL }
 		{ "1" }
 	}
+	"category7"
+	{
+		"HUD FIXES"
+		{ CATEGORY }
+	}	
+	"credit6_1"
+	{
+		"995qa
+		Fixed the mainmenu being broken on resolutions other than 16:9"
+		{ BOOL }
+		{ "1" }
+	}
 }

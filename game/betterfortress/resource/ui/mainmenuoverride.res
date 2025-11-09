@@ -2785,7 +2785,8 @@
 	"ModCreditsButton"
 	{
 		"ControlName"	"CExImageButton"
-		"xpos"			"c-183"
+		"fieldName"		"GeneralStoreButton"
+		"xpos"			"c-165"
 		"ypos"			"rs1-18"
 		"wide"			"100"
 		"tall"			"26"
@@ -2794,22 +2795,21 @@
 		"visible"		"1"
 		"enabled"		"1"
 		"tabPosition"	"0"
-		"labelText"		"#TF_ModCredits_Title"
+		"use_proportional_insets" "1"
 		"font"			"HudFontSmallBold"
 		"textAlignment"	"center"
-		"textinsetx"	"5"
-		"use_proportional_insets" "1"
 		"dulltext"		"0"
 		"brighttext"	"0"
 		"default"		"1"
-		"Command"		"openmodcredits"
-
-		"navUp"			"TF2SettingsButtonSDK"
-		"navLeft"		"TF2SettingsButtonSDK"
-		"navRight"		"TF2SettingsButtonSDK"
+		"labeltext" "#TF_ModCredits_Title"
+		"command" "openmodcredits"
+		"proportionaltoparent"	"1"
 
 		"sound_depressed"	"UI/buttonclick.wav"
 		"sound_released"	"UI/buttonclickrelease.wav"
+			
+		"paintbackground"	"1"
+					
 	}
 	
 	//Items button
@@ -2817,7 +2817,7 @@
 	{
 		"ControlName"	"CExImageButton"
 		"fieldName"		"CharacterSetupButton"
-		"xpos"			"c-238"
+		"xpos"			"c-288"
 		"ypos"			"rs1-18"
 		"wide"			"100"
 		"tall"			"26"

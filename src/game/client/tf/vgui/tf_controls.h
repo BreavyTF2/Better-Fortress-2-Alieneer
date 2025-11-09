@@ -18,6 +18,7 @@
 #include <vgui_controls/Panel.h>
 #include <vgui_controls/ScrollBar.h>
 #include <vgui_controls/EditablePanel.h>
+#include <vgui_controls/PanelListPanel.h>
 #include <vgui_controls/Button.h>
 #include <vgui_controls/Label.h>
 #include <vgui_controls/RichText.h>
@@ -280,12 +281,11 @@ private:
 	mpcontrol_t* m_pList;
 	CTFTextToolTip* m_pToolTip;
 	vgui::EditablePanel* m_pToolTipEmbeddedPanel;
-	vgui::PanelListPanel* m_pPageOne;
-	vgui::PanelListPanel* m_pPageTwo;
-	vgui::PanelListPanel* m_pPageThree;
+
+	CUtlVector< vgui::PanelListPanel* > m_pPages;
 
 	CPanelAnimationVarAliasType(int, m_iControlW, "control_w", "0", "proportional_int");
-	CPanelAnimationVarAliasType(int, m_iControlH, "control_h", "0", "proportional_int");
+	CPanelAnimationVarAliasType(int, m_iControlH, "control_h", "20", "proportional_int"); // Assume they want height 20
 	CPanelAnimationVarAliasType(int, m_iSliderW, "slider_w", "0", "proportional_int");
 	CPanelAnimationVarAliasType(int, m_iSliderH, "slider_h", "0", "proportional_int");
 };

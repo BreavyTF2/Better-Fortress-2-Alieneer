@@ -68,7 +68,7 @@ public:
 
 	objtype_t type;
 
-	char cvarname[64 ];
+	char cvarname[ 64 ];
 	char prompt[ 256 ];
 	char tooltip[ 256 ];
 
@@ -85,6 +85,7 @@ public:
 	bool bSetInfo;  // Prepend "Setinfo" to keyvalue pair in config?
 	// Linked list of default list box items.
 
+	Panel *objParent;
 	CScriptObject *pNext;
 };
 

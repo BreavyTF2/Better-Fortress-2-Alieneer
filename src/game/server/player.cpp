@@ -6294,10 +6294,8 @@ static ConCommand ch_createairboat( "ch_createairboat", CC_CH_CreateAirboat, "Sp
 void CBasePlayer::CheatImpulseCommands( int iImpulse )
 {
 #if !defined( HLDEMO_BUILD )
-	if ( !sv_cheats->GetBool() )
-	{
+	if( !UTIL_HandleCheatCmdForPlayer(this) ) 
 		return;
-	}
 
 	CBaseEntity *pEntity;
 	trace_t tr;
@@ -6490,6 +6488,19 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		pEntity = FindEntityForward( this, true );
 		if ( pEntity )
 		{
+			if ( pEntity->IsPlayer() )
+			{
+				CBasePlayer *pPlayer = (CBasePlayer *) pEntity;
+				if ( pPlayer->IsBot() )
+				{
+					if ( pPlayer )
+					{
+						pPlayer->Remove();
+						engine->ServerCommand( UTIL_VarArgs( "kickid %d\n", pPlayer->GetUserID() ) );
+					}
+				}
+				return;
+			}
 			UTIL_Remove( pEntity );
 //			if ( pEntity->m_takedamage )
 //				pEntity->SetThink(SUB_Remove);
