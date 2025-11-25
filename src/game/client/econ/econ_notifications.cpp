@@ -1488,13 +1488,16 @@ CON_COMMAND( cl_add_notification, "Adds a notification" )
 
 USER_MESSAGE( VS_SendNotification )
 {
-	float flLifetime = msg.ReadFloat();
-	char szString[512];
-	msg.ReadString( szString, 512 );
+    float flLifetime = msg.ReadFloat();
+    static char szString[512];
+    msg.ReadString( szString, sizeof(szString) );
 
-	CEconNotification *pNotification = new CEconNotification();
-	pNotification->SetText( szString );
-	pNotification->SetLifetime( flLifetime );
-	pNotification->SetSoundFilename( "ui/halloween_loot_spawn.wav" );
-	NotificationQueue_Add( pNotification );
+	static char iszSoundFile[512];
+    msg.ReadString( iszSoundFile, sizeof(iszSoundFile) );
+
+    CEconNotification *pNotification = new CEconNotification();
+    pNotification->SetText( szString );
+    pNotification->SetLifetime( flLifetime );
+    pNotification->SetSoundFilename( iszSoundFile );
+    NotificationQueue_Add( pNotification );
 }

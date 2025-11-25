@@ -232,6 +232,77 @@
 				}
 			}
 		}
+		//Spitfire prefab
+		"weapon_flaregun_custom"
+		{
+			"enabled"	"1"
+			"item_class"	"tf_weapon_flaregun"
+			"craft_class"	"weapon"
+			"craft_material_type"	"weapon"
+			"capabilities"
+			{
+				"nameable"		"1"
+				"can_craft_count"	"1"
+			}
+			"tags"
+			{
+				"can_deal_damage"				"1"
+				"can_deal_posthumous_damage"	"1"
+				"can_deal_critical_damage"		"1"
+				"can_deal_long_distance_damage"	"1"
+				"can_deal_taunt_damage"		"1"
+			}
+			"item_logname"	"scorch_shot"
+			"item_iconname"	"scorch_shot"
+			"show_in_armory"	"1"
+			"item_type_name"	"#TF_Weapon_Flaregun"
+			"item_name"	"#TF_Unique_Achievement_Flaregun"
+			"item_description"	"#TF_ScorchShot_Desc"
+			"item_slot"	"secondary"
+			"anim_slot"	"ITEM1"
+			"image_inventory"	"backpack/workshop/weapons/c_models/c_scorch_shot/c_scorch_shot"
+			"image_inventory_size_w"		"128"
+			"image_inventory_size_h"		"82"
+			"model_player"	"models/workshop/weapons/c_models/c_scorch_shot/c_scorch_shot.mdl"
+			"attach_to_hands"	"1"
+			"inspect_panel_dist" "30"
+			"item_quality"	"unique"
+			"propername"	"1"
+			"min_ilevel"	"10"
+			"max_ilevel"	"10"
+			"used_by_classes"
+			{
+				"pyro"	"1"
+			}
+			"attributes"
+			{
+				"hidden secondary max ammo penalty"
+				{
+					"attribute_class"	"mult_maxammo_secondary"
+					"value"	"0.5"
+				}
+				"special taunt"
+				{
+					"attribute_class"	"special_taunt"
+					"value" "1"
+				}
+			}
+			"static_attrs"
+			{
+				"min_viewmodel_offset"				"10 0 -10"
+			}
+			"visuals"
+			{
+				"animation_replacement"
+				{
+					"ACT_SECONDARY_VM_INSPECT_START"	"ACT_ITEM1_VM_INSPECT_START"
+					"ACT_SECONDARY_VM_INSPECT_IDLE"		"ACT_ITEM1_VM_INSPECT_IDLE"
+					"ACT_SECONDARY_VM_INSPECT_END"		"ACT_ITEM1_VM_INSPECT_END"
+				}
+			}
+			"mouse_pressed_sound"	"ui/item_light_gun_pickup.wav"
+			"drop_sound"		"ui/item_light_gun_drop.wav"
+		}
 
 		"weapon_flamethrower_nohprestore"
 		{
@@ -794,6 +865,26 @@
 			"effect_type"	"negative"
 			"description_string"	"#TFCW_Weapon_Afterburner_NoBlast"
 			"stored_as_integer"	"1"		
+		}
+		"4019"
+		{
+			"name"	"airblast pushback downscale"
+			"attribute_class"	"airblast_pushback_scale"
+			"description_string"	"#Attrib_AirBlastPushDownScale"
+			"description_format"	"value_is_percentage"
+			"hidden"	"0"
+			"effect_type"	"negative"
+			"stored_as_integer"	"0"
+		}
+		"4020"
+		{
+        	"name"    "heat seek flare"
+			"attribute_class"    "mod_projectile_heat_seek_power"
+			"description_format"    "value_is_additive"
+			"description_string"    "#TFCW_Spitfire_SeekProj"
+			"hidden"    "0"
+			"effect_type"    "positive"
+			"stored_as_integer"    "1"
 		}
 	}
 	"items"
@@ -1803,6 +1894,11 @@
 			"image_inventory"	"backpack/weapons/custommade/c_baleful_beacon"
 			"attributes"
 			{
+				//"attach particle effect"
+				//{
+				//	"attribute_class"	"set_attached_particle"
+				//	"value"	"705"
+				//}
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
@@ -2385,8 +2481,8 @@
 				"can_deal_critical_damage"		"1"
 				"is_flamethrower"		"1"
 			}
-			"item_logname"		"afterburner"
-			"item_iconname"		"afterburner"
+			"item_logname"		"pilotflamer"
+			"item_iconname"		"pilotflamer"
 			"show_in_armory"		"1"
 			"item_type_name"		"#TF_Weapon_Flamethrower"
 			"item_name"		"#TFCW_Afterburner"
@@ -2431,7 +2527,7 @@
                     "attribute_class"    "mult_single_wep_deploy_time"
                     "value" "0.6"
                 }
-                "airblast pushback scale"
+                "airblast pushback downscale"
                 {
                     "attribute_class"  "airblast_pushback_scale"
                     "value"                            "0.8"
@@ -2515,6 +2611,55 @@
 			"mouse_pressed_sound"	"ui/item_medal_pickup.wav"
 			"drop_sound"		"ui/item_medal_pickup.wav"
 		}
+		"32022" //Spitfire (Flaregun)
+		{
+			"name"					"The Spitfire"
+			"prefab"				"weapon_flaregun_custom"
+			"item_name"				"#TFCW_Spitfire"
+			"item_description"		"#TFCW_Spitfire_Desc"
+			"item_quality"			"community"
+			"moditem" "1"
+			"show_in_armory"		"1"
+			"item_logname"			"pilotflaregun"
+			"item_iconname"			"pilotflaregun"
+			"model_player"			"models/weapons/c_models/c_pilotflaregun/c_pilotflaregun.mdl"
+			"attach_to_hands"		"1"
+			"image_inventory"		"backpack/weapons/custommade/c_pilotflaregun"
+			"attributes"
+			{
+				"dmg bonus vs buildings"
+				{
+					"attribute_class"  "mult_dmg_vs_buildings"
+					"value"								"2"
+				}
+				"weapon burn dmg increased"
+				{
+					"attribute_class"  "mult_wpn_burndmg"
+					"value"								"1.25"
+				}
+				"faster reload rate"
+				{
+					"attribute_class"  "fast_reload"
+					"value"								"0.67"
+				}
+				"heat seek flare"
+				{
+					"attribute_class"  "mod_projectile_heat_seek_power"
+					"value"								"15"
+				}
+				"custom projectile model"
+				{
+					"attribute_class"	"custom_projectile_model"
+					"value"				"models/weapons/w_models/w_pilotflare.mdl"
+				}
+				//NOCRITS
+				"lunchbox adds minicrits"
+				{
+					"attribute_class"	"set_weapon_mode"
+					"value"	"4"
+				}
+			}
+		}
 		"34000" 
 		{
 			"name"		"Paintkit 800"
@@ -2537,6 +2682,23 @@
 				"paintkit_proto_def_index"					"801"
 			}
 		}
+		//WEAPON UNUSUALS
+		//"weapon_unusual_effects"
+		//{
+		//	"705"
+		//	{
+		//		"system"				"candle_light1"
+		//		"draw_in_viewmodel"		"1"
+		//		"use_suffix_name"		"1"
+		//		
+		//		"attachment"			"candle"
+		//		"control_point_1"		"candle"
+		//		"control_point_2"		"candle"
+		//		"control_point_3"		"candle"
+		//		"control_point_4"		"candle"
+		//		"control_point_5"		"candle"
+		//	}
+		//}
 		// CRATES & KEYS
 		"33000" 
 		{

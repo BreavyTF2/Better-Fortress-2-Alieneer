@@ -82,6 +82,7 @@ ConVar script_connect_debugger_on_mapspawn( "script_connect_debugger_on_mapspawn
 
 ConVar script_attach_debugger_at_startup( "script_attach_debugger_at_startup", "0" );
 ConVar script_break_in_native_debugger_on_error( "script_break_in_native_debugger_on_error", "0" );
+ConVar cf_vscript_allow_notifications( "cf_vscript_allow_notifications", "1", FCVAR_NOTIFY | FCVAR_REPLICATED, "Max time after a voice command until player can do another one");
 
 #define VSCRIPT_CONVAR_ALLOWLIST_NAME "cfg/vscript_convar_allowlist.txt"
 
@@ -2020,8 +2021,16 @@ static void Script_ClientPrint( HSCRIPT hPlayer, int iDest, const char *pText )
 }
 
 
-static void Script_SendNotification( HSCRIPT hPlayer, float flLifetime, const char *pText )
+static void Script_SendNotification( HSCRIPT hPlayer, float flLifetime, const char *pText, const char *iszSound )
 {
+
+	if ( !cf_vscript_allow_notifications.GetBool() ) 
+	{
+		Msg( "Server needs cf_vscript_allow_notifications set to 1 for sending custom notifications to players\n" );
+		return;
+	}
+
+
 	CBaseEntity *pBaseEntity = ToEnt( hPlayer );
 	CBasePlayer *pPlayer = dynamic_cast<CBasePlayer*>( pBaseEntity );
 	CRecipientFilter filter;
@@ -2040,6 +2049,7 @@ static void Script_SendNotification( HSCRIPT hPlayer, float flLifetime, const ch
 	UserMessageBegin( filter, "VS_SendNotification" );
 		WRITE_FLOAT( flLifetime );
 		WRITE_STRING( pText );
+		WRITE_STRING( iszSound );
 	MessageEnd();
 }
 

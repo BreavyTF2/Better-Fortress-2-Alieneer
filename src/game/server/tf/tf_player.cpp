@@ -212,7 +212,7 @@ ConVar tf_damage_multiplier_blue( "tf_damage_multiplier_blue", "1.0", FCVAR_CHEA
 ConVar tf_damage_multiplier_red( "tf_damage_multiplier_red", "1.0", FCVAR_CHEAT, "All incoming damage to a red player is multiplied by this value" );
 
 
-ConVar cf_max_voice_speak_delay( "cf_max_voice_speak_delay", "1.5", FCVAR_NOTIFY, "Max time after a voice command until player can do another one");
+ConVar cf_max_voice_speak_delay( "cf_max_voice_speak_delay", "1.5", FCVAR_NOTIFY | FCVAR_REPLICATED, "Max time after a voice command until player can do another one");
 extern ConVar cf_voicespam;
 
 ConVar tf_allow_player_use( "tf_allow_player_use", "0", FCVAR_NOTIFY, "Allow players to execute +use while playing." );

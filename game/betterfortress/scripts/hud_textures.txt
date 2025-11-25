@@ -42,6 +42,24 @@
 				"width"		"56"
 				"height"	"44"
 		}
+		"pilotflaregun"
+		{
+				"dfile"	"HUD/d_images_mod"
+				"dnegfile"	"HUD/dneg_images_mod"
+				"x"		"178"
+				"y"		"3"
+				"width"		"128"
+				"height"	"32"
+		}
+		"pilotflamer"
+		{
+				"dfile"	"HUD/d_images_mod"
+				"dnegfile"	"HUD/dneg_images_mod"
+				"x"		"307"
+				"y"		"3"
+				"width"		"128"
+				"height"	"32"
+		}
 		
 		//STEAM FRIEND ICON - DO NOT TOUCH
 		"ico_friend_indicator"
