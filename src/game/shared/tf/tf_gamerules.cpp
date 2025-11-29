@@ -11498,6 +11498,36 @@ void CTFGameRules::PlayerKilled( CBasePlayer *pVictim, const CTakeDamageInfo &in
 				}
 			}
 		}
+
+		// Drop soul for ghostly dash kills
+		if ( pTFScorer && pTFScorer != pTFVictim && pTFScorer->IsPlayerClass( TF_CLASS_PYRO ) )
+		{
+			// Check if the killer has a weapon with the ghostly dash attribute equipped
+			for ( int i = 0; i < MAX_WEAPONS; i++ )
+			{
+				CTFWeaponBase* pWeapon = static_cast<CTFWeaponBase*>( pTFScorer->GetWeapon( i ) );
+				if ( pWeapon )
+				{
+					int iGhostlyDash = 0;
+					CALL_ATTRIB_HOOK_INT_ON_OTHER( pWeapon, iGhostlyDash, mod_ghostly_dash );
+					if ( iGhostlyDash )
+					{
+						// Spawn souls that fly to the Pyro - 9 souls for Medics, 1 for others
+						bool bIsMedic = pTFVictim && pTFVictim->IsPlayerClass( TF_CLASS_MEDIC );
+						int nSoulCount = bIsMedic ? 9 : 1;
+						
+						// Spawn multiple individual soul packs for visual effect
+						for ( int j = 0; j < nSoulCount; j++ )
+						{
+							// Slightly offset each soul spawn position for visual spread
+							Vector vecOffset = RandomVector( -20.0f, 20.0f );
+							DropHalloweenSoulPack( 1, pVictim->EyePosition() + vecOffset, pTFScorer, pTFVictim->GetTeamNumber() );
+						}
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	//find the area the player is in and see if his death causes a block

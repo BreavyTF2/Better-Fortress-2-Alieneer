@@ -251,7 +251,7 @@ ConVar tf_halloween_giant_health_scale( "tf_halloween_giant_health_scale", "10",
 ConVar tf_grapplinghook_los_force_detach_time( "tf_grapplinghook_los_force_detach_time", "1", FCVAR_CHEAT );
 ConVar tf_powerup_max_charge_time( "tf_powerup_max_charge_time", "30", FCVAR_CHEAT );
 
-ConVar bf_spawn_with_throwable( "bf_spawn_with_throwable", "0", FCVAR_REPLICATED );
+ConVar cf_spawn_with_throwable( "cf_spawn_with_throwable", "0", FCVAR_REPLICATED );
 
 extern ConVar tf_powerup_mode;
 extern ConVar tf_mvm_buybacks_method;
@@ -4723,7 +4723,7 @@ void CTFPlayer::Spawn()
 		RemoveAllCustomAttributes();
 
 
-		if ( bf_spawn_with_throwable.GetBool() )
+		if ( cf_spawn_with_throwable.GetBool() )
 		{
 			int nClassBread = RandomInt( TF_FIRST_NORMAL_CLASS, TF_LAST_NORMAL_CLASS - 1 );
 			const char *name = g_aRawPlayerClassNamesShort[nClassBread];
@@ -6212,6 +6212,23 @@ void CTFPlayer::ManageRegularWeapons( TFPlayerClassData_t *pData )
 	}
 
 
+
+	// Initialize damage-based charge meters to 0
+	for( int i = FIRST_LOADOUT_SLOT_WITH_CHARGE_METER; i <= LAST_LOADOUT_SLOT_WITH_CHARGE_METER; ++i )
+	{
+		CBaseEntity* pItem = GetEntityForLoadoutSlot( i, true );
+		if ( !pItem )
+			continue;
+
+		attrib_value_t chargeType = ATTRIBUTE_METER_TYPE_NONE;
+		CALL_ATTRIB_HOOK_INT_ON_OTHER( pItem, chargeType, item_meter_charge_type );
+
+		if ( chargeType == ATTRIBUTE_METER_TYPE_DAMAGE )
+		{
+			// Initialize damage-based meters to 0
+			m_Shared.SetItemChargeMeter( (loadout_positions_t)i, 0.f );
+		}
+	}
 
 	// Check if we should give a "grenade"
 	for( int i = FIRST_LOADOUT_SLOT_WITH_CHARGE_METER; i <= LAST_LOADOUT_SLOT_WITH_CHARGE_METER; ++i )
@@ -11162,14 +11179,32 @@ int CTFPlayer::OnTakeDamage( const CTakeDamageInfo &inputInfo )
 		}
 	}
 
-	if ( pWeapon && ( ( pWeapon->GetWeaponID() == TF_WEAPON_BAT_FISH ) || ( pWeapon->GetWeaponID() == TF_WEAPON_SLAP ) ) )
+	// Check for weapons that show hits in killfeed (Fish, Slap, or custom weapons with attribute)
+	int iShowHitsInKillfeed = 0;
+	if ( pWeapon )
+	{
+		CALL_ATTRIB_HOOK_INT_ON_OTHER( pWeapon, iShowHitsInKillfeed, show_hits_in_killfeed );
+	}
+
+	if ( pWeapon && ( ( pWeapon->GetWeaponID() == TF_WEAPON_BAT_FISH ) || ( pWeapon->GetWeaponID() == TF_WEAPON_SLAP ) || iShowHitsInKillfeed ) )
 	{
 		bool bDisguised = m_Shared.InCond( TF_COND_DISGUISED ) && pTFAttacker && ( m_Shared.GetDisguiseTeam() == pTFAttacker->GetTeamNumber() );
 		bool bFish = ( pWeapon->GetWeaponID() == TF_WEAPON_BAT_FISH );
 
 		if ( m_iHealth <= 0 )
 		{
-			info.SetDamageCustom( bFish ? TF_DMG_CUSTOM_FISH_KILL : TF_DMG_CUSTOM_SLAP_KILL );
+			if ( bFish )
+			{
+				info.SetDamageCustom( TF_DMG_CUSTOM_FISH_KILL );
+			}
+			else if ( iShowHitsInKillfeed )
+			{
+				info.SetDamageCustom( TF_DMG_CUSTOM_MARLIN_KILL );
+			}
+			else
+			{
+				info.SetDamageCustom( TF_DMG_CUSTOM_SLAP_KILL );
+			}
 		}
 
 		if ( m_iHealth <= 0 || !bDisguised )
@@ -11182,7 +11217,18 @@ int CTFPlayer::OnTakeDamage( const CTakeDamageInfo &inputInfo )
 				CALL_ATTRIB_HOOK_INT_ON_OTHER( pWeapon, iFishDamageOverride, fish_damage_override );
 			}
 
-			TFGameRules()->DeathNotice( this, info, bFish ? ( iFishDamageOverride ? "fish_notice__arm" : "fish_notice" ) : "slap_notice" );
+			// Determine the event name based on weapon type
+			const char *pszEventName = "slap_notice";
+			if ( bFish )
+			{
+				pszEventName = iFishDamageOverride ? "fish_notice__arm" : "fish_notice";
+			}
+			else if ( iShowHitsInKillfeed )
+			{
+				pszEventName = "marlin_notice";
+			}
+
+			TFGameRules()->DeathNotice( this, info, pszEventName );
 		}
 	}
 
