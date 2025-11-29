@@ -66,11 +66,11 @@ bool CTFFireAxe::Deploy( void )
 void CTFFireAxe::ClientEffectsThink( void )
 {
 	CTFPlayer* pPlayer = GetTFPlayerOwner();
-	int iBeacon = 0;
+	float flSoulDefense = 0.f;
 	int iDRG = 0;
-	CALL_ATTRIB_HOOK_INT(iBeacon, lit_candle);
+	CALL_ATTRIB_HOOK_FLOAT(flSoulDefense, mod_soul_defense);
 	CALL_ATTRIB_HOOK_INT(iDRG, damage_all_connected);
-	if ( iBeacon || iDRG ) {
+	if ( flSoulDefense || iDRG ) {
 		if ( !pPlayer )
 			return;
 
@@ -83,11 +83,25 @@ void CTFFireAxe::ClientEffectsThink( void )
 		SetContextThink( &CTFFireAxe::ClientEffectsThink, gpGlobals->curtime + 0.1f, "EFFECTS_THINK" );
 		
 	}
-	if (iBeacon && !m_ParticleEffect) {
+	if (flSoulDefense && !m_ParticleEffect) {
 	m_ParticleEffect = GetAppropriateWorldOrViewModel()->ParticleProp()->Create( "balefulcandle", PATTACH_POINT_FOLLOW, "candle" );
 	}
 	if (iDRG && !m_ParticleEffect) {
 	m_ParticleEffect = GetAppropriateWorldOrViewModel()->ParticleProp()->Create( "drg_3rd_idle", PATTACH_POINT_FOLLOW, "electrode_0" );
 	}
+}
+//-----------------------------------------------------------------------------
+// Purpose: Show the meter if we have mod_soul_defense
+//-----------------------------------------------------------------------------
+bool CTFFireAxe::ShouldDrawMeter() const
+{
+	float flSoulDefense = 0.f;
+	CALL_ATTRIB_HOOK_FLOAT( flSoulDefense, mod_soul_defense );
+	if ( flSoulDefense > 0.f )
+	{
+		return true;
+	}
+	
+	return BaseClass::ShouldDrawMeter();
 }
 #endif

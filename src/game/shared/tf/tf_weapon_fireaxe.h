@@ -42,7 +42,9 @@ public:
 	void ClientEffectsThink( void );
 	bool m_bEffectsThinking;
 	HPARTICLEFFECT		m_ParticleEffect;
+	virtual bool		ShouldDrawMeter() const OVERRIDE;
 #endif
+
 private:
 
 	CTFFireAxe( const CTFFireAxe & ) {}

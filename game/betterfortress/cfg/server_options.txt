@@ -11,7 +11,7 @@
 		{
 			"label"		"#GameUI_ServerName"
 			"type"		"STRING"
-			"val"		"Better Fortress 2"
+			"val"		"Custom Fortress 2"
 		}
 		"sv_tags"
 		{
@@ -284,10 +284,11 @@
 				"zi_sanitarium"		"221"
 				"zi_woods"		"222"
 			}
-			"val"		"-1"
+			"val"		"71"
 		}
 		"map_preview"
 		{
+			"label"		"Unnamed"
 			"type"		"CATEGORY"
 		}
 		"category4"
@@ -306,22 +307,422 @@
 			}
 			"val"		"0"
 		}
+		"sv_password"
+		{
+			"label"		"SERVER PASSWORD"
+			"type"		"STRING"
+		}
+		"category5"
+		{
+			"label"		"COMMUNICATION SETTINGS"
+			"type"		"CATEGORY"
+		}
+		"sv_alltalk"
+		{
+			"label"		"ENABLE ALL TALK"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"sv_voiceenable"
+		{
+			"label"		"ENABLE VOICE CHAT"
+			"type"		"BOOL"
+			"val"		"1"
+		}
+		"category6"
+		{
+			"label"		"ROUND AND TIME SETTINGS"
+			"type"		"CATEGORY"
+		}
+		"mp_timelimit"
+		{
+			"label"		"TIME LIMIT (MINUTES)"
+			"type"		"STRING"
+			"val"		"0"
+		}
+		"mp_winlimit"
+		{
+			"label"		"WIN LIMIT"
+			"type"		"STRING"
+			"val"		"0"
+		}
+		"mp_maxrounds"
+		{
+			"label"		"MAX ROUNDS"
+			"type"		"STRING"
+			"val"		"0"
+		}
+		"mp_bonusroundtime"
+		{
+			"label"		"BONUS ROUND TIME (SECONDS)"
+			"type"		"STRING"
+			"val"		"15"
+		}
+		"mp_stalemate_enable"
+		{
+			"label"		"ENABLE STALEMATE/SUDDEN DEATH"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"category7"
+		{
+			"label"		"TEAM SETTINGS"
+			"type"		"CATEGORY"
+		}
+		"mp_teams_unbalance_limit"
+		{
+			"label"		"TEAM BALANCE LIMIT"
+			"type"		"STRING"
+			"val"		"1"
+		}
+		"mp_autoteambalance"
+		{
+			"label"		"AUTO TEAM BALANCE"
+			"type"		"BOOL"
+			"val"		"1"
+		}
+		"mp_scrambleteams_auto"
+		{
+			"label"		"AUTO SCRAMBLE TEAMS"
+			"type"		"BOOL"
+			"val"		"1"
+		}
+		"category8"
+		{
+			"label"		"NETWORK AND PERFORMANCE"
+			"type"		"CATEGORY"
+		}
+		"sv_pure"
+		{
+			"label"		"SERVER PURE"
+			"type"		"LIST"
+			"options"
+			{
+				"OFF"		"0"
+				"PURE (WHITELIST)"		"1"
+				"PURE (STRICT)"		"2"
+			}
+			"val"		"0"
+		}
+		"sv_region"
+		{
+			"label"		"SERVER REGION"
+			"type"		"LIST"
+			"options"
+			{
+				"AUTOMATIC"		"-1"
+				"US EAST"		"0"
+				"US WEST"		"1"
+				"SOUTH AMERICA"		"2"
+				"EUROPE"		"3"
+				"ASIA"		"4"
+				"AUSTRALIA"		"5"
+				"MIDDLE EAST"		"6"
+				"AFRICA"		"7"
+			}
+			"val"		"-1"
+		}
+		"sv_downloadurl"
+		{
+			"label"		"FAST DOWNLOAD URL"
+			"type"		"STRING"
+		}
+		"sv_allowupload"
+		{
+			"label"		"ALLOW UPLOADS"
+			"type"		"BOOL"
+			"val"		"1"
+		}
+		"sv_allowdownload"
+		{
+			"label"		"ALLOW DOWNLOADS"
+			"type"		"BOOL"
+			"val"		"1"
+		}
 	}
 	"#Replay_Contest_Rules"
 	{
 		"category1"
 		{
-			"label"		"TEST"
+			"label"		"GAMEPLAY RULES"
 			"type"		"CATEGORY"
 		}
 		"sv_cheats"
 		{
-			"label"		"cheats"
+			"label"		"ENABLE CHEATS"
 			"type"		"BOOL"
 			"val"		"0"
 		}
-	}
-	"#GameUI_GameMenu_Options"
-	{
+		"mp_tournament"
+		{
+			"label"		"TOURNAMENT MODE"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"mp_highlander"
+		{
+			"label"		"HIGHLANDER MODE (REQUIRES TOURNAMENT MODE)"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"mp_friendlyfire"
+		{
+			"label"		"ENABLE FRIENDLY FIRE"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"mp_disable_respawn_times"
+		{
+			"label"		"DISABLE RESPAWN TIMES"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"tf_birthday"
+		{
+			"label"		"BIRTHDAY MODE"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"sv_gravity"
+		{
+			"label"		"GRAVITY"
+			"type"		"STRING"
+			"val"		"800"
+		}
+		"cf_allow_ladders"
+		{
+			"label"		"ALLOW LADDERS"
+			"type"		"BOOL"
+			"val"		"1"
+		}
+		"cf_instantrespawn"
+		{
+			"label"		"INSTANT RESPAWN"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"cf_max_speed"
+		{
+			"label"		"MAX SPEED"
+			"type"		"STRING"
+			"val"		"520"
+		}
+		"category2"
+		{
+			"label"		"CLASS AND WEAPON MODIFIERS"
+			"type"		"CATEGORY"
+		}
+		"tf_classlimit"
+		{
+			"label"		"GLOBAL CLASS LIMIT"
+			"type"		"STRING"
+			"val"		"0"
+		}
+		"tf_weapon_criticals"
+		{
+			"label"		"ENABLE RANDOM CRITS"
+			"type"		"BOOL"
+			"val"		"1"
+		}
+		"tf_weapon_criticals_melee"
+		{
+			"label"		"ENABLE RANDOM CRITS ON MELEE"
+			"type"		"LIST"
+			"options"
+			{
+				"OFF"		"0"
+				"ON"		"1"
+				"ON (IGNORES WEAPON CRITICALS)"		"2"
+			}
+			"val"		"1"
+		}
+		"tf_use_fixed_weaponspreads"
+		{
+			"label"		"USE FIXED WEAPON SPREAD"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"sv_infinite_ammo"
+		{
+			"label"		"INFINITE AMMO"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"cf_infinite_shotgun_knockback"
+		{
+			"label"		"INFINITE F.A.N KNOCKBACK"
+			"type"		"BOOL"
+			"val"		"0"
+		}
+		"category3"
+		{
+			"label"		"INDIVIDUAL CLASS LIMITS"
+			"type"		"CATEGORY"
+		}
+		"tf_tournament_classlimit_scout"
+		{
+			"label"		"SCOUT LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_soldier"
+		{
+			"label"		"SOLDIER LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_pyro"
+		{
+			"label"		"PYRO LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_demoman"
+		{
+			"label"		"DEMOMAN LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_heavy"
+		{
+			"label"		"HEAVY LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_engineer"
+		{
+			"label"		"ENGINEER LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_medic"
+		{
+			"label"		"MEDIC LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_sniper"
+		{
+			"label"		"SNIPER LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"tf_tournament_classlimit_spy"
+		{
+			"label"		"SPY LIMIT"
+			"type"		"STRING"
+			"val"		"-1"
+		}
+		"category3b"
+		{
+			"label"		"COSMETICS AND VOICE"
+			"type"		"CATEGORY"
+		}
+		"cf_cosmetic_restrictions"
+		{
+			"label"		"COSMETIC RESTRICTIONS"
+			"type"		"LIST"
+			"options"
+			{
+				"NONE"		"0"
+				"HALLOWEEN ONLY"		"1"
+				"ALL RESTRICTED"		"2"
+			}
+			"val"		"0"
+		}
+		"cf_voicespam"
+		{
+			"label"		"ALLOW VOICE SPAM"
+			"type"		"BOOL"
+			"val"		"1"
+		}
+		"cf_max_voice_speak_delay"
+		{
+			"label"		"MAX VOICE SPEAK DELAY (SECONDS)"
+			"type"		"STRING"
+			"val"		"1.5"
+		}
+		"category4"
+		{
+			"label"		"MANN VS MACHINE OPTIONS"
+			"type"		"CATEGORY"
+			"prefix"		"mvm_"
+		}
+		"cf_mvm_footstep_sounds"
+		{
+			"label"		"UNIQUE GIANT FOOTSTEP SOUNDS"
+			"type"		"BOOL"
+			"val"		"1"
+			"prefix"		"mvm_"
+		}
+		"cf_mvm_inspect_friends_only"
+		{
+			"label"		"INSPECT FRIENDS ONLY"
+			"type"		"BOOL"
+			"val"		"0"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_enable_human_busters"
+		{
+			"label"		"ENABLE HUMAN SENTRY BUSTERS"
+			"type"		"BOOL"
+			"val"		"0"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_invader_bomb_chance"
+		{
+			"label"		"INVADER BOMB CHANCE (%)"
+			"type"		"STRING"
+			"val"		"0"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_max_bosses"
+		{
+			"label"		"MAX BOSSES"
+			"type"		"STRING"
+			"val"		"1"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_max_giants"
+		{
+			"label"		"MAX GIANTS"
+			"type"		"STRING"
+			"val"		"3"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_playstyle"
+		{
+			"label"		"MVM VS PLAYSTYLE"
+			"type"		"LIST"
+			"options"
+			{
+				"TRADITIONAL MVM"		"0"
+				"ROBOT CONTROL"		"1"
+				"MIXED (RANDOM)"		"2"
+			}
+			"val"		"0"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_restrict_slots"
+		{
+			"label"		"RESTRICT ROBOT SLOTS"
+			"type"		"BOOL"
+			"val"		"1"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_robot_stations"
+		{
+			"label"		"ENABLE ROBOT UPGRADE STATIONS"
+			"type"		"BOOL"
+			"val"		"0"
+			"prefix"		"mvm_"
+		}
+		"cf_mvmvs_use_loadout"
+		{
+			"label"		"ROBOTS USE PLAYER LOADOUT"
+			"type"		"BOOL"
+			"val"		"0"
+			"prefix"		"mvm_"
+		}
 	}
 }
