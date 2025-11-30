@@ -611,3 +611,4 @@ game/betterfortress/cfg/cf_devtest_bots.cfg
 game/betterfortress/cfg/cf_devtest.cfg
 game/betterfortress/scripts/population/sentrybuster.pop
 game/betterfortress/cfg/server_options.txt
+game/betterfortress/cfg/airblast.cfg
