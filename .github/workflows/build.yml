@@ -15,7 +15,7 @@ jobs:
         include:
           - os: windows-2025
             build_script: createbf2projects-nopause.bat
-            build_cmd: msbuild betterfortress2.sln /p:Configuration=Release /p:Platform=win64 /m
+            build_cmd: msbuild customfortress2.sln /p:Configuration=Release /p:Platform=win64 /m
             artifact_name: bf2-windows
           - os: ubuntu-latest
             build_script: ./buildbf2projects
@@ -134,8 +134,8 @@ jobs:
           fi
           
           # Check game binaries
-          if [ -d "game/betterfortress/bin/linux64" ]; then
-            for lib in game/betterfortress/bin/linux64/*.so; do
+          if [ -d "game/customfortress/bin/linux64" ]; then
+            for lib in game/customfortress/bin/linux64/*.so; do
               if [ -f "$lib" ]; then
                 echo "Checking $lib:"
                 file "$lib" | grep -q "ELF 64-bit" || {
@@ -149,14 +149,14 @@ jobs:
           fi
           
           # Check main executable
-          if [ -f "game/betterfortress_linux64" ]; then
-            echo "Checking game/betterfortress_linux64:"
-            file "game/betterfortress_linux64" | grep -q "ELF 64-bit" || {
-              echo "ERROR: betterfortress_linux64 is not 64-bit!"
-              file "game/betterfortress_linux64"
+          if [ -f "game/customfortress_linux64" ]; then
+            echo "Checking game/customfortress_linux64:"
+            file "game/customfortress_linux64" | grep -q "ELF 64-bit" || {
+              echo "ERROR: customfortress_linux64 is not 64-bit!"
+              file "game/customfortress_linux64"
               exit 1
             }
-            echo "✓ betterfortress_linux64 is 64-bit"
+            echo "✓ customfortress_linux64 is 64-bit"
           fi
           
           echo "All binaries verified as 64-bit ✓"
@@ -165,9 +165,9 @@ jobs:
       - name: Clean and strip (Linux)
         if: runner.os == 'Linux'
         run: |
-          find game/betterfortress/bin/linux64 -type f -executable -exec strip --strip-all {} +
-          if [ -f game/betterfortress_linux64 ]; then
-            strip --strip-all game/betterfortress_linux64
+          find game/customfortress/bin/linux64 -type f -executable -exec strip --strip-all {} +
+          if [ -f game/customfortress_linux64 ]; then
+            strip --strip-all game/customfortress_linux64
           fi
         shell: bash
 
