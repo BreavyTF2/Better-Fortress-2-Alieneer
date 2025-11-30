@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models\workshop\player\items\taunts\engi_fishing\engi_fishing"
+	"$basetexture"	"models\workshop\player\items\taunts\engi_fishing\engi_fishing_v2"
 	"$bumpmap"	"water\tfwater001_normal"
 	"$envmap"	"env_cubemap"
 	"$envmaptint" .5 .5 .5
