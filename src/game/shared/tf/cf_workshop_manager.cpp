@@ -2056,7 +2056,11 @@ void CCFWorkshopManager::StartItemUpdate(PublishedFileId_t fileID)
 	{
 		CUtlString tagsCopy = m_strPendingTags;
 		char* pszContext = NULL;
+#ifdef _WIN32
 		char* pszToken = strtok_s(tagsCopy.Access(), ",", &pszContext);
+#else
+		char* pszToken = strtok_r(tagsCopy.Access(), ",", &pszContext);
+#endif
 		while (pszToken)
 		{
 			// Trim whitespace
@@ -2071,7 +2075,11 @@ void CCFWorkshopManager::StartItemUpdate(PublishedFileId_t fileID)
 				tagStorage[idx] = pszToken;
 				tagList.AddToTail(tagStorage[idx].Get());
 			}
+#ifdef _WIN32
 			pszToken = strtok_s(NULL, ",", &pszContext);
+#else
+			pszToken = strtok_r(NULL, ",", &pszContext);
+#endif
 		}
 	}
 
