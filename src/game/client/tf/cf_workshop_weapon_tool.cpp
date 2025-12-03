@@ -18,7 +18,12 @@
 #include "ienginevgui.h"
 #include "filesystem.h"
 #include "tier1/KeyValues.h"
+#ifdef _WIN32
 #include <direct.h>
+#else
+#include <sys/stat.h>
+#include <sys/types.h>
+#endif
 #include <stdio.h>
 
 #include "tier0/memdbgon.h"
@@ -761,7 +766,11 @@ bool CCFWorkshopWeaponTool::CopyModelToTarget(const char* pszSourcePath, const c
 	
 	for (int i = 0; i < dirsToCreate.Count(); i++)
 	{
+#ifdef _WIN32
 		_mkdir(dirsToCreate[i].Get());
+#else
+		mkdir(dirsToCreate[i].Get(), 0755);
+#endif
 	}
 	
 	// Get source full path base
