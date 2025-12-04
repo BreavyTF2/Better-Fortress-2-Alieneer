@@ -67,9 +67,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: src/_vpc_
-          key: ${{ runner.os }}-vpc-${{ hashFiles('src/**/*.vpc', 'src/**/vpc_scripts/**') }}
+          key: ${{ runner.os }}-vpc-v2-${{ hashFiles('src/**/*.vpc', 'src/**/vpc_scripts/**') }}
           restore-keys: |
-            ${{ runner.os }}-vpc-
+            ${{ runner.os }}-vpc-v2-
 
       - name: Restore Windows build cache
         if: runner.os == 'Windows'
@@ -192,7 +192,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: src/_vpc_
-          key: ${{ runner.os }}-vpc-${{ hashFiles('src/**/*.vpc', 'src/**/vpc_scripts/**') }}
+          key: ${{ runner.os }}-vpc-v2-${{ hashFiles('src/**/*.vpc', 'src/**/vpc_scripts/**') }}
 
       - name: Save Windows build cache
         if: runner.os == 'Windows'
