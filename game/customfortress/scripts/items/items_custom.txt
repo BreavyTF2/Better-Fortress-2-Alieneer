@@ -987,6 +987,16 @@
 			"hidden"	"0"
 			"effect_type"	"positive"
 		}
+		"4031"
+		{
+			"name"	"headshots from behind"
+			"attribute_class"	"back_headshot"
+			"description_string"	"#Attrib_Back_Headshot"
+			"description_format"	"value_is_additive"
+			"hidden"	"0"
+			"effect_type"	"positive"
+			"stored_as_integer"	"0"
+		}
 	}
 	"items"
 	{
@@ -2743,6 +2753,107 @@
 				}
 			}
 		}
+		"32023"
+		{
+			"name" "The Conventional Pistol"
+			"prefab"	"paintkit_base"
+			"capabilities"
+			{
+				"nameable"		"1"
+				"can_craft_count"	"1"
+			}
+			"tags"
+			{
+				"can_be_festivized"		"1"
+				"can_deal_damage"			"1"
+				"can_deal_critical_damage"	"1"
+				"can_deal_mvm_penetration_damage"	"1"
+				"can_deal_long_distance_damage"	"1"
+			}
+			"item_class"	"tf_weapon_handgun_scout_secondary"
+			"craft_class"	"weapon"
+			"craft_material_type"	"weapon"
+			"item_type_name"	"#TF_Weapon_Pistol"
+			"item_name"					"#TFCW_SVDL_Conventional"
+			"item_description"			"#TFCW_SVDL_Conventional_Desc"
+			"item_logname"	"pep_pistol"
+			"item_iconname"	"pep_pistol"
+			"item_slot"	"secondary"
+			"item_quality"	"community"
+			"moditem" "1"
+			"min_ilevel"	"10"
+			"max_ilevel"	"10"
+			"show_in_armory"	"1"
+			"attach_to_hands"	"1"
+			"image_inventory"	"backpack/workshop/weapons/c_models/c_pep_pistol/c_pep_pistol"
+			"image_inventory_size_w"		"128"
+			"image_inventory_size_h"		"82"
+			"inspect_panel_dist" 			"31"
+			"model_player"	"models/weapons/c_models/c_silencedpistol/c_silencedpistol.mdl"
+			"capabilities"
+			{
+				"can_collect" "1"
+			}
+			"visuals"
+			{
+				"styles"
+				{
+					"0"
+					{
+						"skin_red"	"0"
+						"skin_blu"	"1"
+						"selectable"	"0"
+					}
+				}
+				"attached_models_festive"
+				{
+					"0"
+					{
+						"model"	"models/weapons/c_models/c_silencedpistol/c_silencedpistol_festivizer.mdl"
+					}
+				}
+			}
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"engineer" "1"
+			}
+			"static_attrs"
+			{
+				"min_viewmodel_offset"					"10 0 -10"
+			}
+			"attributes"
+			{
+				"provide on active"
+				{
+					"attribute_class"	"provide_on_active"
+					"value" "1"
+				}
+				"headshots from behind"
+				{
+					"attribute_class"	"back_headshot"
+					"value" "1"
+				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"			   "11"
+				}
+				"damage penalty"
+				{
+					"attribute_class"	"mult_clipsize"
+					"value" "0.75"
+				}
+			}
+			"visuals"
+			{
+				"sound_single_shot"		"Weapon_SilencedPistol.Single"
+				"sound_burst"			"Weapon_SilencedPistol.SingleCrit"
+			}
+			"mouse_pressed_sound"	"ui/item_light_gun_pickup.wav"
+			"drop_sound"		"ui/item_light_gun_drop.wav"
+			"xifier_class_remap"	"pistol_silenced"
+		}
 		"34000" 
 		{
 			"name"		"Paintkit 800"
@@ -2765,23 +2876,6 @@
 				"paintkit_proto_def_index"					"801"
 			}
 		}
-		//WEAPON UNUSUALS
-		//"weapon_unusual_effects"
-		//{
-		//	"705"
-		//	{
-		//		"system"				"candle_light1"
-		//		"draw_in_viewmodel"		"1"
-		//		"use_suffix_name"		"1"
-		//		
-		//		"attachment"			"candle"
-		//		"control_point_1"		"candle"
-		//		"control_point_2"		"candle"
-		//		"control_point_3"		"candle"
-		//		"control_point_4"		"candle"
-		//		"control_point_5"		"candle"
-		//	}
-		//}
 		// CRATES & KEYS
 		"33000" 
 		{
@@ -2867,6 +2961,7 @@
 			"8"			"#Attrib_UGCT_StreamSniper"
 			"9"			"#Attrib_UGCC_Canteen_Merasmus"
 			"10"		"#Attrib_UGC_NeoDement"
+			"11"		"#Attrib_UGC_SVDL"
 		}
 	}
 	"client_loot_lists"

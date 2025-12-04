@@ -10,3 +10,21 @@
 	"wave"		")weapons\weapon_bmmh_single.wav"
 }
 
+// ------------------------------------------------------------------------------------ //
+// SVDL - The Conventional
+// ------------------------------------------------------------------------------------ //
+"Weapon_SilencedPistol.Single"
+{
+	"channel"	"CHAN_WEAPON"
+	"soundlevel"	"SNDLVL_94dB"
+	"volume"	"1.0"
+	"wave"		")weapons/silencedpistol_shoot.wav"
+}
+
+"Weapon_SilencedPistol.SingleCrit"
+{
+	"channel"	"CHAN_WEAPON"
+	"soundlevel"	"SNDLVL_94dB"
+	"volume"	"1.0"
+	"wave"		")weapons/silencedpistol_shoot_crit.wav"
+}

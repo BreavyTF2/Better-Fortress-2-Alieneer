@@ -680,6 +680,7 @@ message CMsgPaintKit_Definition
 	optional	Item						tomislav            = 48;
 	optional	Item						trenchgun           = 49;
 	optional	Item						winger_pistol       = 50;
+	optional	Item						pistol_silenced     = 51;
 }
 
 message CMsgQuestTheme
