@@ -50,13 +50,17 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           mkdir -p ~/.ccache
+          # Config must be inside CCACHE_DIR for container to find it
           cat > ~/.ccache/ccache.conf << 'EOF'
-          max_size = 2G
-          compression = true
-          hash_dir = false
-          base_dir = /my_mod
-          sloppiness = include_file_mtime,include_file_ctime,time_macros,pch_defines,file_stat_matches
-          EOF
+max_size = 2G
+compression = true
+hash_dir = false
+base_dir = /my_mod
+sloppiness = include_file_mtime,include_file_ctime,time_macros,pch_defines,file_stat_matches,locale,system_headers
+log_file = /ccache/ccache.log
+EOF
+          echo "Created ccache.conf:"
+          cat ~/.ccache/ccache.conf
 
       - name: Restore ccache cache (Linux)
         if: runner.os == 'Linux'
@@ -203,6 +207,12 @@ jobs:
         run: |
           echo "=== ccache statistics ==="
           ccache -s
+          echo ""
+          echo "=== ccache log (last 100 lines) ==="
+          tail -100 ~/.ccache/ccache.log 2>/dev/null || echo "No log file found"
+          echo ""
+          echo "=== Uncacheable reasons ==="
+          grep -oE "Result: [a-z_]+" ~/.ccache/ccache.log 2>/dev/null | sort | uniq -c | head -20 || echo "No results found in log"
         shell: bash
 
       - name: Save ccache (Linux)

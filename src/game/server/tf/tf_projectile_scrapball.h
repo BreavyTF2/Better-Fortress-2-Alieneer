@@ -73,6 +73,9 @@ private:
 	// Metal cost and hit tracking
 	int m_iMetalCost;
 	CUtlVector<int> m_HitPlayers;
+	
+	// Prevent double-explosion (can happen with certain brush entities like func_door)
+	bool m_bExploded;
 };
 
 #endif	//TF_PROJECTILE_SCRAPBALL_H

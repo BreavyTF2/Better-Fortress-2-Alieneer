@@ -35,6 +35,7 @@ CTFProjectile_ScrapBall::CTFProjectile_ScrapBall()
 {
 	m_iMetalCost = 0;
 	m_bCritical = false;
+	m_bExploded = false;
 	// m_HitPlayers is auto-initialized by CUtlVector constructor
 }
 
@@ -123,8 +124,39 @@ int	CTFProjectile_ScrapBall::GetDamageType()
 //-----------------------------------------------------------------------------
 void CTFProjectile_ScrapBall::RocketTouch( CBaseEntity *pOther )
 {
-	// Call base class - this will handle the explosion
-	BaseClass::RocketTouch( pOther );
+	// Validate the entity we hit
+	if ( !pOther )
+	{
+		return;
+	}
+
+	// Don't touch triggers or volume contents (unless it's a shield)
+	bool bShield = pOther->IsCombatItem() && !InSameTeam( pOther );
+	if ( pOther->IsSolidFlagSet( FSOLID_TRIGGER | FSOLID_VOLUME_CONTENTS ) && !bShield )
+	{
+		return;
+	}
+
+	// Handle hitting skybox (disappear)
+	const trace_t *pTrace = &CBaseEntity::GetTouchTrace();
+	if ( pTrace && pTrace->surface.flags & SURF_SKY )
+	{
+		UTIL_Remove( this );
+		return;
+	}
+
+	// Create a copy of the trace for the explosion
+	trace_t trace;
+	if ( pTrace )
+	{
+		memcpy( &trace, pTrace, sizeof( trace_t ) );
+		Explode( &trace, pOther );
+	}
+	else
+	{
+		// Fallback if trace is somehow invalid
+		UTIL_Remove( this );
+	}
 }
 
 int CTFProjectile_ScrapBall::GiveMetal( CTFPlayer *pPlayer )
@@ -174,6 +206,13 @@ bool CTFProjectile_ScrapBall::HasHitPlayer( CTFPlayer *pPlayer ) const
 //-----------------------------------------------------------------------------
 void CTFProjectile_ScrapBall::Explode( trace_t *pTrace, CBaseEntity *pOther )
 {
+	// Prevent double-explosion (can happen with certain brush entities like func_door)
+	if ( m_bExploded )
+	{
+		return;
+	}
+	m_bExploded = true;
+
 	if ( ShouldNotDetonate() )
 	{
 		Destroy( true );
