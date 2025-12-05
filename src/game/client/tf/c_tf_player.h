@@ -675,6 +675,8 @@ public:
 	int				m_iSpawnCounter;
 	bool			m_bArenaSpectator;
 
+	int				m_iTracerCount;			// Per-player tracer count for consistent tracer frequency
+
 	bool			m_bFlipViewModels;
 
 	bool			m_bIsMiniBoss;

@@ -3921,6 +3921,8 @@ C_TFPlayer::C_TFPlayer() :
 	m_bIsDisplayingIconForIT = false;
 	m_bShouldShowBirthdayEffect = false;
 
+	m_iTracerCount = 0;
+
 	m_bWasTaunting = false;
 	m_angTauntPredViewAngles.Init();
 	m_angTauntEngViewAngles.Init();

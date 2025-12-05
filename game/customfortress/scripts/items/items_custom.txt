@@ -997,6 +997,16 @@
 			"effect_type"	"positive"
 			"stored_as_integer"	"0"
 		}
+		"4032"
+		{
+    		"name"    "engineer dispenser build rate multiplier"
+    		"attribute_class"    "dispenser_build_rate_multiplier"
+    		"description_string"    "#Attrib_Dispenser_Build_Rate"
+    		"description_format"    "value_is_percentage"
+    		"hidden"    "0"
+    		"effect_type"    "positive"
+    		"stored_as_integer"    "0"
+		}
 	}
 	"items"
 	{
