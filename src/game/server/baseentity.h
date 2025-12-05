@@ -1372,11 +1372,17 @@ public:
 		VPhysicsDestroyObject(); 
 	}
 
-	void ScriptToggleCollisionsOn( CBaseEntity * pEntity1, CBaseEntity * pEntity2, bool bEnable )
+	void ScriptToggleCollisionsOn( HSCRIPT pEntity, bool bEnable )
 	{
-		IPhysicsObject * vPhysObj1 = pEntity1->VPhysicsGetObject();
-		IPhysicsObject * vPhysObj2 = pEntity2->VPhysicsGetObject();
+		IPhysicsObject * vPhysObj1 = VPhysicsGetObject();
 		// need two different objects to do anything
+
+		CBaseEntity *hTarget = ToEnt( pEntity );
+		IPhysicsObject* vPhysObj2 = hTarget->VPhysicsGetObject();
+		//Invalid Target
+		if ( !vPhysObj2 && !vPhysObj1 )
+			return;
+
 		if ( vPhysObj1 && vPhysObj2 && vPhysObj1 != vPhysObj2 )
 		{
 			if ( bEnable )
