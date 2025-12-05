@@ -19143,9 +19143,11 @@ bool CTFPlayer::PlayTauntSceneFromItem( const CEconItemView *pEconItemView )
 
 		static CSchemaAttributeDefHandle pAttrDef_TauntAttackTime( "taunt attack time" );
 		float flTauntAttackTime = 0.f;
+		float flPlaybackRate  = 1.f;
+		CALL_ATTRIB_HOOK_FLOAT( flPlaybackRate , mult_gesture_time );
 		if ( FindAttribute_UnsafeBitwiseCast<attrib_value_t>( pItemDef, pAttrDef_TauntAttackTime, &flTauntAttackTime ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + flTauntAttackTime;
+			m_flTauntAttackTime = gpGlobals->curtime + ( flTauntAttackTime / flPlaybackRate );
 		}
 
 
@@ -19673,6 +19675,9 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	}
 	
 	CTFWeaponBase *pActiveWeapon = m_Shared.GetActiveTFWeapon();
+
+	float flPlaybackRate = 1.f;
+	CALL_ATTRIB_HOOK_FLOAT( flPlaybackRate, mult_gesture_time );
 	if ( iTauntIndex == TAUNT_BASE_WEAPON )
 	{
 		// phlogistinator
@@ -19704,7 +19709,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 			{
 				if ( pActiveWeapon && pActiveWeapon->GetWeaponID() == TF_WEAPON_LUNCHBOX )
 				{
-					m_flTauntAttackTime = gpGlobals->curtime + 0.9;
+					m_flTauntAttackTime = gpGlobals->curtime + ( 0.9 / flPlaybackRate );
 					m_iTauntAttack = TAUNTATK_SCOUT_DRINK;
 				}
 			}
@@ -19713,7 +19718,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 		{
 			if ( pActiveWeapon && pActiveWeapon->GetWeaponID() == TF_WEAPON_LUNCHBOX )
 			{
-				m_flTauntAttackTime = gpGlobals->curtime + 1.0;
+				m_flTauntAttackTime = gpGlobals->curtime + ( 1.0 / flPlaybackRate );
 				m_iTauntAttack = TAUNTATK_HEAVY_EAT;
 
 				// Only count sandviches for "eat 100 sandviches" achievement
@@ -19760,12 +19765,12 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_stricmp( szResponse, "scenes/player/pyro/low/taunt02.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 2.1f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 2.1f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_PYRO_HADOUKEN;
 		}
 		else if ( !V_stricmp( szResponse, "scenes/player/pyro/low/taunt_bubbles.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 3.0f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 3.0f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_PYRO_ARMAGEDDON;
 
 			// We need to parent this to a target instead of the player because the player changing their camera view can twist the rainbow
@@ -19790,7 +19795,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 		}
 		else if ( !V_stricmp( szResponse, "scenes/player/pyro/low/taunt_scorch_shot.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 1.9f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 1.9f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_PYRO_SCORCHSHOT;
 		}
 	}
@@ -19798,7 +19803,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_stricmp( szResponse, "scenes/player/heavy/low/taunt03_v1.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 1.8;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 1.8 / flPlaybackRate);
 			m_iTauntAttack = TAUNTATK_HEAVY_HIGH_NOON;
 		}
 		else if ( pActiveWeapon && pActiveWeapon->GetWeaponID() == TF_WEAPON_FISTS )
@@ -19806,11 +19811,11 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 			CTFFists *pFists = dynamic_cast<CTFFists*>(pActiveWeapon);
 			if ( pFists && pFists->GetFistType() == FISTTYPE_RADIAL_BUFF )
 			{
-				m_flTauntAttackTime = gpGlobals->curtime + 1.0;
+				m_flTauntAttackTime = gpGlobals->curtime + ( 1.0 / flPlaybackRate);
 				m_iTauntAttack = TAUNTATK_HEAVY_RADIAL_BUFF;
 			}
 			else {
-				m_flTauntAttackTime = gpGlobals->curtime + 1.37f;
+				m_flTauntAttackTime = gpGlobals->curtime + ( 1.37f / flPlaybackRate );
 				m_iTauntAttack = TAUNTATK_HEAVY_PUNCHOUT_A;
 			}
 		}
@@ -19819,7 +19824,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_stricmp( szResponse, "scenes/player/scout/low/taunt05_v1.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 4.03f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 4.03f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_SCOUT_GRAND_SLAM;
 		}
 	}
@@ -19827,8 +19832,8 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_stricmp( szResponse, "scenes/player/medic/low/taunt06.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 0.8f;
-			m_flTauntInhaleTime = gpGlobals->curtime + 1.8f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.8f / flPlaybackRate );
+			m_flTauntInhaleTime = gpGlobals->curtime + ( 1.8f / flPlaybackRate );
 			
 			const char *pszParticleEffect;
 			pszParticleEffect = ( GetTeamNumber() == TF_TEAM_RED ? "healhuff_red" : "healhuff_blu" );
@@ -19838,7 +19843,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 		}
 		else if ( !V_stricmp( szResponse, "scenes/player/medic/low/taunt08.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 2.2f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 2.2f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_MEDIC_UBERSLICE_IMPALE;
 		}
 	}
@@ -19846,7 +19851,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_strnicmp( szResponse, "scenes/player/spy/low/taunt03", 29 ) )		// There's taunt03_v1 & taunt03_v2
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 1.8f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 1.8f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_SPY_FENCING_SLASH_A;
 		}
 	}
@@ -19854,7 +19859,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_stricmp( szResponse, "scenes/player/sniper/low/taunt04.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 0.85f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.85f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_SNIPER_ARROW_STAB_IMPALE;
 		}
 	}
@@ -19864,12 +19869,12 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 		{
 			if ( IsWormsGearEquipped() )
 			{
-				m_flTauntAttackTime = gpGlobals->curtime + 1.4f;
+				m_flTauntAttackTime = gpGlobals->curtime + ( 1.4f / flPlaybackRate );
 				m_iTauntAttack = TAUNTATK_SOLDIER_GRENADE_KILL_WORMSIGN;
 				return;
 			}
 
-			m_flTauntAttackTime = gpGlobals->curtime + 3.5f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 3.5f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_SOLDIER_GRENADE_KILL;
 		}
 	}
@@ -19877,7 +19882,7 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_stricmp( szResponse, "scenes/player/demoman/low/taunt09.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 2.55f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 2.55f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_DEMOMAN_BARBARIAN_SWING;
 		}
 	}
@@ -19885,12 +19890,12 @@ void CTFPlayer::Taunt( taunts_t iTauntIndex, int iTauntConcept )
 	{
 		if ( !V_stricmp( szResponse, "scenes/player/engineer/low/taunt07.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 3.695f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 3.695f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_ENGINEER_GUITAR_SMASH;
 		}
 		else if ( !V_stricmp( szResponse, "scenes/player/engineer/low/taunt09.vcd" ) )
 		{
-			m_flTauntAttackTime = gpGlobals->curtime + 3.2f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 3.2f / flPlaybackRate );
 			m_iTauntAttack = TAUNTATK_ENGINEER_ARM_IMPALE;
 		}
 	}
@@ -20204,6 +20209,9 @@ void CTFPlayer::DoTauntAttack( void )
 		return;
 	}
 
+	float flPlaybackRate = 1.f;
+	CALL_ATTRIB_HOOK_FLOAT( flPlaybackRate, mult_gesture_time );
+
 	int iTauntAttack = m_iTauntAttack;
 	m_iTauntAttack = TAUNTATK_NONE;
 
@@ -20276,27 +20284,27 @@ void CTFPlayer::DoTauntAttack( void )
 		if ( iTauntAttack == TAUNTATK_SPY_FENCING_SLASH_A )
 		{
 			m_iTauntAttack = TAUNTATK_SPY_FENCING_SLASH_B;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.47;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.47 / flPlaybackRate );
 		}
 		else if ( iTauntAttack == TAUNTATK_SPY_FENCING_SLASH_B )
 		{
 			m_iTauntAttack = TAUNTATK_SPY_FENCING_STAB;
-			m_flTauntAttackTime = gpGlobals->curtime + 1.73;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 1.73 / flPlaybackRate );
 		}
 		else if (iTauntAttack == TAUNTATK_HEAVY_PUNCHOUT_A)
 		{
 			m_iTauntAttack = TAUNTATK_HEAVY_PUNCHOUT_B;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.8f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.8f / flPlaybackRate );
 		}
 		else if (iTauntAttack == TAUNTATK_HEAVY_PUNCHOUT_B)
 		{
 			m_iTauntAttack = TAUNTATK_HEAVY_PUNCHOUT_C;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.77f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.77f / flPlaybackRate );
 		}
 		else if (iTauntAttack == TAUNTATK_HEAVY_PUNCHOUT_C)
 		{
 			m_iTauntAttack = TAUNTATK_HEAVY_PUNCHOUT_KILL;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.8f;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.8f / flPlaybackRate );
 		}
 
 		if ( tf_debug_damage.GetBool() )
@@ -20308,7 +20316,7 @@ void CTFPlayer::DoTauntAttack( void )
 	{
 		EmitSound( "Taunt.WormsHHG" );
 		m_iTauntAttack = TAUNTATK_SOLDIER_GRENADE_KILL;
-		m_flTauntAttackTime = gpGlobals->curtime + 2.1;
+		m_flTauntAttackTime = gpGlobals->curtime + ( 2.1 / flPlaybackRate );
 	}
 	else if ( iTauntAttack == TAUNTATK_SOLDIER_GRENADE_KILL )
 	{
@@ -20388,18 +20396,18 @@ void CTFPlayer::DoTauntAttack( void )
 		if ( iTauntAttack == TAUNTATK_SNIPER_ARROW_STAB_IMPALE )
 		{
 			m_iTauntAttack = TAUNTATK_SNIPER_ARROW_STAB_KILL;
-			m_flTauntAttackTime = gpGlobals->curtime + 1.30;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 1.30 / flPlaybackRate );
 		}
 		else if ( iTauntAttack == TAUNTATK_ENGINEER_ARM_IMPALE )
 		{
 			m_iTauntAttack = TAUNTATK_ENGINEER_ARM_BLEND;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.05;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.05 / flPlaybackRate );
 			m_iTauntAttackCount = 0;
 		}
 		else if ( iTauntAttack == TAUNTATK_ENGINEER_ARM_BLEND )
 		{
 			m_iTauntAttack = TAUNTATK_ENGINEER_ARM_BLEND;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.05;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.05 / flPlaybackRate );
 			m_iTauntAttackCount++;
 			if ( m_iTauntAttackCount == 13 )
 			{
@@ -20418,7 +20426,7 @@ void CTFPlayer::DoTauntAttack( void )
 
 		// Keep eating until the taunt is over
 		m_iTauntAttack = TAUNTATK_HEAVY_EAT;
-		m_flTauntAttackTime = gpGlobals->curtime + 1.0;
+		m_flTauntAttackTime = gpGlobals->curtime + ( 1.0 / flPlaybackRate );
 
 		// If we're going to finish eating after this bite, say our line
 		if ( m_flTauntRemoveTime < m_flTauntAttackTime )
@@ -20586,7 +20594,7 @@ void CTFPlayer::DoTauntAttack( void )
 	else if ( iTauntAttack == TAUNTATK_MEDIC_HEROIC_TAUNT )
 	{
 		// do these later
-		m_flTauntAttackTime = gpGlobals->curtime + 3.0f;
+		m_flTauntAttackTime = gpGlobals->curtime + ( 3.0f / flPlaybackRate );
 		m_iTauntAttack = TAUNTATK_MEDIC_RELEASE_DOVES;
 
 		// send a reliable message to make sure the effect happens
@@ -20734,11 +20742,11 @@ void CTFPlayer::DoTauntAttack( void )
 			CTF_GameStats.Event_PlayerHealedOther( this, iHealed );
 		}
 
-		// Keep eating until the taunt is over
+		// Keep healing until the taunt is over
 		if ( m_flTauntInhaleTime > gpGlobals->curtime )
 		{
 			m_iTauntAttack = TAUNTATK_MEDIC_INHALE;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.1;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.1 / flPlaybackRate );
 		}
 	}
 	else if ( iTauntAttack == TAUNTATK_MEDIC_UBERSLICE_IMPALE || iTauntAttack == TAUNTATK_MEDIC_UBERSLICE_KILL )
@@ -20790,7 +20798,7 @@ void CTFPlayer::DoTauntAttack( void )
 		if ( iTauntAttack == TAUNTATK_MEDIC_UBERSLICE_IMPALE )
 		{
 			m_iTauntAttack = TAUNTATK_MEDIC_UBERSLICE_KILL;
-			m_flTauntAttackTime = gpGlobals->curtime + 0.75;
+			m_flTauntAttackTime = gpGlobals->curtime + ( 0.75 / flPlaybackRate );
 		}
 	}
 	else if ( iTauntAttack == TAUNTATK_DEMOMAN_BARBARIAN_SWING )
@@ -24394,9 +24402,11 @@ void CTFPlayer::AcceptTauntWithPartner( CTFPlayer *initiator )
 
 	static CSchemaAttributeDefHandle pAttrDef_TauntAttackTime( "taunt attack time" );
 	float flTauntAttackTime = 0.f;
+	float flPlaybackRate  = 1.f;
+	CALL_ATTRIB_HOOK_FLOAT( flPlaybackRate , mult_gesture_time );
 	if ( FindAttribute_UnsafeBitwiseCast<attrib_value_t>( pItemDef, pAttrDef_TauntAttackTime, &flTauntAttackTime ) )
 	{
-		initiator->m_flTauntAttackTime = gpGlobals->curtime + flTauntAttackTime;
+		initiator->m_flTauntAttackTime = gpGlobals->curtime +  ( flTauntAttackTime / flPlaybackRate  );
 	}
 
 	if ( GetActiveWeapon() )
