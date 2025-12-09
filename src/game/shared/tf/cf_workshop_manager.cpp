@@ -3626,8 +3626,7 @@ CON_COMMAND(host_workshop_map, "Load a Workshop map by its file ID")
 	if (!pItem)
 	{
 		Msg("Workshop item %llu not found, adding to tracking...\n", fileID);
-		pItem = new CCFWorkshopItem(fileID, CF_WORKSHOP_TYPE_MAP);
-		CFWorkshop()->AddItem(pItem);
+		pItem = CFWorkshop()->AddItem(fileID, CF_WORKSHOP_TYPE_MAP);
 	}
 
 	// Make sure it's downloaded
@@ -3703,5 +3702,9 @@ CON_COMMAND(host_workshop_map, "Load a Workshop map by its file ID")
 	Msg("Loading Workshop map: %s (ID: %llu)\n", szCanonicalName, fileID);
 	
 	// Execute the map command with the canonical name
+#ifdef CLIENT_DLL
 	engine->ClientCmd_Unrestricted(CFmtStr("map %s", szCanonicalName));
+#else
+	engine->ServerCommand(CFmtStr("changelevel %s\n", szCanonicalName));
+#endif
 }
