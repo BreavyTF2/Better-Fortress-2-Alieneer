@@ -28,6 +28,9 @@
 			// Custom content
 			game+mod+custom_mod    |gameinfo_path|custom/*
 
+			// Mount Workshop content (maps, models, materials, etc.)
+			game+mod				"|gameinfo_path|../../../workshop/content/3768450/*"
+
 			// Mod paths - THIS MOD'S CONTENT (must be first for overrides!)
 			game+mod			|gameinfo_path|.
 			mod+mod_write		|gameinfo_path|.
