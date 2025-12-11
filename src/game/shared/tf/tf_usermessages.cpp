@@ -29,6 +29,29 @@ void MsgFunc_WorkshopMapID( bf_read &msg )
 		CFWorkshop()->OnWorkshopMapIDReceived(fileID);
 	}
 }
+
+// Client-side handler for WorkshopAddonList message
+void MsgFunc_WorkshopAddonList( bf_read &msg )
+{
+	// Read the number of addon IDs
+	uint8 numAddons = msg.ReadByte();
+	
+	// Read each addon ID
+	CUtlVector<PublishedFileId_t> addonIDs;
+	for (int i = 0; i < numAddons; i++)
+	{
+		uint32 lowBits = msg.ReadLong();
+		uint32 highBits = msg.ReadLong();
+		PublishedFileId_t fileID = ((uint64)highBits << 32) | lowBits;
+		addonIDs.AddToTail(fileID);
+	}
+	
+	// Pass to workshop manager
+	if (CFWorkshop())
+	{
+		CFWorkshop()->OnServerAddonListReceived(addonIDs);
+	}
+}
 #endif
 
 void RegisterUserMessages()
@@ -95,6 +118,7 @@ void RegisterUserMessages()
 //=============================================================================
 	usermessages->Register( "VS_SendNotification", -1 );	// Displays a notification
 	usermessages->Register( "WorkshopMapID", 8 );	// Workshop map file ID (64-bit)
+	usermessages->Register( "WorkshopAddonList", -1 );	// List of host's workshop addon IDs
 //=============================================================================
 // HPE_END
 //=============================================================================
@@ -102,6 +126,8 @@ void RegisterUserMessages()
 #ifdef CLIENT_DLL
 	// Hook the WorkshopMapID message on client
 	usermessages->HookMessage( "WorkshopMapID", MsgFunc_WorkshopMapID );
+	// Hook the WorkshopAddonList message on client
+	usermessages->HookMessage( "WorkshopAddonList", MsgFunc_WorkshopAddonList );
 #endif
 
 	usermessages->Register( "DamageDodged", -1 );

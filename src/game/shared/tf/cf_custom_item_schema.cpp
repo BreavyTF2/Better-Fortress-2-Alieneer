@@ -215,11 +215,8 @@ bool CCFCustomItemSchemaManager::ReloadAllCustomSchemas()
 	
 	CFWorkshopMsg("Reloaded %d/%d custom item schemas\n", nSuccess, vecAllWorkshopIDs.Count());
 	
-	// Write merged schema file
-	if (nSuccess > 0)
-	{
-		WriteMergedCustomSchema();
-	}
+	// Always write merged schema file (even if empty, to clear it)
+	WriteMergedCustomSchema();
 	
 	// Refresh inventory
 	CreateInventoryItemsForCustomSchema();
@@ -306,21 +303,14 @@ void CCFCustomItemSchemaManager::WriteMergedCustomSchema()
 	buf.Printf("\t}\n");
 	buf.Printf("}\n");
 	
-	if (nMerged > 0)
+	// Always write the file (even if empty) to clear old items
+	if (g_pFullFileSystem->WriteFile(szPath, "GAME", buf))
 	{
-		// Write to file
-		if (g_pFullFileSystem->WriteFile(szPath, "GAME", buf))
-		{
-			CFWorkshopMsg("Successfully wrote %d item definitions to %s\n", nMerged, szPath);
-		}
-		else
-		{
-			CFWorkshopMsg("Failed to write merged schema to %s\n", szPath);
-		}
+		CFWorkshopMsg("Successfully wrote %d item definitions to %s\n", nMerged, szPath);
 	}
 	else
 	{
-		CFWorkshopMsg("No item definitions to merge\n");
+		CFWorkshopMsg("Failed to write merged schema to %s\n", szPath);
 	}
 }
 
@@ -415,6 +405,8 @@ void CCFCustomItemSchemaManager::UnregisterWorkshopItem(PublishedFileId_t worksh
 	
 	m_mapCustomItems.RemoveAt(idx);
 	delete pEntry;
+	
+	CFWorkshopMsg("Unregistered workshop item %llu\n", workshopID);
 }
 
 bool CCFCustomItemSchemaManager::IsWorkshopItemLoaded(PublishedFileId_t workshopID) const

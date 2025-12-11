@@ -99,6 +99,7 @@
 #include "tf_gamerules.h"
 #include "player_vs_environment/tf_population_manager.h"
 #include "tf/cf_workshop_manager.h"
+#include "tf/cf_workshop_manager.h"
 
 extern ConVar tf_mm_trusted;
 extern ConVar tf_mm_servermode;
@@ -2821,6 +2822,13 @@ void CServerGameClients::ClientActive( edict_t *pEdict, bool bLoadGame )
 				{
 					Log("WARNING: ClientActive, but we don't know his SteamID?\n");
 				}
+			}
+			
+			// Broadcast Workshop addon list to this client if we're a listen server
+			// This allows clients to automatically download the host's addons
+			if ( !engine->IsDedicatedServer() )
+			{
+				CFWorkshop()->BroadcastAddonListToClient( pPlayer );
 			}
 		}
 	#endif
