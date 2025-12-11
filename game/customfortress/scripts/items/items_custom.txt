@@ -3036,13 +3036,12 @@
 			"static_attrs"
 			{
 				"min_viewmodel_offset"		"10 0 -12"
-				"weapon_stattrak_module_scale"		"0.608"
 			}
 			"attributes"
 			{
 				"add give health to teammate on hit"
 				{
-					"attribute_class"	"blast_dmg_to_self"
+					"attribute_class"	"add_give_health_to_teammate_on_hit"
 					"value"	"90"
 				}
 				"blast dmg to self decreased"
@@ -3089,6 +3088,11 @@
 				{
 					"attribute_class"	"set_weapon_mode"
 					"value"	"5"
+				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"			   "12"
 				}
 			}
 			"visuals"
@@ -3212,6 +3216,7 @@
 			"9"			"#Attrib_UGCC_Canteen_Merasmus"
 			"10"		"#Attrib_UGC_NeoDement"
 			"11"		"#Attrib_UGC_SVDL"
+			"12"		"#Attrib_UGC_Neodos"
 		}
 	}
 	"client_loot_lists"
