@@ -788,7 +788,7 @@
 			"description_format"	"value_is_from_lookup_table"
 			"hidden"	"0"
 			"effect_type"	"community"
-			"stored_as_integer"	"0"		
+			"stored_as_integer"	"0"
 			"is_user_generated"	"3"
 		}
 		"4009"
@@ -1053,6 +1053,16 @@
     		"hidden"    "0"
     		"effect_type"    "positive"
     		"stored_as_integer"    "0"
+		}
+		"4037"
+		{
+			"name"	"speed buff ally projectile"
+			"attribute_class"	"speed_buff_ally"
+			"description_string"	"#Attrib_SpeedBuffAllyProjectile"
+			"description_format"	"value_is_additive"
+			"hidden"	"0"
+			"effect_type"	"positive"
+			"stored_as_integer"	"0"
 		}
 		
 	}
@@ -3103,7 +3113,134 @@
 			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
 			"drop_sound"		"ui/item_metal_weapon_drop.wav"
 		}
-
+		//32026-32028 Heavy Duty Medicine - YDM
+		//YDM - Overdose (HDM)
+		"32026"
+		{
+			"name"									"The Overdose (Beta)"
+			"prefab"								"valve"
+			"item_class"							"tf_weapon_syringegun_medic"
+			"craft_class"							"weapon"
+			"craft_material_type"					"weapon"
+			"item_logname"							"overdose"
+			"item_iconname"							"overdose"
+			"moditem" 								"1"
+			"show_in_armory"						"1"
+			"item_type_name"						"#TF_Weapon_SyringeGun_Prototype"
+			"item_name"								"#TFCW_Overdose"
+			"item_description"						"#TFCW_Overdose_Desc"
+			"item_slot"								"primary"
+			"image_inventory"						"backpack/weapons/c_models/c_overdose/c_overdose"
+			"image_inventory_size_w"				"128"
+			"image_inventory_size_h"				"82"
+			"model_player"							"models/weapons/c_models/c_overdose/c_overdose.mdl"
+			"attach_to_hands"						"1"
+			"item_quality"							"community"
+			"propername"							"1"
+			"min_ilevel"							"5"
+			"max_ilevel"							"5"
+			"used_by_classes"
+			{
+				"medic"	"1"
+			}
+			"static_attrs"
+			{
+				"min_viewmodel_offset"		"10 0 -14"				
+			}
+			"attributes"
+			{
+				"speed buff ally projectile"
+				{
+					"attribute_class"	"speed_buff_ally"
+					"value"	"1"
+				}
+				"slow enemy on hit"
+				{
+					"attribute_class"	"mult_onhit_enemyspeed_major"
+					"value"	"1.0"
+				}
+				"damage bonus"
+				{
+					"attribute_class"	"mult_dmg"
+					"value"	"1.5"
+				}
+				"fire rate penalty"
+				{
+					"attribute_class"	"mult_postfiredelay"
+					"value"	"1.75"
+				}
+				"single wep holster time increased"
+				{
+					"attribute_class"	"mult_switch_from_wep_deploy_time"
+					"value"				"1.4"
+				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"			   "13"
+				}
+			}
+		}
+		"32027"
+		{
+			"enabled"								"0"
+			"name"									"The Schwaben-Charger 9000"
+			"prefab"								"valve"
+			"item_class"							"tf_weapon_medigun"
+			"craft_class"							"weapon"
+			"craft_material_type"					"weapon"
+			"show_in_armory"						"1"
+			"moditem" 								"1"
+			"item_type_name"						"#TF_Weapon_Medigun_Prototype"
+			"item_name"								"#TFCW_SchwabenCharger"
+			"propername"							"1"
+			"item_slot"								"secondary"
+			"equip_region"							"medigun_backpack"
+			"image_inventory"						"backpack/weapons/c_models/c_schwaben_charger/c_schwaben_charger"
+			"image_inventory_size_w"				"128"
+			"image_inventory_size_h"				"82"
+			"model_player"							"models/weapons/c_models/c_schwaben_charger/c_schwaben_charger.mdl"
+			"extra_wearable"						"models/weapons/c_models/c_schwaben_charger/c_schwaben_backpack.mdl"
+			"attach_to_hands"						"1"
+			"item_quality"							"community"
+			"min_ilevel"							"8"
+			"max_ilevel"							"8"
+			"used_by_classes"
+			{
+				"medic"	"1"
+			}
+			"static_attrs"
+			{
+				"min_viewmodel_offset"		"10 0 -9"
+			}
+			"attributes"
+			{
+				"overheal decay bonus"
+				{
+					"attribute_class"	"mult_medigun_overheal_decay"
+					"value"	"4.0"
+				}
+				"overheal bonus"
+				{
+					"attribute_class"	"mult_medigun_overheal_amount"
+					"value"	"1.25"
+				}
+				"heal rate penalty"
+				{
+					"attribute_class"	"mult_medigun_healrate"
+					"value"	"0.75"
+				}
+			}
+			"visuals"
+			{
+				"player_bodygroups"
+				{
+					"medic_backpack"			"1"
+				}
+			}
+			"mouse_pressed_sound"	"ui/item_heavy_gun_pickup.wav"
+			"drop_sound"		"ui/item_heavy_gun_drop.wav"
+		}
 		"34000" 
 		{
 			"name"		"Paintkit 800"
@@ -3217,6 +3354,7 @@
 			"10"		"#Attrib_UGC_NeoDement"
 			"11"		"#Attrib_UGC_SVDL"
 			"12"		"#Attrib_UGC_Neodos"
+			"13"		"#Attrib_UGC_YM"
 		}
 	}
 	"client_loot_lists"
