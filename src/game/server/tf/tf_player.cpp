@@ -5684,6 +5684,25 @@ void CTFPlayer::ManageBuilderWeapons( TFPlayerClassData_t *pData )
 		}
 	}
 
+	// Check if PDA has pda_builds_pads attribute and add pad types as buildable
+	CTFWeaponBase *pPDA = dynamic_cast<CTFWeaponBase*>( Weapon_GetSlot( LOADOUT_POSITION_PDA ) );
+	if ( pPDA )
+	{
+		int iBuildsPads = 0;
+		CALL_ATTRIB_HOOK_INT_ON_OTHER( pPDA, iBuildsPads, pda_builds_pads );
+		if ( iBuildsPads != 0 )
+		{
+			// Find a builder that can build teleporter (default builder)
+			CTFWeaponBuilder *pBuilder = CTFPlayerSharedUtils::GetBuilderForObjectType( this, OBJ_TELEPORTER );
+			if ( pBuilder )
+			{
+				// Add pads as buildable types
+				pBuilder->SetObjectTypeAsBuildable( OBJ_SPEEDPAD );
+				pBuilder->SetObjectTypeAsBuildable( OBJ_JUMPPAD );
+			}
+		}
+	}
+
 	// Anything left should be destroyed
 	FOR_EACH_VEC( vecBuilderDestroyList, i )
 	{
@@ -12053,6 +12072,16 @@ int CTFPlayer::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 	if ( TFGameRules()->IsInItemTestingMode() && !IsFakeClient() )
 		return 0;
 
+	// Remove Speed Pad boost when taking damage
+	if ( m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV1 ) ||
+		 m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV2 ) ||
+		 m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV3 ) )
+	{
+		m_Shared.RemoveCond( TF_COND_SPEEDPAD_BOOST_LV1 );
+		m_Shared.RemoveCond( TF_COND_SPEEDPAD_BOOST_LV2 );
+		m_Shared.RemoveCond( TF_COND_SPEEDPAD_BOOST_LV3 );
+	}
+
 	bool bUsingUpgrades = TFGameRules()->GameModeUsesUpgrades();
 
 	// Always NULL check this below
@@ -12168,6 +12197,17 @@ int CTFPlayer::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 	}
 
 	m_flLastDamageTime = gpGlobals->curtime; // not networked
+	
+	// Remove Speed Pad boost when taking damage
+	if ( m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV1 ) ||
+		 m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV2 ) ||
+		 m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV3 ) )
+	{
+		m_Shared.RemoveCond( TF_COND_SPEEDPAD_BOOST_LV1 );
+		m_Shared.RemoveCond( TF_COND_SPEEDPAD_BOOST_LV2 );
+		m_Shared.RemoveCond( TF_COND_SPEEDPAD_BOOST_LV3 );
+	}
+	
 	if ( TFGameRules()->IsMannVsMachineMode() )
 	{
 		// We only need damage time networked while in MvM

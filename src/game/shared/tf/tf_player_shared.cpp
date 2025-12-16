@@ -1696,6 +1696,12 @@ void CTFPlayerShared::OnConditionAdded( ETFCond eCond )
 
 	case TF_COND_SPEED_BOOST:				OnAddSpeedBoost( false );		break;
 
+	case TF_COND_SPEEDPAD_BOOST_LV1:
+	case TF_COND_SPEEDPAD_BOOST_LV2:
+	case TF_COND_SPEEDPAD_BOOST_LV3:
+		OnAddSpeedPadBoost();
+		break;
+
 	case TF_COND_SAPPED:
 		OnAddSapped();
 		break;
@@ -2024,6 +2030,11 @@ void CTFPlayerShared::OnConditionRemoved( ETFCond eCond )
 
 	case TF_COND_SPEED_BOOST:					OnRemoveSpeedBoost( false );		break;
 		
+	case TF_COND_SPEEDPAD_BOOST_LV1:
+	case TF_COND_SPEEDPAD_BOOST_LV2:
+	case TF_COND_SPEEDPAD_BOOST_LV3:
+		OnRemoveSpeedPadBoost();
+		break;
 
 	case TF_COND_SAPPED:
 		OnRemoveSapped();
@@ -4398,6 +4409,53 @@ void CTFPlayerShared::OnRemoveSpeedBoost( bool IsNonCombat )
 	{
 		m_pOuter->EmitSound( "DisciplineDevice.PowerDown" );
 	}
+#else // !CLIENT_DLL
+	m_pOuter->TeamFortress_SetSpeed();
+#endif // CLIENT_DLL
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Speed Pad boost particle effects
+//-----------------------------------------------------------------------------
+void CTFPlayerShared::OnAddSpeedPadBoost( void )
+{
+#ifdef CLIENT_DLL
+	const char* strBuffName = "speed_boost_trail";
+
+	if ( !m_pOuter->m_pSpeedBoostEffect )
+	{
+		// No speedlines at all for stealth or feign death 
+		if ( !InCond( TF_COND_STEALTHED ) && !InCond(TF_COND_FEIGN_DEATH) )
+		{
+			m_pOuter->m_pSpeedBoostEffect = m_pOuter->ParticleProp()->Create( strBuffName, PATTACH_ABSORIGIN_FOLLOW );
+		}
+	}
+	
+	if ( m_pOuter->IsLocalPlayer())
+	{
+		m_pOuter->EmitSound( "DisciplineDevice.PowerUp" );
+	}
+#else // !CLIENT_DLL
+	m_pOuter->TeamFortress_SetSpeed();
+#endif // CLIENT_DLL
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CTFPlayerShared::OnRemoveSpeedPadBoost( void )
+{
+#ifdef CLIENT_DLL
+	if ( m_pOuter->m_pSpeedBoostEffect )
+	{
+		m_pOuter->ParticleProp()->StopEmission( m_pOuter->m_pSpeedBoostEffect );
+		m_pOuter->m_pSpeedBoostEffect = NULL;
+	}
+
+	if ( m_pOuter->IsLocalPlayer() )
+	{
+		m_pOuter->EmitSound( "DisciplineDevice.PowerDown" );
+	}
 	else
 	{
 		m_pOuter->EmitSound( "Building_Speedpad.BoostStop" );
@@ -4671,6 +4729,16 @@ void CTFPlayerShared::OnAttack( void )
 		{
 			AddCond( TF_COND_MARKEDFORDEATH_SILENT, flMarkedForDeathTime );
 		}
+	}
+
+	// Remove Speed Pad boost when attacking
+	if ( InCond( TF_COND_SPEEDPAD_BOOST_LV1 ) ||
+		 InCond( TF_COND_SPEEDPAD_BOOST_LV2 ) ||
+		 InCond( TF_COND_SPEEDPAD_BOOST_LV3 ) )
+	{
+		RemoveCond( TF_COND_SPEEDPAD_BOOST_LV1 );
+		RemoveCond( TF_COND_SPEEDPAD_BOOST_LV2 );
+		RemoveCond( TF_COND_SPEEDPAD_BOOST_LV3 );
 	}
 }
 
@@ -10882,6 +10950,29 @@ float CTFPlayer::TeamFortress_CalculateMaxSpeed( bool bIgnoreSpecialAbility /*= 
 			maxfbspeed += MIN( maxfbspeed * 0.4f, tf_whip_speed_increase.GetFloat() );
 		}
 	}
+
+	// Speed Pad boost conditions with variable multipliers
+	if ( m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV1 ) )
+	{
+		if ( maxfbspeed > 0.0f )
+		{
+			maxfbspeed *= 1.33f; // 33% speed increase
+		}
+	}
+	else if ( m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV2 ) )
+	{
+		if ( maxfbspeed > 0.0f )
+		{
+			maxfbspeed *= 1.50f; // 50% speed increase
+		}
+	}
+	else if ( m_Shared.InCond( TF_COND_SPEEDPAD_BOOST_LV3 ) )
+	{
+		if ( maxfbspeed > 0.0f )
+		{
+			maxfbspeed *= 1.80f; // 80% speed increase
+		}
+	}
 #endif
 
 	if ( m_Shared.InCond( TF_COND_STEALTHED ) )
@@ -11303,7 +11394,31 @@ int CTFPlayer::CanBuild( int iObjectType, int iObjectMode )
 
 	if ( !bHasSubType && pCls && pCls->CanBuildObject( iObjectType ) == false )
 	{
-		return CB_CANNOT_BUILD;
+		// Check if this is a pad type and we have the pda_builds_pads attribute
+		bool bCanBuildPad = false;
+		if ( iObjectType == OBJ_SPEEDPAD || iObjectType == OBJ_JUMPPAD )
+		{
+			// Find the PDA weapon in the player's inventory
+			for ( int i = 0; i < MAX_WEAPONS; i++ )
+			{
+				CTFWeaponBase *pWeapon = dynamic_cast<CTFWeaponBase*>( GetWeapon( i ) );
+				if ( pWeapon && pWeapon->GetWeaponID() == TF_WEAPON_PDA_ENGINEER_BUILD )
+				{
+					int iBuildsPads = 0;
+					CALL_ATTRIB_HOOK_INT_ON_OTHER( pWeapon, iBuildsPads, pda_builds_pads );
+					if ( iBuildsPads != 0 )
+					{
+						bCanBuildPad = true;
+					}
+					break;
+				}
+			}
+		}
+		
+		if ( !bCanBuildPad )
+		{
+			return CB_CANNOT_BUILD;
+		}
 	}
 #endif
 
@@ -13209,6 +13324,35 @@ void CTFPlayer::SetTauntYaw( float flTauntYaw )
 //-----------------------------------------------------------------------------
 void CTFPlayer::StartBuildingObjectOfType( int iType, int iMode )
 {
+	// Check if we should replace teleporters with pads
+	int iBuildsPads = 0;
+	
+	// Find the PDA weapon in the player's inventory
+	for ( int i = 0; i < MAX_WEAPONS; i++ )
+	{
+		CTFWeaponBase *pWeapon = dynamic_cast<CTFWeaponBase*>( GetWeapon( i ) );
+		if ( pWeapon && pWeapon->GetWeaponID() == TF_WEAPON_PDA_ENGINEER_BUILD )
+		{
+			CALL_ATTRIB_HOOK_INT_ON_OTHER( pWeapon, iBuildsPads, pda_builds_pads );
+			break;
+		}
+	}
+	
+	// If we have the pads attribute, replace teleporter types with pad types
+	if ( iBuildsPads != 0 && iType == OBJ_TELEPORTER )
+	{
+		if ( iMode == MODE_TELEPORTER_ENTRANCE )
+		{
+			iType = OBJ_SPEEDPAD;
+			iMode = 0;
+		}
+		else if ( iMode == MODE_TELEPORTER_EXIT )
+		{
+			iType = OBJ_JUMPPAD;
+			iMode = 0;
+		}
+	}
+
 	// early out if we can't build this type of object
 	if ( CanBuild( iType, iMode ) != CB_CAN_BUILD )
 		return;
@@ -14713,6 +14857,27 @@ CTFWeaponBuilder *CTFPlayerSharedUtils::GetBuilderForObjectType( CTFPlayer *pTFP
 	if ( !pTFPlayer )
 		return NULL;
 
+	// Check if we're looking for pads with the pda_builds_pads attribute
+	bool bLookingForPadWithAttribute = false;
+	if ( iObjectType == OBJ_SPEEDPAD || iObjectType == OBJ_JUMPPAD )
+	{
+		// Check if player has the attribute
+		for ( int i = 0; i < MAX_WEAPONS; i++ )
+		{
+			CTFWeaponBase *pWeapon = dynamic_cast<CTFWeaponBase*>( pTFPlayer->GetWeapon( i ) );
+			if ( pWeapon && pWeapon->GetWeaponID() == TF_WEAPON_PDA_ENGINEER_BUILD )
+			{
+				int iBuildsPads = 0;
+				CALL_ATTRIB_HOOK_INT_ON_OTHER( pWeapon, iBuildsPads, pda_builds_pads );
+				if ( iBuildsPads != 0 )
+				{
+					bLookingForPadWithAttribute = true;
+				}
+				break;
+			}
+		}
+	}
+
 	for ( int i = 0; i < MAX_WEAPONS; i++ )
 	{
 		CTFWeaponBuilder *pBuilder = dynamic_cast< CTFWeaponBuilder* >( pTFPlayer->GetWeapon( i ) );
@@ -14721,6 +14886,10 @@ CTFWeaponBuilder *CTFPlayerSharedUtils::GetBuilderForObjectType( CTFPlayer *pTFP
 
 		// Any builder will do - return first
 		if ( iObjectType == OBJ_ANY )
+			return pBuilder;
+
+		// If looking for pads with attribute, return the teleporter builder
+		if ( bLookingForPadWithAttribute && pBuilder->CanBuildObjectType( OBJ_TELEPORTER ) )
 			return pBuilder;
 
 		// Requires a specific builder for this type

@@ -588,7 +588,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"			   "4"
+					"value"			   "[U:1:135572748], [U:1:182175764], [U:1:169909794], [U:1:165684995]"
 				}
 			}
 			"mouse_pressed_sound"	"ui/item_knife_large_pickup.wav"
@@ -784,8 +784,9 @@
 		{
 			"name"	"is community contributed item"
 			"attribute_class"	"is_community_contributed_item"
-			"description_string"	"#Attrib_CommunityItem_Value"			
-			"description_format"	"value_is_from_lookup_table"
+			"attribute_type"	"string"
+			"description_string"	"#Attrib_CommunityItem_SteamID"
+			"description_format"	"value_is_steamid3"
 			"hidden"	"0"
 			"effect_type"	"community"
 			"stored_as_integer"	"0"
@@ -1056,6 +1057,25 @@
 		}
 		"4037"
 		{
+			"name"	"scripted weapon flags"
+			"attribute_class"	"vscript_weapon_flags"
+			"description_format"	"value_is_additive"
+			"hidden"	"1"
+			"effect_type"	"neutral"
+			"stored_as_integer"	"1"
+		}
+		"4038"
+		{
+			"name"	"mod pda builds pads"
+			"attribute_class"	"pda_builds_pads"
+			"description_string"	"#Attrib_TeleporterPads"
+			"description_format"	"value_is_additive"
+			"hidden"	"0"
+			"effect_type"	"neutral"
+			"stored_as_integer"	"1"
+		}
+		"4039"
+		{
 			"name"	"speed buff ally projectile"
 			"attribute_class"	"speed_buff_ally"
 			"description_string"	"#Attrib_SpeedBuffAllyProjectile"
@@ -1252,6 +1272,127 @@
 				"engineer"		"1"
 			}
 		}
+		//ALL-CLASS OVERRIDES
+		"264" //Frying Pan
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
+		"474" //Objector
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
+		"880" //Freedom Staff
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
+		"939" //Bat Outta Hell
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
+		"954" //Memory Maker
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
+		"1013" //Ham Shank
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
+		"1123" //Necro Smasher
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
+		"1127" //Crossing Guard
+		{
+			"used_by_classes"
+			{
+				"scout"	"1"
+				"sniper"	"1"
+				"soldier"	"1"
+				"demoman"	"1"
+				"medic"	"1"
+				"heavy"	"1"
+				"pyro" "1"
+				"engineer" "1"
+				"spy"      "1"
+			}
+		}
 		//------------------------
 		// CUSTOM TAUNTS
 		//------------------------
@@ -1310,7 +1451,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"0"
+					"value"			   "[U:1:226522217]"
 				}
 			}
 			"taunt"
@@ -1418,7 +1559,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"2"
+					"value"			   "[U:1:75909945], [U:1:1587897928]"
 				}
 			}
 			"taunt"
@@ -1622,7 +1763,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"1"
+					"value"							"[U:1:80322829], [U:1:91007515]"	// TODO: Replace with SovietUnit's Steam ID
 				}
 			}
 			"visuals"
@@ -1908,7 +2049,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"5"
+					"value"							"[U:1:118590530]"
 				}
 			}
 			"visuals"
@@ -1982,7 +2123,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"6"
+					"value"							"[U:1:36277404], [U:1:46547035]"
 				}
 			}
 			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
@@ -2040,7 +2181,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"				"7"
+					"value"				"[U:1:179892890]"
 				}
 				"allowed in medieval mode"
 				{
@@ -2129,7 +2270,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"3"
+					"value"							"[U:1:111333689]"
 				}
 			}
 			"visuals"
@@ -2618,8 +2759,8 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"9"
-				}		
+					"value"							"[U:1:65509397], [U:1:51441837], [U:1:79611342], [U:1:484693647]"
+				}
 			}
 		}
 		"32020"
@@ -2681,7 +2822,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"							"10"
+					"value"							"[U:1:12215355]"
 				}
                 "single wep deploy time decreased"
                 {
@@ -2907,7 +3048,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"			   "11"
+					"value"			   "[U:1:33094002]"
 				}
 				"clip size penalty"
 				{
@@ -2973,7 +3114,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"			   "11"
+					"value"			   "[U:1:33094002]"
 				}
 				"kill combo fire rate boost"
 				{
@@ -3031,7 +3172,7 @@
 			"image_inventory"						"backpack/weapons/c_models/c_ubersaw/c_ubersaw"
 			"image_inventory_size_w"				"128"
 			"image_inventory_size_h"				"82"
-			"moditem" 								"1"
+			"moditem" 								"0"
 			"model_player"							"models/weapons/c_items/med_pack/c_defib.mdl"
 			"attach_to_hands"						"1"
 			"inspect_panel_dist"					"42"
@@ -3102,7 +3243,7 @@
 				"is community contributed item"
 				{
 					"attribute_class"  "is_community_contributed_item"
-					"value"			   "12"
+					"value"			   "[U:1:36277404]"
 				}
 			}
 			"visuals"
@@ -3113,9 +3254,70 @@
 			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
 			"drop_sound"		"ui/item_metal_weapon_drop.wav"
 		}
-		//32026-32028 Heavy Duty Medicine - YDM
-		//YDM - Overdose (HDM)
 		"32026"
+		{
+			"name"	"TF_WEAPON_PDA_BUILD_PADS"
+			"item_class"	"tf_weapon_pda_engineer_build"
+			"craft_class"	"weapon"
+			"craft_material_type"	"weapon"
+			"item_name"	"#TFCW_PadsPDA"
+			"item_type_name"	"#TF_Weapon_PDA_Engineer"
+			"item_slot"	"pda"
+			"item_quality"	"community"
+			"show_in_armory"	"1"
+			"moditem" "1"
+			"min_ilevel"	"1"
+			"max_ilevel"	"1"
+			"attach_to_hands" "1"
+			"image_inventory"	"backpack/weapons/w_models/w_builder"
+			"image_inventory_size_w"		"128"
+			"image_inventory_size_h"		"82"
+			"model_player"	"models/weapons/c_models/c_builder/c_builder.mdl"
+			"used_by_classes"
+			{
+				"engineer"	"1"
+			}
+			"static_attrs"
+			{
+				"min_viewmodel_offset"					"10 0 -10"				
+			}
+			"attributes"
+			{
+				"mod pda builds pads"
+				{
+					"attribute_class"	"pda_builds_pads"
+					"value"	"1"
+				}
+				"kill eater score type"
+				{
+					"attribute_class"	"kill_eater_score_type"
+					"value" 	"3" 
+				}
+				"kill eater score type 2"
+				{
+					"attribute_class"	"kill_eater_score_type_2"
+					"value" 	"59" 
+				}
+				"kill eater score type 3"
+				{
+					"attribute_class"	"kill_eater_score_type_3"
+					"value" 	"60" 
+				}
+			}
+			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
+			"drop_sound"		"ui/item_metal_weapon_drop.wav"
+			"visuals"
+			{
+				"animation_replacement"
+				{
+					"ACT_VM_IDLE"	"ACT_ENGINEER_PDA2_VM_IDLE"
+					"ACT_VM_DRAW"	"ACT_ENGINEER_PDA2_VM_DRAW"
+				}
+			}
+		}
+		//32027-32029 Heavy Duty Medicine - YDM
+		//YDM - Overdose (HDM)
+		"32027"
 		{
 			"name"									"The Overdose (Beta)"
 			"prefab"								"valve"
@@ -3181,7 +3383,7 @@
 				}
 			}
 		}
-		"32027"
+		"32028"
 		{
 			"enabled"								"0"
 			"name"									"The Schwaben-Charger 9000"
@@ -3335,26 +3537,6 @@
 		"desc_beta"
 		{
 			"color_name"	"QualityColorBeta"
-		}
-	}
-	"string_lookups"
-	{
-		"is community contributed item"
-		{
-			"0"			"#Attrib_CommunityItem_Test"
-			"1"			"#Attrib_UGCI_SovietUnit"
-			"2"			"#Attrib_UGCT_TrustFall"
-			"3"			"#Attrib_UGCW_OFFSHORE_Stickybomb"
-			"4"			"#Attrib_UGCW_OFFSHORE_HolyMarlin"
-			"5"			"#Attrib_UGCW_OFFSHORE_Wrench"
-			"6"			"#Attrib_UGCW_PDA_Mini"
-			"7"			"#Attrib_UGCW_BBeacon"
-			"8"			"#Attrib_UGCT_StreamSniper"
-			"9"			"#Attrib_UGCC_Canteen_Merasmus"
-			"10"		"#Attrib_UGC_NeoDement"
-			"11"		"#Attrib_UGC_SVDL"
-			"12"		"#Attrib_UGC_Neodos"
-			"13"		"#Attrib_UGC_YM"
 		}
 	}
 	"client_loot_lists"

@@ -520,6 +520,7 @@ enum ETFWeaponType
 	TF_WEAPON_GRENADE_JAR_GAS,
 	TF_WEAPON_FLAME_BALL,
 	TF_WEAPON_BMMH,
+	TF_WEAPON_SCRIPTED,
 
 
 	//
@@ -829,6 +830,9 @@ enum ETFCond
 	TF_COND_HALLOWEEN_HELL_HEAL              = 128,
 	TF_COND_POWERUPMODE_DOMINANT			 = 129,
 	TF_COND_IMMUNE_TO_PUSHBACK				 = 130,
+	TF_COND_SPEEDPAD_BOOST_LV1				 = 131, // Speed Pad Level 1: 33% speed boost
+	TF_COND_SPEEDPAD_BOOST_LV2				 = 132, // Speed Pad Level 2: 50% speed boost
+	TF_COND_SPEEDPAD_BOOST_LV3				 = 133, // Speed Pad Level 3: 90% speed boost
 		//
 	// ADD NEW ITEMS HERE TO AVOID BREAKING DEMOS
 	//
@@ -1403,8 +1407,8 @@ enum ObjectType_t
 	// ADD NEW ITEMS HERE TO AVOID BREAKING DEMOS
 	//
 
-
-
+	OBJ_SPEEDPAD,		// Speed boost pad (replaces teleporter entrance)
+	OBJ_JUMPPAD,		// Jump boost pad (replaces teleporter exit)
 
 	OBJ_LAST,
 };
