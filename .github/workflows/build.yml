@@ -23,12 +23,12 @@ jobs:
       shell: cmd
       working-directory: src
       run: |
-        devtools\bin\vpc.exe /tf /define:SOURCESDK /define:DISCORD_RPC /define:TF_RAID_MODE /define:SDK_TEMP_PATCH +game /mksln customfortress2.sln
+        devtools\bin\vpc.exe /tf /define:SOURCESDK /define:DISCORD_RPC /define:TF_RAID_MODE /define:SDK_TEMP_PATCH +game /mksln customfortress2.sln.sln
     
     - name: Build solution (Release)
       working-directory: src
       run: |
-        msbuild customfortress2.sln /p:Configuration=Release /p:Platform=x64 /m /v:minimal
+        msbuild customfortress2.sln.sln /p:Configuration=Release /p:Platform=win64 /m /v:minimal
     
     - name: Upload Windows binaries
       uses: actions/upload-artifact@v4
@@ -51,12 +51,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y podman
-    
-    - name: Setup ccache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: linux-build
-        max-size: 2G
     
     - name: Generate VPC projects and build (Release)
       working-directory: src
