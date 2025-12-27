@@ -241,21 +241,105 @@ CTFBot *SpawnRedTFBot( int iClassIndex, const Vector &spot, bool bRusher = false
 	if ( GetAvailableRedSpawnSlots() <= 0 )
 		return nullptr;
 
-	CTFBot* bot = NextBotCreatePlayerBot< CTFBot >("Bot");
+	CTFBot* bot = nullptr;
+	Vector spawn = spot;
 
 
-	if ( !bot )
+
+	CTFNavArea* area = (CTFNavArea*)TheTFNavMesh()->GetNavArea(spot);
+	if (area && area->HasAttributeTF(TF_NAV_SPAWN_ROOM_BLUE))
+	{
+		if (tf_raid_debug.GetBool())
+		{
+			DevMsg("RAID: Tried to spawn bot in blue spawn room\n");
+			NDebugOverlay::Box(spot, Vector(-16, -16, 0), Vector(16, 16, 64), 0, 255, 0, 0, 5.0f);
+		}
+		return nullptr;
+	}
+
+	if (TFGameRules()->State_Get() != GR_STATE_RND_RUNNING)
 		return nullptr;
 
-	bot->SetAttribute(CTFBot::REMOVE_ON_DEATH);
+	float z;
+	for (z = 0.0f; z < StepHeight; z += 4.0f)
+	{
+		spawn.z = spot.z + StepHeight;
+
+		if (IsSpaceToSpawnHere(spot))
+		{
+			break;
+		}
+	}
+
+	if (z >= StepHeight)
+	{
+		if (tf_raid_debug.GetBool())
+		{
+			DevMsg("RAID: No space to spawn bot\n");
+			NDebugOverlay::Box(spot, Vector(-16, -16, 0), Vector(16, 16, 64), 255, 0, 0, 0, 5.0f);
+		}
+		return nullptr;
+	}
+
+	//Recycle spectators
+	CTeam* deadTeam = GetGlobalTeam(TEAM_SPECTATOR);
+	for (int i = 0; i < deadTeam->GetNumPlayers(); ++i)
+	{
+		if (!deadTeam->GetPlayer(i)->IsBot())
+			continue;
+
+		// reuse this guy
+		bot = (CTFBot*)deadTeam->GetPlayer(i);
+		bot->ClearAllAttributes();
+		break;
+	}
+
+	if (!bot)
+	{
+		if (tf_raid_debug.GetBool())
+		{
+			DevMsg("RAID: No dead bots to recycle, spawning a new one\n");
+		}
+		bot = NextBotCreatePlayerBot< CTFBot >("Defender");
+
+		if (!bot)
+		{
+			if (tf_raid_debug.GetBool())
+			{
+				DevMsg("RAID: Failed to spawn new bot!\n");
+			}
+			return nullptr;
+		}
+	}
+
+	bot->RemovePlayerAttributes(false);
+	bot->ClearTeleportWhere();
+
+	engine->SetFakeClientConVarValue(bot->edict(), "name", "Defender");
+
+	if (g_internalSpawnPoint == nullptr)
+	{
+		g_internalSpawnPoint = (CPopulatorInternalSpawnPoint*)CreateEntityByName("populator_internal_spawn_point");
+		g_internalSpawnPoint->Spawn();
+	}
+
+	g_internalSpawnPoint->SetAbsOrigin(spot);
+	g_internalSpawnPoint->SetLocalAngles(vec3_angle);
+	bot->SetSpawnPoint(g_internalSpawnPoint);
+
+	bot->ChangeTeam(TF_TEAM_RED, false, true);
+
+	bot->AllowInstantSpawn();
+
+	bot->HandleCommand_JoinClass(g_aRawPlayerClassNames[iClassIndex]);
+
+	bot->SetAttribute(CTFBot::BECOME_SPECTATOR_ON_DEATH);
 	if (bRusher)
 	{
 		bot->SetAttribute(CTFBot::AGGRESSIVE);
 	}
-	bot->ChangeTeam(TF_TEAM_RED, false, true);
 	bot->SetDifficulty(CTFBot::NORMAL);
-	bot->HandleCommand_JoinClass(g_aRawPlayerClassNames[iClassIndex]);
-	bot->SetPosition(spot);
+
 
 	return bot;
 }
@@ -266,23 +350,24 @@ bool SpawnWanderer( const Vector &spot )
 		return false;
 
 	return SpawnRedTFBot( TF_CLASS_SCOUT, spot ) ? true : false;
+}
+#endif // 0
 
-	/*
-	CBaseCombatCharacter *minion = static_cast< CBaseCombatCharacter * >( CreateEntityByName( "bot_npc_minion" ) );
-	if ( minion )
+bool SpawnMinion(const Vector& spot)
+{
+	CBaseCombatCharacter* minion = static_cast<CBaseCombatCharacter*>(CreateEntityByName("bot_npc_minion"));
+	if (minion)
 	{
-		minion->SetAbsOrigin( spot );
-		minion->SetOwnerEntity( NULL );
+		minion->SetAbsOrigin(spot);
+		minion->SetOwnerEntity(NULL);
 
-		DispatchSpawn( minion );
+		DispatchSpawn(minion);
 
 		return true;
 	}
-	return false;
-	*/
 
+	return false;
 }
-#endif // 0
 
 
 bool SpawnSentry( const Vector &spot )
@@ -406,7 +491,7 @@ void CRaidLogic::OnRoundStart( void )
 	for( int i=0; i<minionAreaVector.Count(); ++i )
 	{
 		static_cast< CTFNavArea * >( minionAreaVector[i] )->AddToWanderCount( 1 );
-		SpawnWanderer( minionAreaVector[i]->GetRandomPoint() );
+		SpawnMinion( minionAreaVector[i]->GetRandomPoint() );
 	}
 
 	DevMsg( "RAID: Total minion population = %d\n", minionAreaVector.Count() );
@@ -1309,6 +1394,9 @@ void CRaidLogic::CullObsoleteEnemies( float minIncursion, float maxIncursion )
 			continue;
 
 		CTFBot *defender = (CTFBot *)defenseTeam->GetPlayer(i);
+
+		if ( !defender )
+			continue;
 
 		if ( !defender->IsAlive() )
 			continue;

@@ -902,12 +902,12 @@ ConVar tf_training_client_message( "tf_training_client_message", "0", FCVAR_REPL
 
 #ifdef TF_RAID_MODE
 // Raid mode
-ConVar tf_gamemode_raid( "tf_gamemode_raid", "0", FCVAR_REPLICATED | FCVAR_NOTIFY );		// client needs access to this for IsRaidMode()
+ConVar tf_gamemode_raid( "tf_gamemode_raid", "0", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DEVELOPMENTONLY );		// client needs access to this for IsRaidMode()
 ConVar tf_raid_enforce_unique_classes( "tf_raid_enforce_unique_classes", "0", FCVAR_REPLICATED | FCVAR_NOTIFY );
 ConVar tf_raid_respawn_time( "tf_raid_respawn_time", "5", FCVAR_REPLICATED | FCVAR_NOTIFY /*| FCVAR_CHEAT*/, "How long it takes for a Raider to respawn with his team after death." );
 ConVar tf_raid_allow_all_classes( "tf_raid_allow_all_classes", "1", FCVAR_REPLICATED | FCVAR_NOTIFY );
 
-ConVar tf_gamemode_boss_battle( "tf_gamemode_boss_battle", "0", FCVAR_REPLICATED | FCVAR_NOTIFY );
+ConVar tf_gamemode_boss_battle( "tf_gamemode_boss_battle", "0", FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DEVELOPMENTONLY );
 
 #ifdef GAME_DLL
 ConVar tf_raid_allow_overtime( "tf_raid_allow_overtime", "0"/*, FCVAR_CHEAT*/ );
@@ -9888,10 +9888,11 @@ bool CTFGameRules::FPlayerCanTakeDamage( CBasePlayer *pPlayer, CBaseEntity *pAtt
 
 	// in PvE modes, if entities are on the same team, they can't hurt each other
 	// this is needed since not all entities will be players
+	// Unless forced - Custom Fortress
 	if ( IsPVEModeActive() && 
 			pPlayer->GetTeamNumber() == pAttacker->GetTeamNumber() && 
 			pPlayer != pAttacker && 
-			!info.IsForceFriendlyFire() )
+			!info.IsForceFriendlyFire() && !friendlyfire.GetBool() )
 	{
 		return false;
 	}

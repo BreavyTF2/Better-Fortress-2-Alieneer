@@ -1667,7 +1667,8 @@ void CSniperDot::ClientThink( void )
 	int bHasMvmLaser = 0;
 	CALL_ATTRIB_HOOK_INT_ON_OTHER(pPlayer, bHasMvmLaser, sniper_has_laserdot);
 	// snipers have laser sights in PvE mode
-	if ( TFGameRules()->IsPVEModeActive() && GetTeamNumber() == TF_TEAM_PVE_INVADERS || bHasMvmLaser)
+	// Custom Fortress - or if has the attribute
+	if ( TFGameRules()->IsMannVsMachineMode() && GetTeamNumber() == TF_TEAM_PVE_INVADERS || bHasMvmLaser)
 	{
 		if ( pPlayer && !(pPlayer->IsLocalPlayer() && pPlayer->LocalPlayerInFirstPersonView() && tf_hide_aiming_laser.GetBool() ) )
 		{
