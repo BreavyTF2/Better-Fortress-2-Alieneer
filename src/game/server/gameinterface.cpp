@@ -330,6 +330,8 @@ int UTIL_PlayerIsModDev( CBasePlayer *client )
 		break;
 		//Contributors
 		case 76561198813329543: // Grub - it's grubbin time.
+		case 76561198024846297: // SaintSoftware
+		case 76561198423023261: // Alieneer/MOTS0
 			return 3;
 		break;
 		//None

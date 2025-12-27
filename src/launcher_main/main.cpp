@@ -146,8 +146,10 @@ static bool LoadSteam( const char *pRootDir )
 	#define STEAM_API_DLL_PATH	"%s\\" PLATFORM_BIN_DIR "\\steam_api64.dll"
 #elif defined( _WIN32 )
 	#define STEAM_API_DLL_PATH	"%s\\" PLATFORM_BIN_DIR "\\steam_api.dll"
+#elif defined( LINUX64 )
+	#define STEAM_API_DLL_PATH	"%s/bin/linux64/libsteam_api.so"
 #elif defined( POSIX )
-	#define STEAM_API_DLL_PATH	"%s/" PLATFORM_BIN_DIR "/libsteam_api.so"
+	#define STEAM_API_DLL_PATH	"%s/bin/libsteam_api.so"
 #endif
 
 	char szBuffer[4096];

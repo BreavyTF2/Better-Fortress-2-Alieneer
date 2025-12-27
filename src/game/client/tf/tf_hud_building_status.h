@@ -323,6 +323,40 @@ private:
 };
 
 //-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+class CBuildingStatusItem_SpeedPad : public CBuildingStatusItem
+{
+	DECLARE_CLASS_SIMPLE( CBuildingStatusItem_SpeedPad, CBuildingStatusItem );
+
+public:
+	CBuildingStatusItem_SpeedPad( Panel *parent );
+
+	virtual void PerformLayout( void );
+
+private:
+	vgui::ContinuousProgressBar *m_pUpgradeProgress;
+	CIconPanel *m_pUpgradeIcon;
+};
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+class CBuildingStatusItem_JumpPad : public CBuildingStatusItem
+{
+	DECLARE_CLASS_SIMPLE( CBuildingStatusItem_JumpPad, CBuildingStatusItem );
+
+public:
+	CBuildingStatusItem_JumpPad( Panel *parent );
+
+	virtual void PerformLayout( void );
+
+private:
+	vgui::ContinuousProgressBar *m_pUpgradeProgress;
+	CIconPanel *m_pUpgradeIcon;
+};
+
+//-----------------------------------------------------------------------------
 // Purpose: Container panel for object status panels
 //-----------------------------------------------------------------------------
 class CHudBuildingStatusContainer : public CHudElement, public vgui::Panel

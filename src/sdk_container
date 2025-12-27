@@ -13,34 +13,38 @@ function run_in_sniper() {
             exit 1
         fi
 
-        # Let's say we run as /home/misyl/my_mod/src/myscript
-        # We want to mount /home/misyl/my_mod, and then launch
-        # src/myscript inside of that.
-        #
-        # The below achieves that.
+        # Check if we're running in a container
         mod_src_dir=$(pwd)
         mod_src_dir_name=$(basename -- "$mod_src_dir")
         mod_base_dir=$(dirname -- "$mod_src_dir")
 
+        # Setup ccache directory if not disabled
+        ccache_args=""
+        if [[ -z "${CCACHE_DISABLE:-}" ]]; then
+            ccache_dir="${CCACHE_DIR:-$HOME/.ccache}"
+            mkdir -p "$ccache_dir"
+            ccache_args="--env CCACHE_DIR=/ccache --env CCACHE_BASEDIR=/my_mod/src --volume $ccache_dir:/ccache:rw"
+        fi
+
         image="registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest"
         echo "Running script inside $image"
         exec podman run \
-            --env "$check_env=$script_file" \
-            --env "CCACHE_DIR=/ccache" \
-            --env "CCACHE_BASEDIR=/my_mod/src" \
-            --env "CCACHE_CONFIGPATH=/ccache/ccache.conf" \
-            --env "PATH=/usr/lib/ccache:/usr/local/bin:/usr/bin:/bin" \
-            --userns=keep-id \
-            --rm -it \
-            --mount type=bind,source="${CCACHE_DIR:-$HOME/.ccache}",target=/ccache \
-            --mount type=bind,source="$mod_base_dir",target=/my_mod/ \
+            --env "SCRIPT_CHECKSUM=$check_env" \
+            $ccache_args \
+            --volume "$mod_base_dir:/my_mod:rw" \
+            --workdir "/my_mod/$mod_src_dir_name" \
+            --rm \
             "$image" \
-            /my_mod/"$mod_src_dir_name"/"$script_file" \
-            "$@"
+            "./$script_file" "$@"
     fi
 
-    if [[ $(printenv -- "$check_env") != "$script_file" ]]; then
-        echo "Can't run in a nested container setup. Sorry! :("
+    # At this point, we're already inside the container.
+    # Verify we are running the right script (security check)
+    our_sum=$(sha256sum -- "./$script_file" | cut -d " " -f 1)
+    their_sum="${SCRIPT_CHECKSUM:-}"
+
+    if [[ -n "$their_sum" && "$our_sum" != "$their_sum" ]]; then
+        echo "Error: Script checksum mismatch. Aborting..."
         exit 1
     fi
 }

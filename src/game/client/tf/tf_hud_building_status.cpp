@@ -24,6 +24,8 @@
 #include "c_obj_dispenser.h"
 #include "c_obj_teleporter.h"
 #include "c_obj_sapper.h"
+#include "c_obj_speedpad.h"
+#include "c_obj_jumppad.h"
 
 #include "tf_gamerules.h"
 #include "tf_logic_halloween_2014.h"
@@ -1144,6 +1146,93 @@ void CBuildingStatusItem_Sapper::PerformLayout( void )
 
 //============================================================================
 
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+CBuildingStatusItem_SpeedPad::CBuildingStatusItem_SpeedPad( Panel *parent ) :
+CBuildingStatusItem( parent, "resource/UI/hud_obj_speedpad.res", OBJ_SPEEDPAD )
+{
+	m_pUpgradeProgress = new vgui::ContinuousProgressBar( GetRunningPanel(), "Upgrade" );
+	m_pUpgradeIcon = new CIconPanel( GetRunningPanel(), "UpgradeIcon" );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CBuildingStatusItem_SpeedPad::PerformLayout( void )
+{
+	BaseClass::PerformLayout();
+
+	C_ObjectSpeedPad *pSpeedPad = static_cast<C_ObjectSpeedPad*>(GetRepresentativeObject());
+
+	if ( !IsActive() || !pSpeedPad )
+	{
+		return;
+	}
+
+	GetRunningPanel()->SetDialogVariable( "timesused", pSpeedPad->GetTimesUsed() );
+
+	int iUpgradeLevel = pSpeedPad->GetUpgradeLevel();
+
+	Assert( iUpgradeLevel >= 1 && iUpgradeLevel <= 3 );
+
+	// upgrade progress
+	int iMetal = pSpeedPad->GetUpgradeMetal();
+	int iMetalRequired = pSpeedPad->GetUpgradeMetalRequired();
+	float flUpgrade = (float)iMetal / (float)iMetalRequired;
+	m_pUpgradeProgress->SetProgress( flUpgrade );
+
+	// upgrade label only in 1 or 2
+	m_pUpgradeIcon->SetVisible( iUpgradeLevel < 3 );
+	m_pUpgradeProgress->SetVisible( iUpgradeLevel < 3 );
+}
+
+//============================================================================
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+CBuildingStatusItem_JumpPad::CBuildingStatusItem_JumpPad( Panel *parent ) :
+CBuildingStatusItem( parent, "resource/UI/hud_obj_jumppad.res", OBJ_JUMPPAD )
+{
+	m_pUpgradeProgress = new vgui::ContinuousProgressBar( GetRunningPanel(), "Upgrade" );
+	m_pUpgradeIcon = new CIconPanel( GetRunningPanel(), "UpgradeIcon" );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: 
+//-----------------------------------------------------------------------------
+void CBuildingStatusItem_JumpPad::PerformLayout( void )
+{
+	BaseClass::PerformLayout();
+
+	C_ObjectJumpPad *pJumpPad = static_cast<C_ObjectJumpPad*>(GetRepresentativeObject());
+
+	if ( !IsActive() || !pJumpPad )
+	{
+		return;
+	}
+
+	GetRunningPanel()->SetDialogVariable( "timesused", pJumpPad->GetTimesUsed() );
+
+	int iUpgradeLevel = pJumpPad->GetUpgradeLevel();
+
+	Assert( iUpgradeLevel >= 1 && iUpgradeLevel <= 3 );
+
+	// upgrade progress
+	int iMetal = pJumpPad->GetUpgradeMetal();
+	int iMetalRequired = pJumpPad->GetUpgradeMetalRequired();
+	float flUpgrade = (float)iMetal / (float)iMetalRequired;
+	m_pUpgradeProgress->SetProgress( flUpgrade );
+
+	// upgrade label only in 1 or 2
+	m_pUpgradeIcon->SetVisible( iUpgradeLevel < 3 );
+	m_pUpgradeProgress->SetVisible( iUpgradeLevel < 3 );
+}
+
+
+//============================================================================
+
 
 DECLARE_HUDELEMENT( CHudBuildingStatusContainer_Spy );
 
@@ -1191,6 +1280,8 @@ BaseClass( "BuildingStatus_Engineer" )
 	AddBuildingPanel( OBJ_TELEPORTER, MODE_TELEPORTER_ENTRANCE );
 	AddBuildingPanel( OBJ_TELEPORTER, MODE_TELEPORTER_EXIT );
 	AddBuildingPanel( OBJ_SENTRYGUN, MODE_SENTRYGUN_DISPOSABLE );
+	AddBuildingPanel( OBJ_SPEEDPAD );
+	AddBuildingPanel( OBJ_JUMPPAD );
 
 	vgui::ivgui()->AddTickSignal( GetVPanel(), 500 );
 }
@@ -1242,21 +1333,46 @@ void CHudBuildingStatusContainer_Engineer::OnTick()
 			}
 		}
 
+		// Check if engineer has the pda_builds_pads attribute
+		int nBuildsPads = 0;
+		CALL_ATTRIB_HOOK_INT_ON_OTHER( pLocalPlayer, nBuildsPads, pda_builds_pads );
+		bool bBuildsPads = ( nBuildsPads != 0 );
 
 		for ( int i = 0 ; i < m_BuildingPanels.Count() ; i++ )
 		{
 			CBuildingStatusItem *pItem = m_BuildingPanels.Element( i );
 
-			if ( pItem && ( pItem->GetRepresentativeObjectType() == OBJ_SENTRYGUN ) && ( pItem->GetRepresentativeObjectMode() == MODE_SENTRYGUN_DISPOSABLE ) )
+			if ( pItem )
 			{
-				if ( pItem->IsVisible() != bDisposableSentriesVisible )
+				int iObjectType = pItem->GetRepresentativeObjectType();
+				int iObjectMode = pItem->GetRepresentativeObjectMode();
+
+				// Handle disposable sentries visibility
+				if ( iObjectType == OBJ_SENTRYGUN && iObjectMode == MODE_SENTRYGUN_DISPOSABLE )
 				{
-					pItem->SetVisible( bDisposableSentriesVisible );
+					if ( pItem->IsVisible() != bDisposableSentriesVisible )
+					{
+						pItem->SetVisible( bDisposableSentriesVisible );
+					}
 				}
-
-				break;
+				// Handle teleporter vs pads visibility
+				else if ( iObjectType == OBJ_TELEPORTER )
+				{
+					// Hide teleporters when building pads
+					if ( pItem->IsVisible() == bBuildsPads )
+					{
+						pItem->SetVisible( !bBuildsPads );
+					}
+				}
+				else if ( iObjectType == OBJ_SPEEDPAD || iObjectType == OBJ_JUMPPAD )
+				{
+					// Show pads only when building pads
+					if ( pItem->IsVisible() != bBuildsPads )
+					{
+						pItem->SetVisible( bBuildsPads );
+					}
+				}
 			}
-
 		}
 	}
 }
@@ -1360,6 +1476,12 @@ CBuildingStatusItem *CHudBuildingStatusContainer::CreateItemPanel( int iObjectTy
 		break;
 	case OBJ_ATTACHMENT_SAPPER:
 		pBuildingItem = new CBuildingStatusItem_Sapper( this );
+		break;
+	case OBJ_SPEEDPAD:
+		pBuildingItem = new CBuildingStatusItem_SpeedPad( this );
+		break;
+	case OBJ_JUMPPAD:
+		pBuildingItem = new CBuildingStatusItem_JumpPad( this );
 		break;
 	default:
 		pBuildingItem = NULL;
@@ -1480,9 +1602,10 @@ void CHudBuildingStatusContainer::RepositionObjectPanels( void )
 			// set position directly
 			pItem->SetPos( flXPos, flYPos );
 
-			// do not increment for speed pad (this is a minor hack)
-			// OBJ_TELEPORTER, MODE_TELEPORTER_SPEED
-			if ( pItem->GetRepresentativeObjectType() == OBJ_TELEPORTER )
+			int iObjectType = pItem->GetRepresentativeObjectType();
+			
+			// Handle teleporter positioning
+			if ( iObjectType == OBJ_TELEPORTER )
 			{
 				switch ( pItem->GetRepresentativeObjectMode() )
 				{
@@ -1495,6 +1618,11 @@ void CHudBuildingStatusContainer::RepositionObjectPanels( void )
 						flYPos += pItem->GetTall();
 						break;
 				}
+			}
+			// Position Speed Pad and Jump Pad closer together, near dispenser
+			else if ( iObjectType == OBJ_SPEEDPAD || iObjectType == OBJ_JUMPPAD )
+			{
+				flYPos += pItem->GetTall() - YRES(2); // Tighter spacing for pads
 			}
 			else
 			{

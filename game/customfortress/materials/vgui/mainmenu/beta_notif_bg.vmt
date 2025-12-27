@@ -1,0 +1,8 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/mainmenu/beta_notif_bg"
+	"$translucent" 1
+	"$ignorez" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+}

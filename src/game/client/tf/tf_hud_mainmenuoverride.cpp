@@ -20,6 +20,7 @@
 #include "gcsdk/gcclientjob.h"
 #include "econ_item_system.h"
 #include <vgui_controls/AnimationController.h>
+#include <vgui_controls/CheckButton.h>
 #include "store/store_panel.h"
 #include "gc_clientsystem.h"
 #include <vgui_controls/ScrollBarSlider.h>
@@ -46,7 +47,6 @@
 #include "tf_matchmaking_dashboard_comp_rank_tooltip.h"
 #include "tf_rating_data.h"
 #include "tf_progression.h"
-#include "vgui/cf_serverbrowser.h"
 
 #include "replay/ireplaysystem.h"
 #include "replay/ienginereplay.h"
@@ -82,6 +82,7 @@ void AddSubKeyNamed( KeyValues *pKeys, const char *pszName );
 
 extern const char *g_sImagesBlue[];
 extern int EconWear_ToIntCategory( float flWear );
+extern ConVar cf_disable_holiday_themes;
 
 void cc_tf_safemode_toggle( IConVar *pConVar, const char *pOldString, float flOldValue )
 {
@@ -109,6 +110,7 @@ ConVar tf_training_has_prompted_for_offline_practice( "tf_training_has_prompted_
 ConVar tf_training_has_prompted_for_forums( "tf_training_has_prompted_for_forums", "0", FCVAR_ARCHIVE, "Whether the user has been prompted to view the new user forums." );
 ConVar tf_training_has_prompted_for_options( "tf_training_has_prompted_for_options", "0", FCVAR_ARCHIVE, "Whether the user has been prompted to view the TF2 advanced options." );
 ConVar tf_training_has_prompted_for_loadout( "tf_training_has_prompted_for_loadout", "0", FCVAR_ARCHIVE, "Whether the user has been prompted to equip something in their loadout." );
+ConVar cf_beta_warning_accepted( "cf_beta_warning_accepted", "0", FCVAR_ARCHIVE, "Whether the user has accepted the beta warning" );
 ConVar cl_ask_bigpicture_controller_opt_out( "cl_ask_bigpicture_controller_opt_out", "0", FCVAR_ARCHIVE, "Whether the user has opted out of being prompted for controller support in Big Picture." );
 ConVar cl_mainmenu_operation_motd_start( "cl_mainmenu_operation_motd_start", "0", FCVAR_ARCHIVE | FCVAR_HIDDEN );
 ConVar cl_mainmenu_operation_motd_reset( "cl_mainmenu_operation_motd_reset", "0", FCVAR_ARCHIVE | FCVAR_HIDDEN );
@@ -197,6 +199,9 @@ CHudMainMenuOverride::CHudMainMenuOverride( IViewPort *pViewPort ) : BaseClass( 
 	m_bWasInTraining = false;
 
 	m_pWorkshopPanel = NULL;
+
+	m_pBetaNotificationPanel = NULL;
+	m_pBetaCheckbox = NULL;
 
 	ScheduleItemCheck();
 
@@ -333,6 +338,51 @@ void CHudMainMenuOverride::OnTick()
 		{
 			Msg( "Executing deferred connect command: %s\n", szConnectAdr );
 			engine->ExecuteClientCmd( CFmtStr( "connect %s -%s\n", szConnectAdr, "ConnectStringOnCommandline" ) );
+		}
+	}
+
+	// Check beta notification visibility (do this every tick to ensure config is loaded)
+	static bool s_bBetaNotificationChecked = false;
+	if ( !s_bBetaNotificationChecked && m_pBetaNotificationPanel )
+	{
+		// Check if config has been loaded by verifying any archive convar has a non-default value
+		// or just check after a few frames to ensure config.cfg has been executed
+		static int s_nCheckFrames = 0;
+		s_nCheckFrames++;
+		
+		if ( s_nCheckFrames > 1 )  // Wait a few frames for config to load
+		{
+			s_bBetaNotificationChecked = true;
+			
+			bool bAccepted = ( cf_beta_warning_accepted.GetInt() != 0 );
+			
+			if ( bAccepted )
+			{
+				// Hide the panel if already accepted
+				m_pBetaNotificationPanel->SetVisible( false );
+				
+				// Show matchmaking dashboard
+				CTFMatchmakingDashboard *pDashboard = GetMMDashboard();
+				if ( pDashboard )
+				{
+					pDashboard->SetVisible( true );
+				}
+			}
+			else
+			{
+				// Show the panel if not accepted yet
+				m_pBetaNotificationPanel->SetVisible( true );
+				m_pBetaNotificationPanel->SetMouseInputEnabled( true );
+				m_pBetaNotificationPanel->SetKeyBoardInputEnabled( true );
+				m_pBetaNotificationPanel->MoveToFront();
+				
+				// Hide matchmaking dashboard
+				CTFMatchmakingDashboard *pDashboard = GetMMDashboard();
+				if ( pDashboard )
+				{
+					pDashboard->SetVisible( false );
+				}
+			}
 		}
 	}
 
@@ -510,6 +560,11 @@ void CHudMainMenuOverride::ApplySchemeSettings( IScheme *scheme )
 	KeyValues *pConditions = NULL;
 	const char *pszHoliday = UTIL_GetActiveHolidayString();
 
+	// Check if holiday themes are disabled
+	if ( cf_disable_holiday_themes.GetBool() )
+	{
+		pszHoliday = NULL; // Force no holiday theme
+	}
 
 	if ( pszHoliday && pszHoliday[0] )
 	{
@@ -702,6 +757,52 @@ void CHudMainMenuOverride::ApplySchemeSettings( IScheme *scheme )
 		m_flSplashAnimationTime = gpGlobals->curtime;
 		m_bSplashAnimatingIn = true;
 	}
+
+	// Initialize beta notification panel
+	m_pBetaNotificationPanel = dynamic_cast<vgui::EditablePanel*>( FindChildByName("BetaNotificationPanel") );
+	if ( m_pBetaNotificationPanel )
+	{
+		// Find the checkbox control
+		m_pBetaCheckbox = dynamic_cast<vgui::CheckButton*>( m_pBetaNotificationPanel->FindChildByName("DontShowAgainCheckbox") );
+
+		// Find and hook up the confirm button
+		CExButton *pConfirmButton = dynamic_cast<CExButton*>( m_pBetaNotificationPanel->FindChildByName("ConfirmButton") );
+		if ( pConfirmButton )
+		{
+			pConfirmButton->AddActionSignalTarget( this );
+		}
+
+		// Check if user has already accepted the beta warning
+		bool bAccepted = ( cf_beta_warning_accepted.GetInt() != 0 );
+		
+		if ( bAccepted )
+		{
+			// Hide the panel if already accepted
+			m_pBetaNotificationPanel->SetVisible( false );
+			
+			// Show matchmaking dashboard
+			CTFMatchmakingDashboard *pDashboard = GetMMDashboard();
+			if ( pDashboard )
+			{
+				pDashboard->SetVisible( true );
+			}
+		}
+		else
+		{
+			// Show the panel if not accepted yet
+			m_pBetaNotificationPanel->SetVisible( true );
+			m_pBetaNotificationPanel->SetMouseInputEnabled( true );
+			m_pBetaNotificationPanel->SetKeyBoardInputEnabled( true );
+			m_pBetaNotificationPanel->MoveToFront();
+			
+			// Hide matchmaking dashboard
+			CTFMatchmakingDashboard *pDashboard = GetMMDashboard();
+			if ( pDashboard )
+			{
+				pDashboard->SetVisible( false );
+			}
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -776,7 +877,15 @@ void CHudMainMenuOverride::LoadCharacterImageFile( void )
 			}
 			else if ( eHoliday != kHoliday_None )
 			{
-				iWeight = UTIL_IsHolidayActive( eHoliday ) ? MAX( iWeight, 6 ) : 0;
+				// Check if holiday themes are disabled
+				if ( cf_disable_holiday_themes.GetBool() )
+				{
+					iWeight = 0; // Disable holiday character images
+				}
+				else
+				{
+					iWeight = UTIL_IsHolidayActive( eHoliday ) ? MAX( iWeight, 6 ) : 0;
+				}
 			}
 			else if ( bActiveOperation && !bIsOperationCharacter )
 			{
@@ -785,7 +894,8 @@ void CHudMainMenuOverride::LoadCharacterImageFile( void )
 			else
 			{
 				// special cases for summer, halloween, fullmoon, and christmas...turn off anything not covered above
-				if ( UTIL_IsHolidayActive( kHoliday_Summer ) || UTIL_IsHolidayActive( kHoliday_HalloweenOrFullMoon ) || UTIL_IsHolidayActive( kHoliday_Christmas ) )
+				// Unless the user has disabled holiday themes
+				if ( !cf_disable_holiday_themes.GetBool() && ( UTIL_IsHolidayActive( kHoliday_Summer ) || UTIL_IsHolidayActive( kHoliday_HalloweenOrFullMoon ) || UTIL_IsHolidayActive( kHoliday_Christmas ) ) )
 				{
 					iWeight = 0;
 				}
@@ -2002,8 +2112,8 @@ void CHudMainMenuOverride::OnCommand( const char *command )
 	}
 	else if ( !Q_stricmp( command, "find_game" ) )
 	{
-		// Open the custom server browser
-		CCFServerBrowser::ShowDialog();
+		// Open the server browser (using engine command since custom browser was removed)
+		engine->ClientCmd_Unrestricted( "openserverbrowser\n" );
 	}
 	else if ( !Q_stricmp( command, "engine disconnect" ) && engine->IsInGame() && TFGameRules() && ( TFGameRules()->IsMannVsMachineMode() || TFGameRules()->IsCompetitiveMode() ) )
 	{
@@ -2098,6 +2208,33 @@ void CHudMainMenuOverride::OnCommand( const char *command )
 		}
 		return;
 	}
+	else if ( FStrEq( "confirmbeta", command ) )
+	{
+		// Check if the checkbox is checked
+		if ( m_pBetaCheckbox && m_pBetaCheckbox->IsSelected() )
+		{
+			// Set the ConVar to remember user's choice (don't show again)
+			cf_beta_warning_accepted.SetValue( 1 );
+			
+			// Force save to config
+			engine->ClientCmd_Unrestricted( "host_writeconfig\n" );
+		}
+
+		// Hide the beta notification panel
+		if ( m_pBetaNotificationPanel )
+		{
+			m_pBetaNotificationPanel->SetVisible( false );
+		}
+		
+		// Show the matchmaking dashboard
+		CTFMatchmakingDashboard *pDashboard = GetMMDashboard();
+		if ( pDashboard )
+		{
+			pDashboard->SetVisible( true );
+		}
+		
+		return;
+	}
 	else if ( FStrEq( "OpenMutePlayerDialog", command ) )
 	{
 		if ( !m_hMutePlayerDialog.Get() )
@@ -2175,6 +2312,11 @@ void CHudMainMenuOverride::OnCommand( const char *command )
 	else if(!Q_stricmp(command,"openmodcredits"))
 	{
 		GetClientModeTFNormal()->GameUI()->SendMainMenuCommand("engine openmodcredits");
+	}
+	else if (FStrEq("create_server", command))
+	{
+		GetMMDashboard()->OnCreateServer();
+		return;
 	}
 	else
 	{

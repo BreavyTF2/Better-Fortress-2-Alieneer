@@ -4,9 +4,9 @@
 	{
 		"ControlName"	"Label"
 		"fieldName"		"BetaMessage"
-		"font" 			"HudFontMediumBold"
-		"xpos"			"5"
-		"ypos"			"-55"
+		"font" 			"HudFontSmallBold"
+		"xpos"			"3"
+		"ypos"			"400"
 		"wide"			"600"
 		"tall"			"80"
 		"autoResize"	"0"

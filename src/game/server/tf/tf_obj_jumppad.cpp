@@ -31,7 +31,7 @@
 #define JUMPPAD_THINK_CONTEXT		"JumpPadContext"
 
 // Vertical jump velocity per level
-static float g_flJumpPadVelocity[4] = { 0.0f, 400.0f, 600.0f, 900.0f };
+static float g_flJumpPadVelocity[4] = { 0.0f, 500.0f, 700.0f, 800.0f };
 // Cooldown time per level
 static float g_flJumpPadCooldown[4] = { 0.0f, 8.0f, 6.0f, 3.0f };
 
@@ -240,8 +240,13 @@ void CObjectJumpPad::ApplyJumpBoost( CTFPlayer *pPlayer )
 	vecBaseVelocity.z = flVelocity;
 	pPlayer->SetBaseVelocity( vecBaseVelocity );
 
-	// Remove fall damage for a short time
-	pPlayer->m_Shared.AddCond( TF_COND_PARACHUTE_DEPLOYED, 2.0f );
+	// Reset fall velocity to prevent fall damage
+	pPlayer->m_Local.m_flFallVelocity = 0;
+
+	// Add parachute condition to continue preventing fall damage while in air
+	// Duration calculated to last until landing from max jump height
+	float flProtectionTime = 3.5f; // Enough time for level 3 jump
+	pPlayer->m_Shared.AddCond( TF_COND_ROCKETPACK, flProtectionTime );
 
 	Vector origin = GetAbsOrigin();
 	CPVSFilter filter( origin );

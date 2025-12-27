@@ -272,6 +272,10 @@ private:
 
 	vgui::DHANDLE<vgui::CCFWorkshopBrowserPanel> m_pWorkshopPanel;
 
+	// Beta notification
+	vgui::EditablePanel*	m_pBetaNotificationPanel;
+	vgui::CheckButton*		m_pBetaCheckbox;
+
 	CPanelAnimationVarAliasType( int, m_iButtonXOffset, "button_x_offset", "0", "proportional_int" );
 	CPanelAnimationVarAliasType( int, m_iButtonY, "button_y", "0", "proportional_int" );
 	CPanelAnimationVarAliasType( int, m_iButtonYDelta, "button_y_delta", "0", "proportional_int" );

@@ -33,7 +33,7 @@
 #define SCRIPTED_WEAPON_HAS_SPECIAL_TAUNT			(1 << 10)	
 #define SCRIPTED_WEAPON_CAN_DROP					(1 << 11)	
 #define SCRIPTED_WEAPON_HAS_ZOOM					(1 << 12)	//Sniperrifles
-#define SCRIPTED_WEAPON_CAN_HEADSHOT				(1 << 13)	//
+#define SCRIPTED_WEAPON_CAN_HEADSHOT				(1 << 13)	// 
 
 #define SCRIPTED_WEAPON_LASTFLAG SCRIPTED_WEAPON_HAS_ZOOM
 
@@ -68,19 +68,22 @@ public:
 	virtual int		GetDamageType( void ) const;
 	bool			CanHeadshot( void ) const { return m_bitsWeaponFlags & SCRIPTED_WEAPON_CAN_HEADSHOT; };
 
-	void PrimaryAttack() OVERRIDE;
-	void SecondaryAttack() OVERRIDE;
+	virtual void PrimaryAttack();
+	virtual void SecondaryAttack();
 
+	virtual bool	Deploy( void );
+	virtual bool	Holster( CBaseCombatWeapon *pSwitchingTo );
+
+	virtual int GetWeaponProjectileType( void );
+	// virtual CBaseEntity *FireProjectile( CTFPlayer *pPlayer );
 	virtual int		GetWeaponID( void ) const			{ return TF_WEAPON_SCRIPTED; }
-
-	//virtual bool	Deploy( void );
-	//virtual bool	Holster( CBaseCombatWeapon *pSwitchingTo );
+	virtual int		GetWeaponFlags( void ) { return m_iWeaponFlags; }
 
 	//virtual void RemoveProjectileAmmo( CTFPlayer *pPlayer );
 	//virtual bool HasPrimaryAmmo( void );
 
 private:
-
+	CNetworkVar( int, m_iWeaponFlags );
 	CTFWeaponScripted( const CTFWeaponScripted & ) {}
 };
 

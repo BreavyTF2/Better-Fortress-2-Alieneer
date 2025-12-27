@@ -22,6 +22,7 @@
 IMPLEMENT_NETWORKCLASS_ALIASED( TFWeaponScripted, DT_WeaponScripted )
 
 BEGIN_NETWORK_TABLE( CTFWeaponScripted, DT_WeaponScripted )
+//RecvPropInt( RECVINFO( m_iWeaponFlags ) ),
 END_NETWORK_TABLE()
 
 BEGIN_PREDICTION_DATA( CTFWeaponScripted )
@@ -33,6 +34,7 @@ PRECACHE_WEAPON_REGISTER( tf_weapon_scripted );
 // Server specific.
 #ifndef CLIENT_DLL
 BEGIN_DATADESC(CTFWeaponScripted)
+DEFINE_KEYFIELD( m_iWeaponFlags, FIELD_INTEGER, "WeaponFlags" ),
 END_DATADESC()
 #endif
 
@@ -113,11 +115,11 @@ bool CTFWeaponScripted::FunctionCallBack( const char * iszFunction )
 		m_ScriptScope.Call( hFunc, &pFunctionReturn );
 		m_ScriptScope.ReleaseFunction( hFunc );
 
-		if( !pFunctionReturn )
-			return false;
+		if( !pFunctionReturn.IsNull() && pFunctionReturn )
+			return true;
 	}
 #endif
-	return true;
+	return false;
 }
 
 
@@ -135,12 +137,54 @@ int	CTFWeaponScripted::GetDamageType( void ) const
 
 void CTFWeaponScripted::PrimaryAttack() 
 {
-	FunctionCallBack("PrimaryAttack");
+	if( FunctionCallBack( "PrimaryAttack" ) )
+		return;
 	BaseClass::PrimaryAttack();
 }
 
 void CTFWeaponScripted::SecondaryAttack() 
 {
-	FunctionCallBack("SecondaryAttack");
+	if( FunctionCallBack( "SecondaryAttack" ) )
+		return;
 	BaseClass::SecondaryAttack();
+}
+
+bool CTFWeaponScripted::Deploy()
+{
+	if( FunctionCallBack( "Deploy" ) )
+		return false;
+	return BaseClass::Deploy();
+}
+
+bool CTFWeaponScripted::Holster( CBaseCombatWeapon *pSwitchingTo )
+{
+#ifndef CLIENT_DLL
+	HSCRIPT hFunc = m_ScriptScope.LookupFunction( "Holster" );
+	if ( hFunc )
+	{
+		ScriptVariant_t pFunctionReturn;
+		m_ScriptScope.Call( hFunc, &pFunctionReturn, ToHScript( pSwitchingTo ) );
+		m_ScriptScope.ReleaseFunction( hFunc );
+		if( !pFunctionReturn.IsNull() && pFunctionReturn )
+			return pFunctionReturn;
+	}
+#endif
+	return BaseClass::Holster( pSwitchingTo );
+}
+
+int CTFWeaponScripted::GetWeaponProjectileType( void )
+{
+#ifndef CLIENT_DLL
+	HSCRIPT hFunc = m_ScriptScope.LookupFunction( "GetWeaponProjectileType" );
+	if ( hFunc )
+	{
+		ScriptVariant_t pFunctionReturn;
+		m_ScriptScope.Call( hFunc, &pFunctionReturn );
+		m_ScriptScope.ReleaseFunction( hFunc );
+
+		if( !pFunctionReturn.IsNull() )
+			return pFunctionReturn;
+	}
+#endif
+	return m_pWeaponInfo->GetWeaponData( m_iWeaponMode ).m_iProjectile;
 }
