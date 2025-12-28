@@ -35,6 +35,7 @@
 #include "physics_collisionevent.h"
 #ifdef TF_RAID_MODE
 #include "player_vs_environment/boss_alpha/boss_alpha.h"
+#include "bot_npc/bot_npc_minion.h"
 #endif // TF_RAID_MODE
 #include "tf_weapon_medigun.h"
 #endif
@@ -717,16 +718,16 @@ void CTFGrenadePipebombProjectile::StickybombTouch( CBaseEntity *pOther )
 {
 #ifdef GAME_DLL
 #ifdef TF_RAID_MODE
-	if ( TFGameRules()->IsRaidMode() )
-	{
-		if ( dynamic_cast< CBossAlpha * >( pOther ) != NULL )
-		{
-			// stickies stick to the boss
-			m_bTouched = true;
-			VPhysicsGetObject()->EnableMotion( false );
 
-			SetParent( pOther );
-		}
+	if	 ( ( dynamic_cast< CBossAlpha * >( pOther ) != NULL )
+		|| ( dynamic_cast< CBotNPCMinion * >( pOther ) != NULL )
+		|| ( pOther != NULL && pOther->m_bSticksProjectiles ) )
+	{
+		//Stick it
+		m_bTouched = true;
+		VPhysicsGetObject()->EnableMotion( false );
+
+		SetParent( pOther );
 	}
 #endif
 #endif

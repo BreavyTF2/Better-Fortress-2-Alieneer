@@ -333,7 +333,7 @@ CTFPlayer *CBotNPCMinion::FindTarget( void )
 	}
 
 	CUtlVector< CTFPlayer * > playerVector;
-	CollectPlayers( &playerVector, TF_TEAM_BLUE, COLLECT_ONLY_LIVING_PLAYERS );
+	CollectPlayers( &playerVector, ( GetTeamNumber() == TF_TEAM_RED ) ? TF_TEAM_BLUE : TF_TEAM_RED, COLLECT_ONLY_LIVING_PLAYERS );
 
 	CTFPlayer *closeVictim = NULL;
 	float victimRangeSq = FLT_MAX;
@@ -380,7 +380,7 @@ CTFPlayer *CBotNPCMinion::FindTarget( void )
 void CBotNPCMinion::UpdateTarget( void )
 {
 	CUtlVector< CTFPlayer * > playerVector;
-	CollectPlayers( &playerVector, TF_TEAM_BLUE, COLLECT_ONLY_LIVING_PLAYERS );
+	CollectPlayers( &playerVector, ( GetTeamNumber() == TF_TEAM_RED ) ? TF_TEAM_BLUE : TF_TEAM_RED, COLLECT_ONLY_LIVING_PLAYERS );
 
 	CTFPlayer *closestPlayer = NULL;
 	float closestRangeSq = IsAlert() ? FLT_MAX : ( tf_bot_npc_minion_notice_threat_range.GetFloat() * tf_bot_npc_minion_notice_threat_range.GetFloat() );

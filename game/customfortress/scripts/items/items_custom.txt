@@ -1261,6 +1261,14 @@
 				}
 			}
 		}
+		//The Airstrike
+		"1104"
+		{
+			"visuals"
+			{
+				"sound_burst"			"Weapon_Airstrike.CritFire" //Much better
+			}
+		}
 		//CUT - Mercenary Park Cap
 		"1191"
 		{
