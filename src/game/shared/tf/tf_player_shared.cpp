@@ -155,7 +155,6 @@ CON_COMMAND_F( tf_add_bombhead, "Add Merasmus Bomb Head Condition", 0 )
 		//playerVector[i]->m_Shared.AddCond( TF_COND_HALLOWEEN_BOMB_HEAD, 7 );
 	}
 }
-
 ConVar tf_debug_bullets( "tf_debug_bullets", "0", FCVAR_DEVELOPMENTONLY, "Visualize bullet traces." );
 #endif // _DEBUG
 
@@ -4581,6 +4580,15 @@ void CTFPlayerShared::OnAddHalloweenBombHead( void )
 #ifdef CLIENT_DLL
 	m_pOuter->HalloweenBombHeadUpdate();
 	m_pOuter->CreateBombonomiconHint();
+	C_TFPlayer *pLocalPlayer = C_TFPlayer::GetLocalTFPlayer(); //Thriller port
+	if ( !TFGameRules()->IsHalloweenScenario( CTFGameRules::HALLOWEEN_SCENARIO_DOOMSDAY ) )
+	{
+		if ( pLocalPlayer == m_pOuter )
+		{
+			m_pOuter->EmitSound( "Player.bomb_attach" );
+			m_pOuter->EmitSound( "Player.bomb_fuse" );	
+		}
+	}
 #else
 	if ( InCond( TF_COND_HALLOWEEN_KART ) )
 	{
@@ -4597,6 +4605,15 @@ void CTFPlayerShared::OnRemoveHalloweenBombHead( void )
 #ifdef CLIENT_DLL
 	m_pOuter->HalloweenBombHeadUpdate();
 	m_pOuter->DestroyBombonomiconHint();
+
+	C_TFPlayer *pLocalPlayer = C_TFPlayer::GetLocalTFPlayer(); //Thriller port
+	if ( !TFGameRules()->IsHalloweenScenario( CTFGameRules::HALLOWEEN_SCENARIO_DOOMSDAY ) )
+	{
+		if ( pLocalPlayer == m_pOuter )
+		{
+			m_pOuter->StopSound( "Player.bomb_fuse" );	
+		}
+	}
 #else
 	if ( InCond( TF_COND_HALLOWEEN_KART ) )
 	{
