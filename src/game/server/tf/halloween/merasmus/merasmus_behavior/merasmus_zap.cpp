@@ -38,7 +38,7 @@ ActionResult< CMerasmus > CMerasmusZap::Update( CMerasmus *me, float interval )
 		const float flMaxDamage = 50.f + ( 5 * (me->GetLevel() - 1) );
 		const float flMinDamage = 20.f + ( 5 * (me->GetLevel() - 1) );
 
-		if ( CMerasmus::Zap( me, "effect_staff", flSpellRange, flMinDamage, flMaxDamage, nTargetCount ) )
+		if ( CMerasmus::Zap( me, "effect_staff", flSpellRange, flMinDamage, flMaxDamage, nTargetCount, m_spellType ) )
 		{
 			me->EmitSound( "Halloween.Merasmus_Spell" );
 		}
@@ -66,6 +66,17 @@ void CMerasmusZap::PlayCastSound( CMerasmus* me ) const
 	case SPELL_LAUNCH:
 		{
 			me->PlayLowPrioritySound( filter, "Halloween.MerasmusLaunchSpell" );
+		}
+		break;
+	case SPELL_JARATE:
+		{
+			//ALIEN31 - TODO: Make rare spell
+			me->PlayLowPrioritySound( filter, "Halloween.MerasmusCastJarateSpell" );
+		}
+		break;
+	case SPELL_BLEED:
+		{
+			me->PlayLowPrioritySound( filter, "Halloween.MerasmusCastBleedingSpell" );
 		}
 		break;
 	}

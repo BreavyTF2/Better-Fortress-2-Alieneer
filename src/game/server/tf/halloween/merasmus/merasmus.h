@@ -240,6 +240,8 @@ public:
 	//Outputs
 	COutputEvent m_OnStartFlying;
 	COutputEvent m_OnStopFlying;
+	COutputEvent m_OnCastSpell;
+	COutputEvent m_OnThrowBomb;
 
 	bool IsFlying( void ) const { return m_isFlying; }
 	bool IsHiding( void ) const { return m_isHiding; }
@@ -259,7 +261,7 @@ public:
 
 	const CUtlVector< CHandle<CTFPlayer> >& GetStartingAttackers() const;
 
-	static bool Zap( CBaseCombatCharacter *pCaster, const char* pszCastingAttachmentName, float flSpellRange, float flMinDamage, float flMaxDamage, int nMaxTarget, int nTargetTeam = TEAM_ANY );
+	static bool Zap( CMerasmus *pCaster, const char* pszCastingAttachmentName, float flSpellRange, float flMinDamage, float flMaxDamage, int nMaxTarget, int iSpellType, int nTargetTeam = TEAM_ANY );
 
 	// Stats
 	void RecordDisguiseTime( );

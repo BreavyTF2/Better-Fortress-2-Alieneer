@@ -20,6 +20,8 @@
 #include "merasmus_throwing_grenade.h"
 #include "merasmus_zap.h"
 
+ConVar cf_merasmus_taunts( "cf_merasmus_taunts", "1", FCVAR_REPLICATED, "Taunt if he has nothing better to do." );
+
 //----------------------------------------------------------------------------------
 ActionResult< CMerasmus >	CMerasmusAttack::OnStart( CMerasmus *me, Action< CMerasmus > *priorAction )
 {
@@ -167,16 +169,16 @@ ActionResult< CMerasmus >	CMerasmusAttack::Update( CMerasmus *me, float interval
 
 			m_path.Update( me );
 		}
-// 		else
-// 		{
-// 			// at home with nothing to do - taunt!
-// 			if ( !me->IsMoving() && m_tauntTimer.IsElapsed() )
-// 			{
-// 				m_tauntTimer.Start( RandomFloat( 3.0f, 5.0f ) );
-// 
-// 				return SuspendFor( new CMerasmusTaunt, "Taunting because I have nothing to do." );
-// 			}
-// 		}
+ 		else if ( cf_merasmus_taunts.GetBool() )
+ 		{
+ 			// at home with nothing to do - taunt!
+ 			if ( !me->IsMoving() && m_tauntTimer.IsElapsed() )
+ 			{
+ 				m_tauntTimer.Start( RandomFloat( 3.0f, 5.0f ) );
+ 
+ 				return SuspendFor( new CMerasmusTaunt, "Taunting because I have nothing to do." );
+ 			}
+ 		}
 	}
 	else
 	{
@@ -356,7 +358,7 @@ ActionResult< CMerasmus > CMerasmusTaunt::OnStart( CMerasmus *me, Action< CMeras
 	me->AddGestureSequence( me->LookupSequence( taunts[ which ] ) );
 
 	int staffBodyGroup = me->FindBodygroupByName( "staff" );
-	me->SetBodygroup( staffBodyGroup, 1 );
+	me->SetBodygroup( staffBodyGroup, 2 );
 
 	return Continue();
 }

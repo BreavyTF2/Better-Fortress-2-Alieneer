@@ -20,6 +20,8 @@ private:
 	{
 		SPELL_FIRE,
 		SPELL_LAUNCH,
+		SPELL_JARATE,
+		SPELL_BLEED,
 
 		SPELL_COUNT
 	};
