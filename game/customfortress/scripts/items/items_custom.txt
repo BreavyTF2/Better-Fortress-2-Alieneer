@@ -452,10 +452,35 @@
 			}
 			"attributes"
 			{
-				"damage penalty"
+				"stickybomb_charge_damage_increase"
 				{
-					"attribute_class"	"mult_dmg"
-					"value"	"0.35"
+					"attribute_class"	"stickybomb_charge_damage_increase"
+					"value"	"2.5"
+				}
+				"mod use metal ammo type"
+				{
+					"attribute_class"	"mod_use_metal_ammo_type"
+					"value"	"1"
+				}
+				"bleeding duration"
+				{
+					"attribute_class"	"bleeding_duration"
+					"value" "3"
+				}
+				"mod no reload DISPLAY ONLY"
+				{
+					"attribute_class"	"mod_no_reload_display_only"
+					"value"				"1"
+				}
+				"fire rate penalty"
+				{
+					"attribute_class"	"mult_postfiredelay"
+					"value"	"1.65"
+				}
+				"self dmg push force decreased"
+				{
+					"attribute_class"	"mult_dmgself_push_force"
+					"value"		"0.65"
 				}
 				//Smart or stupid?
 				"override projectile type"
@@ -1313,6 +1338,15 @@
 						"name"	"#TFB_Jetpack_S2"
 					}
 				}
+			}
+		}
+		//Solemn Vow
+		"413"
+		{
+			"used_by_classes"
+			{
+				"medic"	"1"
+				"heavy"	"1"
 			}
 		}
 		//Pretty boy pocket pistol
