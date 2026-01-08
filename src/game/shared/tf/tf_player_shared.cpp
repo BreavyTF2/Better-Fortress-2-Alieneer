@@ -137,6 +137,7 @@ ConVar cf_player_parentables( "cf_player_parentables", "1", FCVAR_REPLICATED | F
 //ConVar tf_scout_dodge_move_penalty_duration( "tf_scout_dodge_move_penalty_duration", "3.0", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED );
 //ConVar tf_scout_dodge_move_penalty( "tf_scout_dodge_move_penalty", "0.5", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED );
 
+extern ConVar cf_condition_bombhead_bombinomicon;
 
 #ifdef GAME_DLL
 ConVar tf_boost_drain_time( "tf_boost_drain_time", "15.0", FCVAR_DEVELOPMENTONLY, "Time is takes for a full health boost to drain away from a player.", true, 0.1, false, 0 );
@@ -4579,7 +4580,13 @@ void CTFPlayerShared::OnAddHalloweenBombHead( void )
 {
 #ifdef CLIENT_DLL
 	m_pOuter->HalloweenBombHeadUpdate();
-	m_pOuter->CreateBombonomiconHint();
+	//Some mappers don't want him.
+	ConVarRef book( "cf_condition_bombhead_bombinomicon" );
+	if ( book.IsValid() && book.GetBool() )
+	{
+		m_pOuter->CreateBombonomiconHint();
+	}
+
 	C_TFPlayer *pLocalPlayer = C_TFPlayer::GetLocalTFPlayer(); //Thriller port
 	if ( !TFGameRules()->IsHalloweenScenario( CTFGameRules::HALLOWEEN_SCENARIO_DOOMSDAY ) )
 	{

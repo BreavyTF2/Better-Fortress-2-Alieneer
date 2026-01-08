@@ -254,6 +254,10 @@ ConVar tf_powerup_max_charge_time( "tf_powerup_max_charge_time", "30", FCVAR_CHE
 
 ConVar cf_spawn_with_throwable( "cf_spawn_with_throwable", "0", FCVAR_REPLICATED );
 
+ConVar cf_condition_bombhead_damage( "cf_condition_bombhead_damage", "40", FCVAR_REPLICATED, "Damage when times up." );
+ConVar cf_condition_bombhead_damage_boss( "cf_condition_bombhead_damage_boss", "100", FCVAR_REPLICATED, "Damage to merasmus." );
+ConVar cf_condition_bombhead_bombinomicon( "cf_condition_bombhead_bombinomicon", "1", FCVAR_REPLICATED, "Should Bombinomicon give you the bomb?." );
+
 extern ConVar tf_powerup_mode;
 extern ConVar tf_mvm_buybacks_method;
 extern ConVar tf_mvm_buybacks_per_wave;
@@ -9542,11 +9546,11 @@ bool CTFPlayer::IsClassMenuOpen( void )
 //-----------------------------------------------------------------------------
 void CTFPlayer::MerasmusPlayerBombExplode( bool bExcludeMe /*= true */ )
 {
-	float flDamage = 40.0f;
+	float flDamage = cf_condition_bombhead_damage.GetFloat();
 	// bomb head damage is 100 only for fighting Merasmus, lower for all other scenarios
 	if ( TFGameRules() && TFGameRules()->GetActiveBoss() && ( TFGameRules()->GetActiveBoss()->GetBossType() == HALLOWEEN_BOSS_MERASMUS ) )
 	{
-		flDamage = 100.0f;
+		flDamage = cf_condition_bombhead_damage_boss.GetFloat();
 	}
 
 	// explode!

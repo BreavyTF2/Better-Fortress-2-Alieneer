@@ -102,6 +102,7 @@ ActionResult< CMerasmus > CMerasmusThrowingGrenade::Update( CMerasmus *me, float
 		Vector vPos;
 		QAngle qAngles;
 		me->GetAttachment( "effect_hand_R", vPos, qAngles );
+		me->m_OnThrowBomb.FireOutput( me, me);
 
 		Vector vForward, vRight, vUp;
 		AngleVectors( me->EyeAngles(), &vForward, &vRight, &vUp );

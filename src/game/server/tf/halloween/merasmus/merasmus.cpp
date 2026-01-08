@@ -38,28 +38,30 @@
 
 #include "tf_fx.h"
 
-ConVar tf_merasmus_health_base( "tf_merasmus_health_base", "33750", FCVAR_CHEAT );
-ConVar tf_merasmus_health_per_player( "tf_merasmus_health_per_player", "2500", FCVAR_CHEAT );
-ConVar tf_merasmus_min_player_count( "tf_merasmus_min_player_count", "10", FCVAR_CHEAT );
+ConVar tf_merasmus_health_base( "tf_merasmus_health_base", "33750", FCVAR_REPLICATED );
+ConVar tf_merasmus_health_per_player( "tf_merasmus_health_per_player", "2500", FCVAR_REPLICATED );
+ConVar tf_merasmus_min_player_count( "tf_merasmus_min_player_count", "10", FCVAR_REPLICATED );
 
-ConVar tf_merasmus_lifetime( "tf_merasmus_lifetime", "120", FCVAR_CHEAT );
+ConVar tf_merasmus_lifetime( "tf_merasmus_lifetime", "120", FCVAR_REPLICATED );
 
-ConVar tf_merasmus_speed( "tf_merasmus_speed", "600", FCVAR_CHEAT );
-ConVar tf_merasmus_speed_recovery_rate( "tf_merasmus_speed_recovery_rate", "100", FCVAR_CHEAT, "Movement units/second" );
-ConVar tf_merasmus_chase_duration( "tf_merasmus_chase_duration", "7", FCVAR_CHEAT );
-ConVar tf_merasmus_chase_range( "tf_merasmus_chase_range", "2000", FCVAR_CHEAT );
+ConVar tf_merasmus_speed( "tf_merasmus_speed", "600", FCVAR_REPLICATED );
+ConVar tf_merasmus_speed_recovery_rate( "tf_merasmus_speed_recovery_rate", "100", FCVAR_REPLICATED, "Movement units/second" );
+ConVar tf_merasmus_chase_duration( "tf_merasmus_chase_duration", "7", FCVAR_REPLICATED );
+ConVar tf_merasmus_chase_range( "tf_merasmus_chase_range", "2000", FCVAR_REPLICATED );
 
-ConVar tf_merasmus_should_disguise_threshold( "tf_merasmus_should_disguise_threshold", "0.45f", FCVAR_CHEAT );
-ConVar tf_merasmus_min_props_to_reveal( "tf_merasmus_min_props_to_reveal", "0.7f", FCVAR_CHEAT, "Percentage of total fake props players have to destroy before Merasmus reveals himself");
+ConVar tf_merasmus_should_disguise_threshold( "tf_merasmus_should_disguise_threshold", "0.45f", FCVAR_REPLICATED );
+ConVar tf_merasmus_min_props_to_reveal( "tf_merasmus_min_props_to_reveal", "0.7f", FCVAR_REPLICATED, "Percentage of total fake props players have to destroy before Merasmus reveals himself");
 
-ConVar tf_merasmus_attack_range( "tf_merasmus_attack_range", "200", FCVAR_CHEAT );
+ConVar tf_merasmus_attack_range( "tf_merasmus_attack_range", "200", FCVAR_REPLICATED );
 
-ConVar tf_merasmus_health_regen_rate( "tf_merasmus_health_regen_rate", "0.001f", FCVAR_CHEAT, "Percentage of Max HP per sec that Merasmus will regenerate while in disguise" );
+ConVar tf_merasmus_health_regen_rate( "tf_merasmus_health_regen_rate", "0.001f", FCVAR_REPLICATED, "Percentage of Max HP per sec that Merasmus will regenerate while in disguise" );
 
-ConVar tf_merasmus_bomb_head_duration( "tf_merasmus_bomb_head_duration", "15.f", FCVAR_CHEAT );
-ConVar tf_merasmus_bomb_head_per_team( "tf_merasmus_bomb_head_per_team", "1", FCVAR_CHEAT );
+ConVar tf_merasmus_bomb_head_duration( "tf_merasmus_bomb_head_duration", "15.f", FCVAR_REPLICATED );
+ConVar tf_merasmus_bomb_head_per_team( "tf_merasmus_bomb_head_per_team", "1", FCVAR_REPLICATED );
 
-ConVar tf_merasmus_stun_duration( "tf_merasmus_stun_duration", "2.f", FCVAR_CHEAT );
+ConVar tf_merasmus_stun_duration( "tf_merasmus_stun_duration", "2.f", FCVAR_REPLICATED );
+
+ConVar cf_merasmus_extra_spells( "cf_merasmus_extra_spells", "1", FCVAR_REPLICATED, "Should merasmus make players Bleed or cover them in Jarate?." );
 
 extern ConVar tf_merasmus_spawn_interval;
 extern ConVar tf_merasmus_spawn_interval_variation;
@@ -118,6 +120,8 @@ BEGIN_DATADESC( CMerasmus )
 	DEFINE_OUTPUT( m_OnStunEnd, "OnStunEnd" ),
 	DEFINE_OUTPUT( m_OnStartFlying, "OnStartFlying" ),
 	DEFINE_OUTPUT( m_OnStopFlying, "OnStopFlying" ),
+	DEFINE_OUTPUT( m_OnCastSpell, "OnCastSpell" ),
+	DEFINE_OUTPUT( m_OnThrowBomb, "OnThrowBomb" ),
 #endif
 END_DATADESC()
 
@@ -222,7 +226,7 @@ void CMerasmus::PrecacheMerasmus()
 	// Boss VOs
 	PrecacheScriptSound( "Halloween.MerasmusAppears" );
 	PrecacheScriptSound( "Halloween.MerasmusBanish" );
-	//PrecacheScriptSound( "Halloween.MerasmusCastBleedingSpell" );
+	PrecacheScriptSound( "Halloween.MerasmusCastBleedingSpell" );
 	PrecacheScriptSound( "Halloween.MerasmusCastFireSpell" );
 	PrecacheScriptSound( "Halloween.MerasmusCastJarateSpell" );
 	PrecacheScriptSound( "Halloween.MerasmusCastJarateSpellRare" );
@@ -334,7 +338,9 @@ void CMerasmus::Spawn( void )
 	m_solidFlags = GetSolidFlags();
 
 	const float flLifeTime = tf_merasmus_lifetime.GetFloat();
-	m_lifeTimer.Start( flLifeTime );
+	//Stay Forever with us.
+	if ( flLifeTime != -1 )
+		m_lifeTimer.Start( flLifeTime );
 	m_flLastWarnTime = 0;
 
 	IGameEvent *event = gameeventmanager->CreateEvent( "merasmus_summoned" );
@@ -1212,21 +1218,51 @@ void CollectTargets( CBaseCombatCharacter *pCaster, float flSpellRange, int nTar
 }
 
 
-void CastSpell( CBaseCombatCharacter* pCaster, const char* pszCastingAttachmentName, float flSpellRange, float flMinDamage, float flMaxDamage, CBaseEntity* pTarget )
+void CastSpell( CMerasmus* pCaster, const char* pszCastingAttachmentName, float flSpellRange, float flMinDamage, float flMaxDamage, CBaseEntity* pTarget, int iSpellType )
 {
 	float flSpellTime = 5.f;
-
+	CMerasmus * pMerasmus = pCaster;
+	pCaster->m_OnCastSpell.FireOutput( pTarget , pCaster );
 	if ( pTarget->IsPlayer() )
 	{
 		CTFPlayer *pPlayer = ToTFPlayer( pTarget );
-		pPlayer->m_Shared.SelfBurn( flSpellTime );
+		//Restored the spells
+		int iDmgBit = DMG_BURN;
+		if ( cf_merasmus_extra_spells.GetBool() )
+		{ 
+			switch ( iSpellType )
+			{
+			case 0: //Fire
+			case 1: //Launch
+				{
+					pPlayer->m_Shared.SelfBurn( flSpellTime );
+				}
+				break;
+			case 2: //Jarate
+				{
+					iDmgBit = DMG_GENERIC;
+					pPlayer->m_Shared.AddCond( TF_COND_URINE, flSpellTime, pCaster );
+					pPlayer->SpeakConceptIfAllowed( MP_CONCEPT_JARATE_HIT );
+				}
+				break;
+			case 3: //Bleed || Why the bleeding function is so bad??
+				{
+					iDmgBit = DMG_GENERIC;
+					pPlayer->m_Shared.MakeBleed( pPlayer, pPlayer->GetActiveTFWeapon(), flSpellTime );
+				}
+				break;
+			}
+		}
+		else
+			pPlayer->m_Shared.SelfBurn( flSpellTime );
+
 		pPlayer->ApplyAbsVelocityImpulse( 1000.f * Vector( 0, 0, 1 ) );
 
 		Vector toPlayer = pCaster->EyePosition() - pPlayer->WorldSpaceCenter();
 		float flDistSqr = toPlayer.LengthSqr();
 
 		float flDmg = RemapValClamped( flDistSqr, 100.f, Square( 0.5f * flSpellRange ), flMaxDamage, flMinDamage );
-		CTakeDamageInfo info( pCaster, pCaster, flDmg, DMG_BURN, TF_DMG_CUSTOM_MERASMUS_ZAP );
+		CTakeDamageInfo info( pCaster, pCaster, flDmg, iDmgBit, TF_DMG_CUSTOM_MERASMUS_ZAP );
 		pPlayer->TakeDamage( info );
 	}
 	else if ( pTarget->IsBaseObject() )
@@ -1246,7 +1282,7 @@ void CastSpell( CBaseCombatCharacter* pCaster, const char* pszCastingAttachmentN
 }
 
 
-/*static*/ bool CMerasmus::Zap( CBaseCombatCharacter *pCaster, const char* pszCastingAttachmentName, float flSpellRange, float flMinDamage, float flMaxDamage, int nMaxTarget, int nTargetTeam /*= TEAM_ANY*/ )
+/*static*/ bool CMerasmus::Zap( CMerasmus *pCaster, const char* pszCastingAttachmentName, float flSpellRange, float flMinDamage, float flMaxDamage, int nMaxTarget, int iSpellType, int nTargetTeam /*= TEAM_ANY*/ )
 {
 	CUtlVector< CHandle< CBaseEntity > > vecTargets;
 	CollectTargets( pCaster, flSpellRange, nTargetTeam, nMaxTarget, vecTargets );
@@ -1259,7 +1295,7 @@ void CastSpell( CBaseCombatCharacter* pCaster, const char* pszCastingAttachmentN
 		CBaseEntity *pTarget = vecTargets[i];
 		if ( pTarget )
 		{
-			CastSpell( pCaster, pszCastingAttachmentName, flSpellRange, flMinDamage, flMaxDamage, pTarget );
+			CastSpell( pCaster, pszCastingAttachmentName, flSpellRange, flMinDamage, flMaxDamage, pTarget, iSpellType );
 		}
 	}
 
@@ -1343,7 +1379,7 @@ public:
 		{
 			me->LeaveWarning();
 
-			if ( me->ShouldLeave() && !me->IsStunned() && !me->IsFlying() )
+			if ( me->ShouldLeave() && !me->IsStunned() && !me->IsFlying() && tf_merasmus_lifetime.GetFloat() != -1 )
 			{
 				return ChangeTo( new CMerasmusEscape, "Escaping..." );
 			}
