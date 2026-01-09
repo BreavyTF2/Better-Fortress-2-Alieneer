@@ -1165,6 +1165,16 @@
 			"effect_type"	"negative"
 			"stored_as_integer"	"0"
 		}
+		"4042"
+		{
+			"name"	"cannot swim"
+			"attribute_class"	"cannot_swim"
+			"description_string"	"#Attrib_CannotSwim"
+			"description_format"	"value_is_additive"
+			"hidden"	"0"
+			"effect_type"	"negative"
+			"stored_as_integer"	"0"
+		}
 		"4043"
 		{
 			"name"	"medigun charge is cloak"
@@ -1173,6 +1183,26 @@
 			"description_format"	"value_is_additive"
 			"hidden"	"0"
 			"effect_type"	"neutral"
+			"stored_as_integer"	"0"
+		}
+		"4044"
+		{
+			"name"	"lifeleech on damage"
+			"attribute_class"	"lifeleech_on_damage"
+			"description_string"	"#Attrib_LifeLeech"
+			"description_format"	"value_is_additive_percentage"
+			"hidden"	"0"
+			"effect_type"	"positive"
+			"stored_as_integer"	"0"
+		}
+		"4045"
+		{
+			"name"	"lifeleech on wearer"
+			"attribute_class"	"lifeleech_on_damage_w"
+			"description_string"	"#Attrib_LifeLeechWearer"
+			"description_format"	"value_is_additive_percentage"
+			"hidden"	"0"
+			"effect_type"	"positive"
 			"stored_as_integer"	"0"
 		}
 	}
@@ -3510,6 +3540,7 @@
 				}
 			}
 		}
+		//YDM - Schwaben-Charger 9000
 		"32028"
 		{
 			"enabled"								"1"
@@ -3554,10 +3585,15 @@
 					"attribute_class"	"mult_medigun_overheal_amount"
 					"value"	"1.25"
 				}
+				"overheal fill rate reduced"
+				{
+					"attribute_class"	"overheal_fill_rate"
+					"value" "0.75"
+				}
 				"heal rate penalty"
 				{
 					"attribute_class"	"mult_medigun_healrate"
-					"value"	"0.75"
+					"value"	"0.85"
 				}
 				"is community contributed item"
 				{
@@ -3579,11 +3615,6 @@
 					"attribute_class"	"mult_medigun_uberchargerate"
 					"value"	"1.5"
 				}
-				"uber duration penalty"
-				{
-					"attribute_class"	"add_uber_time"
-					"value"	"0.5"
-				}
 			}
 			"visuals"
 			{
@@ -3595,6 +3626,7 @@
 			"mouse_pressed_sound"	"ui/item_heavy_gun_pickup.wav"
 			"drop_sound"		"ui/item_heavy_gun_drop.wav"
 		}
+		//YDM - Tonsil Guillotines
 		"32029"
 		{
 			"name"									"Tonsil Guillotines"
@@ -3662,6 +3694,87 @@
 			}
 			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
 			"drop_sound"		"ui/item_metal_weapon_drop.wav"
+		}
+		//mostly? - Eastern Island Threat Blocker
+		"32030"
+		{
+			"enabled"								"1"
+			"name"									"The Eastern Island Threat Blocker"
+			"prefab"								"valve"
+			"item_class"							"tf_wearable_razorback"
+			"craft_class"							"weapon"
+			"craft_material_type"					"weapon"
+			"show_in_armory"						"1"
+			"moditem" 								"1"
+			"item_type_name" 						"#TF_Wearable_Shield"
+			"item_name"								"#TFCW_Moai"
+			"item_description"						"#TFCW_Moai_Desc"
+			"item_slot"								"secondary"
+			"equip_region"							"back"
+			"anim_slot"								"FORCE_NOT_USED"
+			"item_quality"							"community"
+			"propername"							"1"
+			"min_ilevel"							"10"
+			"max_ilevel"							"10"
+			"image_inventory"						"backpack/player/items/sniper/sniper_moai/sniper_moai"
+			"image_inventory_size_w"				"128"
+			"image_inventory_size_h"				"82"
+			"model_player"							"models/player/items/sniper/sniper_moai/sniper_moai.mdl"
+			"extra_wearable"						"models/player/items/sniper/sniper_moai/sniper_moai.mdl"
+			"used_by_classes"
+			{
+				"sniper"	"1"
+			}
+			"attributes"
+			{
+				"max health additive bonus"
+				{
+					"attribute_class"	"add_maxhealth"
+					"value" "50"
+				}
+				"lifeleech on wearer"
+				{
+					"attribute_class"	"lifeleech_on_damage_w"
+					"value" "0.3"
+				}
+				"damage force reduction"
+				{
+					"attribute_class"	"damage_force_reduction"
+					"value"	"0.4"
+				}
+				"airblast vulnerability multiplier"
+				{
+					"attribute_class"	"airblast_vulnerability_multiplier"
+					"value"	"0.4"
+				}
+				"dmg taken from crit increased"
+				{
+					"attribute_class"	"mult_dmgtaken_from_crit"
+					"value"	"1.3"
+				}
+				"move speed penalty"
+				{
+					"attribute_class"	"mult_player_movespeed"
+					"value"	"0.85"
+				}
+				"cannot swim"
+				{
+					"attribute_class"	"cannot_swim"
+					"value"	"1"
+				}
+				"allowed in medieval mode"
+				{
+					"attribute_class"	"allowed_in_medieval_mode"
+					"value"	"1"
+				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"			   "[U:1:82892076]"
+				}
+			}
+			"mouse_pressed_sound"	"ui/item_default_pickup.wav"
+			"drop_sound"		"ui/item_default_drop.wav"
 		}
 		"34000" 
 		{
