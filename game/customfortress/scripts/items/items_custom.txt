@@ -3718,14 +3718,14 @@
 		//mostly? - Eastern Island Threat Blocker
 		"32030"
 		{
-			"enabled"								"0"
+			"enabled"								"0" //Waiting on permission
 			"name"									"The Eastern Island Threat Blocker"
 			"prefab"								"valve"
 			"item_class"							"tf_wearable_razorback"
 			"craft_class"							"weapon"
 			"craft_material_type"					"weapon"
-			"show_in_armory"						"1"
-			"moditem" 								"1"
+			"show_in_armory"						"0"
+			"moditem" 								"0"
 			"item_type_name" 						"#TF_Wearable_Shield"
 			"item_name"								"#TFCW_Moai"
 			"item_description"						"#TFCW_Moai_Desc"
@@ -3821,7 +3821,8 @@
 			"item_quality"	"community"
 			"item_logname"			"deputy_revolver"
 			"item_iconname"			"deputy_revolver"
-			"moditem" "1"
+			"show_in_armory"						"0"
+			"moditem" "0"
 			"min_ilevel"	"5"
 			"max_ilevel"	"5"
 			"image_inventory"	"backpack/weapons/custommade/c_big_tex"
