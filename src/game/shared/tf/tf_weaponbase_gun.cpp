@@ -126,7 +126,7 @@ void CTFWeaponBaseGun::PrimaryAttack( void )
 		if ( GetOwner() && GetAmmoPerShot() > GetOwner()->GetAmmoCount( m_iPrimaryAmmoType ) )
 		{
 			WeaponSound( EMPTY );
-			m_flNextPrimaryAttack = gpGlobals->curtime + flFireDelay;
+			m_flNextPrimaryAttack = GetCorrectedNextAttackTime( m_flNextPrimaryAttack, flFireDelay );
 			return;
 		}
 	}
@@ -182,7 +182,7 @@ void CTFWeaponBaseGun::PrimaryAttack( void )
 	}
 
 	// Set next attack times.
-	m_flNextPrimaryAttack = gpGlobals->curtime + flFireDelay;
+	m_flNextPrimaryAttack = GetCorrectedNextAttackTime( m_flNextPrimaryAttack, flFireDelay );
 
 	// Don't push out secondary attack, because our secondary fire
 	// systems are all separate from primary fire (sniper zooming, demoman pipebomb detonating, etc)
@@ -214,6 +214,19 @@ void CTFWeaponBaseGun::PrimaryAttack( void )
 	}
 
 	pPlayer->m_Shared.OnAttack();
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Calculates the next attack time that averages the attack interval correctly for continuous fire
+//-----------------------------------------------------------------------------
+float CTFWeaponBaseGun::GetCorrectedNextAttackTime( float flAttackTime, float flFireDelay ) const
+{
+	float flDiff = gpGlobals->curtime - flAttackTime;
+
+	if ( flDiff < 0.f || flDiff > TICK_INTERVAL )
+		return gpGlobals->curtime + flFireDelay;
+
+	return flAttackTime + flFireDelay;
 }	
 
 //-----------------------------------------------------------------------------
