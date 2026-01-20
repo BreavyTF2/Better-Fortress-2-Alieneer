@@ -12181,11 +12181,11 @@ int CTFPlayer::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 			if ( fLifeleechOnDamage > 0.0f || fLifeleechOnDamage_w > 0.0f)
 			{
 				const float fActualDamageDealt = iOldHealth - m_iHealth;
-				const float fHealAmount = clamp(fActualDamageDealt, 0, iOldHealth) * (fLifeleechOnDamage + fLifeleechOnDamage_w);
+				const float fHealAmount = clamp( fActualDamageDealt, 0, iOldHealth * 1.25f + 20.0f) * ( fLifeleechOnDamage + fLifeleechOnDamage_w );
 
 				if ( fHealAmount >= 0.5f )
 				{
-					const int iHealthToAdd = MIN( (int)(fHealAmount + 0.5f), pTFAttacker->GetMaxHealth() - pTFAttacker->GetHealth());
+					const int iHealthToAdd = MIN( (int)(fHealAmount + 0.5f), pTFAttacker->m_Shared.GetMaxBuffedHealth() - pTFAttacker->GetHealth());
 					pTFAttacker->TakeHealth( iHealthToAdd, DMG_GENERIC );
 
 					CTF_GameStats.Event_PlayerHealedOther(pTFAttacker, iHealthToAdd);

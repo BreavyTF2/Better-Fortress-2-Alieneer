@@ -1225,6 +1225,16 @@
 			"effect_type"	"positive"
 			"stored_as_integer"	"1"
 		}
+		"4048"
+		{
+			"name"	"crit mod bonus"
+			"attribute_class"	"mult_crit_chance"
+			"description_string"	"#Attrib_CritChanceBonus"
+			"description_format"	"value_is_percentage"
+			"hidden"	"0"
+			"effect_type"	"positive"
+			"stored_as_integer"	"0"
+		}
 	}
 	"items"
 	{
@@ -3718,14 +3728,14 @@
 		//mostly? - Eastern Island Threat Blocker
 		"32030"
 		{
-			"enabled"								"0" //Waiting on permission
+			"enabled"								"1"
 			"name"									"The Eastern Island Threat Blocker"
 			"prefab"								"valve"
 			"item_class"							"tf_wearable_razorback"
 			"craft_class"							"weapon"
 			"craft_material_type"					"weapon"
-			"show_in_armory"						"0"
-			"moditem" 								"0"
+			"show_in_armory"						"1"
+			"moditem" 								"1"
 			"item_type_name" 						"#TF_Wearable_Shield"
 			"item_name"								"#TFCW_Moai"
 			"item_description"						"#TFCW_Moai_Desc"
@@ -3755,7 +3765,7 @@
 				"lifeleech on wearer"
 				{
 					"attribute_class"	"lifeleech_on_damage_w"
-					"value" "0.3"
+					"value" "0.20"
 				}
 				"damage force reduction"
 				{
@@ -3901,6 +3911,63 @@
 			}
 			"mouse_pressed_sound"	"ui/item_light_gun_pickup.wav"
 			"drop_sound"		"ui/item_light_gun_drop.wav"
+		}
+		//The Specialist - Mnemo
+		"32032"
+		{
+			"name"	"The Specialist"
+			"prefab"		"weapon_scattergun"
+			"item_class"	"tf_weapon_leech"
+			"item_type_name"	"#TF_Weapon_Scattergun"
+			"item_name"			"#TFCW_Leech"
+			"show_in_armory"	"1"
+			"item_logname"	"leech"
+			"item_iconname"	"leech"
+			"item_quality"	"community"
+			"show_in_armory"						"1"
+			"moditem" "1"
+			"min_ilevel"	"20"
+			"max_ilevel"	"20"
+			"image_inventory"	"backpack/workshop/weapons/c_models/c_specialist_scattergun/c_specialist_scattergun"
+			"model_player"	"models/workshop/weapons/c_models/c_specialist_scattergun/c_specialist_scattergun.mdl"
+			"attach_to_hands" "1"
+			"static_attrs"
+			{
+				"min_viewmodel_offset"					"10 0 -10"
+			}
+			"attributes"
+			{
+				"lifeleech on damage"
+				{
+					"attribute_class"	"lifeleech_on_damage"
+					"value" "0.15"
+				}
+				"weapon spread bonus"
+				{
+					"attribute_class"	"mult_spread_scale"
+					"value"	"0.8"
+				}
+				"fire rate penalty"
+				{
+					"attribute_class"	"mult_postfiredelay"
+					"value"	"1.25"
+				}
+				"clip size penalty"
+				{
+					"attribute_class"	"mult_clipsize"
+					"value" "0.50"
+				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"			   "[U:1:49035685]"
+				}
+			}
+			"visuals"
+			{
+				"sound_single_shot"	"Weapon_Back_Scatter.Single"
+				"sound_burst"		"Weapon_Back_Scatter.SingleCrit"
+			}
 		}
 		"34000" 
 		{
