@@ -30,6 +30,8 @@ public:
 
 	CTFFireAxe() {}
 	virtual int			GetWeaponID( void ) const			{ return TF_WEAPON_FIREAXE; }
+	virtual int	GetActivityWeaponRole() const OVERRIDE;
+	virtual Activity TranslateViewmodelHandActivityInternal( Activity actBase );
 
 #ifdef GAME_DLL
 	virtual float GetInitialAfterburnDuration() const OVERRIDE;

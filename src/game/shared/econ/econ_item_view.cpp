@@ -1098,6 +1098,9 @@ int CEconItemView::GetAnimationSlot( void ) const
 #if defined( CSTRIKE_DLL ) || defined( DOTA_DLL )
 	return -1;
 #else
+	if (GetStaticData()->iOverrideAnimSlot != -1 )
+		return GetStaticData()->iOverrideAnimSlot;
+
 	return GetStaticData()->GetAnimSlot();
 #endif
 }

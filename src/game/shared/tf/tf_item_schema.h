@@ -278,7 +278,7 @@ public:
 #endif // CLIENT_DLL
 
 	bool		IsChanceRestricted() const { return m_bChanceRestricted; }
-
+	int			iOverrideAnimSlot = -1;
 private:
 	void InternalInitialize();
 

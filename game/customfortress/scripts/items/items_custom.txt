@@ -3629,6 +3629,59 @@
 			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
 			"drop_sound"		"ui/item_metal_weapon_drop.wav"
 		}
+		//Heavy FireAxes
+		"32035"
+		{
+			"name"	"TF_WEAPON_HVY_FIREAXE"
+			"prefab"	"weapon_fireaxe"
+			"show_in_armory"						"1"
+			"moditem" "1"
+			"anim_slot"	"MELEE_ALLCLASS"
+			"used_by_classes"
+			{
+				"heavy"	"1"
+			}
+		}
+		"153"
+		{
+			"used_by_classes"
+			{
+				"pyro"	"1"
+				"heavy"	"1"
+			}
+		}
+		"348"
+		{
+			"used_by_classes"
+			{
+				"pyro"	"1"
+				"heavy"	"1"
+			}
+		}
+		"466"
+		{
+			"used_by_classes"
+			{
+				"pyro"	"1"
+				"heavy"	"1"
+			}
+		}
+		"593"
+		{
+			"used_by_classes"
+			{
+				"pyro"	"1"
+				"heavy"	"1"
+			}
+		}
+		"739"
+		{
+			"used_by_classes"
+			{
+				"pyro"	"1"
+				"heavy"	"1"
+			}
+		}
 		"34000" 
 		{
 			"name"		"Paintkit 800"

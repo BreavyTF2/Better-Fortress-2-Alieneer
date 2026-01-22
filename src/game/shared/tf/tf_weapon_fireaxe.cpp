@@ -50,6 +50,49 @@ float CTFFireAxe::GetInitialAfterburnDuration() const
 	return BaseClass::GetInitialAfterburnDuration();
 }
 #endif
+//-----------------------------------------------------------------------------
+// Purpose: Allows heavy to use FireAxes without creating new IDs, "HWG uses a fireaxe because he doesn't have a default melee weapon of his own; also I am a terrible person" 
+//-----------------------------------------------------------------------------
+int CTFFireAxe::GetActivityWeaponRole() const
+{
+	const CEconItemView* pEconItemView = GetAttributeContainer()->GetItem();
+	if (pEconItemView)
+	{
+		CTFPlayer* pPlayer = GetTFPlayerOwner();
+		if (pPlayer && pPlayer->IsAlive() && pPlayer->GetPlayerClass()->GetClassIndex() == TF_CLASS_HEAVYWEAPONS &&
+			pEconItemView->GetStaticData()->iOverrideAnimSlot != TF_WPN_TYPE_MELEE_ALLCLASS)
+		{
+			pEconItemView->GetStaticData()->iOverrideAnimSlot = TF_WPN_TYPE_MELEE_ALLCLASS;
+		}
+		if (pPlayer && pPlayer->IsAlive() && pPlayer->GetPlayerClass()->GetClassIndex() == TF_CLASS_PYRO &&
+			pEconItemView->GetStaticData()->iOverrideAnimSlot != -1)
+		{
+			pEconItemView->GetStaticData()->iOverrideAnimSlot = -1;
+		}
+	}
+
+	return BaseClass::GetActivityWeaponRole();
+}
+Activity CTFFireAxe::TranslateViewmodelHandActivityInternal(Activity actBase)
+{
+	CEconItemView* pEconItemView = GetAttributeContainer()->GetItem();
+	if (pEconItemView)
+	{
+		CTFPlayer* pPlayer = GetTFPlayerOwner();
+		if (pPlayer && pPlayer->IsAlive() && pPlayer->GetPlayerClass()->GetClassIndex() == TF_CLASS_HEAVYWEAPONS && 
+			pEconItemView->GetStaticData()->iOverrideAnimSlot != TF_WPN_TYPE_MELEE_ALLCLASS)
+		{
+			pEconItemView->GetStaticData()->iOverrideAnimSlot = TF_WPN_TYPE_MELEE_ALLCLASS;
+		}
+		if (pPlayer && pPlayer->IsAlive() && pPlayer->GetPlayerClass()->GetClassIndex() == TF_CLASS_PYRO &&
+			pEconItemView->GetStaticData()->iOverrideAnimSlot != -1)
+		{
+			pEconItemView->GetStaticData()->iOverrideAnimSlot = -1;
+		}
+	}
+
+	return BaseClass::TranslateViewmodelHandActivityInternal(actBase);
+}
 void CTFFireAxe::Precache( void )
 {
 	PrecacheParticleSystem( "balefulcandle" );
