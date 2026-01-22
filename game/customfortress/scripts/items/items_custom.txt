@@ -487,7 +487,6 @@
 				{
 					"attribute_class"	"override_projectile_type"
 					"value" 			"31"
-				
 				}
 			}
 			"visuals"
@@ -1189,7 +1188,7 @@
 		{
 			"name"	"lifeleech on damage"
 			"attribute_class"	"lifeleech_on_damage"
-			"description_string"	"#Attrib_LifeLeech"
+			"description_string"	"#Attrib_LifeleechOnDamage"
 			"description_format"	"value_is_additive_percentage"
 			"hidden"	"0"
 			"effect_type"	"positive"
@@ -1229,8 +1228,38 @@
 		{
 			"name"	"crit mod bonus"
 			"attribute_class"	"mult_crit_chance"
-			"description_string"	"#Attrib_CritChanceBonus"
+			"description_string"	"#Attrib_CritChance"
 			"description_format"	"value_is_percentage"
+			"hidden"	"0"
+			"effect_type"	"positive"
+			"stored_as_integer"	"0"
+		}
+		"4049"
+		{
+			"name"	"extra damage on hit"
+			"attribute_class"	"extra_damage_on_hit"
+			"description_string"	"#Attrib_ExtraDamageOnHit"
+			"description_format"	"value_is_additive"
+			"hidden"	"0"
+			"effect_type"	"positive"
+			"stored_as_integer"	"0"
+		}
+		"4050"
+		{
+			"name"	"extra damage on hit penalty"
+			"attribute_class"	"extra_damage_on_hit_penalty"
+			"description_string"	"#Attrib_ExtraDamageOnHitPenalty"
+			"description_format"	"value_is_additive"
+			"hidden"	"0"
+			"effect_type"	"negative"
+			"stored_as_integer"	"0"
+		}
+		"4051"
+		{
+			"name"	"melee cleave attack"
+			"attribute_class"	"melee_cleave_attack"
+			"description_string"	"#Attrib_MeleeCleaveAttack"
+			"description_format"	"value_is_additive"
 			"hidden"	"0"
 			"effect_type"	"positive"
 			"stored_as_integer"	"0"
@@ -2734,6 +2763,7 @@
 		"32015"
 		{
 			"name"	"The Big Bang"
+			"prefab"		"cf_restored_item"
 			"item_class"	"tf_weapon_wrench"
 			"craft_class"	"weapon"
 			"craft_material_type"	"weapon"
@@ -2752,7 +2782,7 @@
 			"item_type_name"	"#TF_Weapon_Hammer"
 			"item_name"	"#TFCW_Bigbang"
 			"item_slot"	"melee"
-			"item_quality"	"community"
+			"item_quality"	"rarity2"
 			"min_ilevel"	"20"
 			"max_ilevel"	"20"
 			"propername"	"1"
@@ -2789,6 +2819,16 @@
 					"attribute_class"	"melee_range_multiplier"
 					"value"	"1.25"
 				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"							"[U:1:25227431]"
+				}
+				"allowed in medieval mode"
+				{
+					"attribute_class"	"allowed_in_medieval_mode"
+					"value"	"1"
+				}
 			}
 			"visuals"
 			{
@@ -2807,6 +2847,7 @@
 		"32016"
 		{
 			"name"	"The Big Tex"
+			"prefab"		"cf_restored_item"
 			"capabilities"
 			{
 				"nameable"		"1"
@@ -2823,7 +2864,7 @@
 			"item_type_name"	"#TF_Weapon_Pistol"
 			"item_name"	"#TFCW_BigTex"
 			"item_slot"	"secondary"
-			"item_quality"	"community"
+			"item_quality"	"rarity2"
 			"item_logname"			"bab_revolver"
 			"item_iconname"			"bab_revolver"
 			"moditem" "1"
@@ -2875,6 +2916,11 @@
 					"attribute_class"	"mult_crit_chance"
 					"value"	"0"
 				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"							"[U:1:25227431]"
+				}
 			}
 			"mouse_pressed_sound"	"ui/item_light_gun_pickup.wav"
 			"drop_sound"		"ui/item_light_gun_drop.wav"
@@ -2883,10 +2929,19 @@
 		"32017"
 		{
 			"name"	"The Big Mean Mother Hubbard"
-			"prefab"	"weapon_bmmh"
+			"prefab"	"weapon_bmmh cf_restored_item"
+			"item_quality"	"rarity2"
 			"static_attrs"
 			{
 				"min_viewmodel_offset"		"10 0 -9"
+			}
+			"attributes"
+			{
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"							"[U:1:25227431]"
+				}
 			}
 			"xifier_class_remap"	"frontier_justice"
 		}
@@ -2934,7 +2989,7 @@
 		{
 			"name"		"The Afterburner"
 			"item_class"		"tf_weapon_flamethrower"
-			"prefab"		"weapon_flamethrower_nohprestore"
+			"prefab"		"weapon_flamethrower_nohprestore cf_restored_item"
 			"craft_class"		"weapon"
 			"moditem" 	"1"
 			"craft_material_type"		"weapon"
@@ -2963,7 +3018,7 @@
 			"inspect_panel_dist"		"75"
 			"model_player"		"models/weapons/c_models/c_pilotflamer/c_pilotflamer.mdl"
 			"attach_to_hands"		"1"
-			"item_quality"		"community"
+			"item_quality"		"rarity2"
 			"propername"		"1"
 			"min_ilevel"		"10"
 			"max_ilevel"		"10"
@@ -3088,10 +3143,10 @@
 		"32022" //Spitfire (Flaregun)
 		{
 			"name"					"The Spitfire"
-			"prefab"				"weapon_flaregun_custom"
+			"prefab"				"weapon_flaregun_custom cf_restored_item"
 			"item_name"				"#TFCW_Spitfire"
 			"item_description"		"#TFCW_Spitfire_Desc"
-			"item_quality"			"community"
+			"item_quality"			"rarity2"
 			"moditem" "1"
 			"show_in_armory"		"1"
 			"item_logname"			"pilotflaregun"
@@ -3101,6 +3156,11 @@
 			"image_inventory"		"backpack/weapons/custommade/c_pilotflaregun"
 			"attributes"
 			{
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"							"[U:1:12215355]"
+				}
 				"minicrit vs burning player"
 				{
 					"attribute_class"	"or_minicrit_vs_playercond_burning"
@@ -3261,7 +3321,7 @@
 		"32024"
 		{
 			"name"									"Assault Cannon"
-			"prefab"								"valve"
+			"prefab"								"valve cf_restored_item"
 			"item_class"							"tf_weapon_minigun"
 			"craft_class"							"weapon"
 			"craft_material_type"					"weapon"
@@ -3278,7 +3338,7 @@
 			"model_player"							"models/workshop/weapons/c_models/c_assault_minigun/c_assault_minigun.mdl"
 			"inspect_panel_dist"					 "88"
 			"attach_to_hands"						"1"
-			"item_quality"							"community"
+			"item_quality"							"rarity2"
 			"moditem" 								"1"
 			"min_ilevel"							"30"
 			"max_ilevel"							"30"
@@ -3341,7 +3401,7 @@
 		{
 			"name"									"Cardiac Arrest"
 			"item_class"							"tf_weapon_bonesaw"
-			"prefab"								"valve"
+			"prefab"								"valve cf_restored_item"
 			"craft_class"							"weapon"
 			"craft_material_type"					"weapon"
 			"show_in_armory"						"1"
@@ -3358,7 +3418,7 @@
 			"model_player"							"models/weapons/c_items/med_pack/c_defib.mdl"
 			"attach_to_hands"						"1"
 			"inspect_panel_dist"					"42"
-			"item_quality"							"community"
+			"item_quality"							"rarity2"
 			"propername"							"1"
 			"min_ilevel"							"40"
 			"max_ilevel"							"40"
@@ -3426,6 +3486,11 @@
 				{
 					"attribute_class"  "is_community_contributed_item"
 					"value"			   "[U:1:36277404]"
+				}
+				"allowed in medieval mode"
+				{
+					"attribute_class"	"allowed_in_medieval_mode"
+					"value"	"1"
 				}
 			}
 			"visuals"
@@ -3502,7 +3567,7 @@
 		"32027"
 		{
 			"name"									"Overdose (Beta)"
-			"prefab"								"valve"
+			"prefab"								"valve cf_restored_item"
 			"item_class"							"tf_weapon_syringegun_medic"
 			"craft_class"							"weapon"
 			"craft_material_type"					"weapon"
@@ -3519,7 +3584,7 @@
 			"image_inventory_size_h"				"82"
 			"model_player"							"models/weapons/c_models/c_overdose/c_overdose.mdl"
 			"attach_to_hands"						"1"
-			"item_quality"							"community"
+			"item_quality"							"rarity2"
 			"propername"							"1"
 			"min_ilevel"							"5"
 			"max_ilevel"							"5"
@@ -3575,7 +3640,7 @@
 		{
 			"enabled"								"1"
 			"name"									"Schwaben-Charger 9000"
-			"prefab"								"valve"
+			"prefab"								"valve cf_restored_item"
 			"item_class"							"tf_weapon_medigun"
 			"craft_class"							"weapon"
 			"craft_material_type"					"weapon"
@@ -3592,7 +3657,7 @@
 			"model_player"							"models/weapons/c_models/c_schwaben_charger/c_schwaben_charger.mdl"
 			"extra_wearable"						"models/weapons/c_models/c_schwaben_charger/c_schwaben_backpack.mdl"
 			"attach_to_hands"						"1"
-			"item_quality"							"community"
+			"item_quality"							"rarity2"
 			"min_ilevel"							"8"
 			"max_ilevel"							"8"
 			"used_by_classes"
@@ -3608,7 +3673,7 @@
 				"overheal decay bonus"
 				{
 					"attribute_class"	"mult_medigun_overheal_decay"
-					"value"	"4.0"
+					"value"	"3.0"
 				}
 				"overheal bonus"
 				{
@@ -3618,12 +3683,12 @@
 				"overheal fill rate reduced"
 				{
 					"attribute_class"	"overheal_fill_rate"
-					"value" "0.75"
+					"value" "0.6"
 				}
 				"heal rate penalty"
 				{
 					"attribute_class"	"mult_medigun_healrate"
-					"value"	"0.85"
+					"value"	"0.8"
 				}
 				"is community contributed item"
 				{
@@ -3660,7 +3725,7 @@
 		"32029"
 		{
 			"name"									"Tonsil Guillotines"
-			"prefab"								"valve"
+			"prefab"								"valve cf_restored_item"
 			"item_class"							"tf_weapon_bonesaw"
 			"craft_class"							"weapon"
 			"craft_material_type"					"weapon"
@@ -3677,7 +3742,7 @@
 			"image_inventory_size_h"				"82"
 			"model_player"							"models/weapons/c_models/c_tonsil_clamp/c_tonsil_clamp.mdl"
 			"attach_to_hands"						"1"
-			"item_quality"							"community"
+			"item_quality"							"rarity2"
 			"propername"							"1"
 			"min_ilevel"							"10"
 			"max_ilevel"							"10"
@@ -3706,6 +3771,11 @@
 					"attribute_class"	"melee_bounds_multiplier"
 					"value"	"1.35"
 				}
+				"melee cleave attack"
+				{
+					"attribute_class"	"melee_cleave_attack"
+					"value"				"1"
+				}
 				"single wep deploy time decreased"
 				{
 					"attribute_class"	"mult_single_wep_deploy_time"
@@ -3721,216 +3791,33 @@
 					"attribute_class"  "is_community_contributed_item"
 					"value"			   "[U:1:27787151]"
 				}
-			}
-			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
-			"drop_sound"		"ui/item_metal_weapon_drop.wav"
-		}
-		//mostly? - Eastern Island Threat Blocker
-		"32030"
-		{
-			"enabled"								"1"
-			"name"									"The Eastern Island Threat Blocker"
-			"prefab"								"valve"
-			"item_class"							"tf_wearable_razorback"
-			"craft_class"							"weapon"
-			"craft_material_type"					"weapon"
-			"show_in_armory"						"1"
-			"moditem" 								"1"
-			"item_type_name" 						"#TF_Wearable_Shield"
-			"item_name"								"#TFCW_Moai"
-			"item_description"						"#TFCW_Moai_Desc"
-			"item_slot"								"secondary"
-			"equip_region"							"back"
-			"anim_slot"								"FORCE_NOT_USED"
-			"item_quality"							"community"
-			"propername"							"1"
-			"min_ilevel"							"10"
-			"max_ilevel"							"10"
-			"image_inventory"						"backpack/player/items/sniper/sniper_moai/sniper_moai"
-			"image_inventory_size_w"				"128"
-			"image_inventory_size_h"				"82"
-			"model_player"							"models/player/items/sniper/sniper_moai/sniper_moai.mdl"
-			"extra_wearable"						"models/player/items/sniper/sniper_moai/sniper_moai.mdl"
-			"used_by_classes"
-			{
-				"sniper"	"1"
-			}
-			"attributes"
-			{
-				"max health additive bonus"
-				{
-					"attribute_class"	"add_maxhealth"
-					"value" "50"
-				}
-				"lifeleech on wearer"
-				{
-					"attribute_class"	"lifeleech_on_damage_w"
-					"value" "0.20"
-				}
-				"damage force reduction"
-				{
-					"attribute_class"	"damage_force_reduction"
-					"value"	"0.4"
-				}
-				"airblast vulnerability multiplier"
-				{
-					"attribute_class"	"airblast_vulnerability_multiplier"
-					"value"	"0.4"
-				}
-				"dmg taken from crit increased"
-				{
-					"attribute_class"	"mult_dmgtaken_from_crit"
-					"value"	"1.3"
-				}
-				"move speed penalty"
-				{
-					"attribute_class"	"mult_player_movespeed"
-					"value"	"0.85"
-				}
-				"cannot swim"
-				{
-					"attribute_class"	"cannot_swim"
-					"value"	"1"
-				}
 				"allowed in medieval mode"
 				{
 					"attribute_class"	"allowed_in_medieval_mode"
 					"value"	"1"
 				}
-				"is community contributed item"
-				{
-					"attribute_class"  "is_community_contributed_item"
-					"value"			   "[U:1:82892076]"
-				}
 			}
-			"mouse_pressed_sound"	"ui/item_default_pickup.wav"
-			"drop_sound"		"ui/item_default_drop.wav"
-		}
-		//The Deputy - NeoDement
-		"32031"
-		{
-			"enabled"								"0" //Waiting on model
-			"name"	"The Deputy"
-			"prefab"	"weapon_revolver_secondary"
-			"capabilities"
-			{
-				"nameable"		"1"
-			}
-			"tags"
-			{
-				"can_deal_damage"			"1"
-				"can_deal_mvm_penetration_damage"	"1"
-				"can_deal_long_distance_damage"	"1"
-			}
-			"item_class"	"tf_weapon_revolver_secondary"
-			"craft_class"	"weapon"
-			"craft_material_type"	"weapon"
-			"item_type_name"	"#TF_Weapon_Revolver"
-			"item_name"	"#TFCW_Deputy"
-			"item_slot"	"secondary"
-			"item_quality"	"community"
-			"item_logname"			"deputy_revolver"
-			"item_iconname"			"deputy_revolver"
-			"show_in_armory"						"0"
-			"moditem" "0"
-			"min_ilevel"	"5"
-			"max_ilevel"	"5"
-			"image_inventory"	"backpack/weapons/custommade/c_big_tex"
-			"image_inventory_size_w"		"128"
-			"image_inventory_size_h"		"80"
-			"model_player"	"models/weapons/c_models/c_big_tex/c_big_tex.mdl"
-			"attach_to_hands" "1"
-			"used_by_classes"
-			{
-				"engineer"	"1"
-			}
-			"static_attrs"
-			{
-				"min_viewmodel_offset"		"10 0 -6"
-				"crit_dmg_falloff"			"1"
-			}
-			"attributes"
-			{
-				"last shot crits"
-				{
-					"attribute_class"	"last_shot_crits"
-					"value"	"1"
-				}
-				"fire rate bonus"
-				{
-					"attribute_class"	"mult_postfiredelay"
-					"value"	"0.8"
-				}
-				"holster reloads"
-				{
-					"attribute_class"	"holster_reloads"
-					"value"	"1"
-				}
-				"damage penalty"
-				{
-					"attribute_class"	"mult_dmg"
-					"value"	"0.8"
-				}
-				"Reload time increased"
-				{
-					"attribute_class"	"mult_reload_time"
-					"value"	"1.25"
-				}
-				"maxammo primary reduced"
-				{
-					"attribute_class"    "mult_maxammo_primary"
-					"value" "0.75"
-				}
-				"crit mod disabled"
-				{
-					"attribute_class"	"mult_crit_chance"
-					"value"	"0"
-				}
-				"hidden secondary max ammo penalty"
-				{
-					"attribute_class"	"mult_maxammo_secondary"
-					"value"	"0.18"
-				}
-				"is community contributed item"
-				{
-					"attribute_class"  "is_community_contributed_item"
-					"value"			   "[U:1:12215355], [U:1:64725899], [U:1:65530097]"
-				}
-			}
-			"visuals"
-			{
-				"sound_single_shot"	"Weapon_Letranger.Single"
-				"sound_burst"	"Weapon_Letranger.SingleCrit"
-				"animation_replacement"
-				{
-					"ACT_VM_DRAW"							"ACT_ENGINEER_REVOLVER_DRAW"
-					"ACT_VM_IDLE"							"ACT_ENGINEER_REVOLVER_IDLE"
-					"ACT_VM_PRIMARYATTACK"					"ACT_ENGINEER_REVOLVER_PRIMARYATTACK"
-					"ACT_VM_RELOAD"							"ACT_ENGINEER_REVOLVER_RELOAD"
-				}
-			}
-			"mouse_pressed_sound"	"ui/item_light_gun_pickup.wav"
-			"drop_sound"		"ui/item_light_gun_drop.wav"
+			"mouse_pressed_sound"	"ui/item_metal_weapon_pickup.wav"
+			"drop_sound"		"ui/item_metal_weapon_drop.wav"
 		}
 		//The Specialist - Mnemo
-		"32032"
+		"32030"
 		{
-			"name"	"The Specialist"
-			"prefab"		"weapon_scattergun"
-			"item_class"	"tf_weapon_leech"
-			"item_type_name"	"#TF_Weapon_Scattergun"
-			"item_name"			"#TFCW_Leech"
-			"show_in_armory"	"1"
-			"item_logname"	"leech"
-			"item_iconname"	"leech"
-			"item_quality"	"community"
+			"name"									"The Specialist"
+			"prefab"								"weapon_scattergun cf_restored_item"
+			"item_class"							"tf_weapon_leech"
+			"item_type_name"						"#TF_Weapon_Scattergun"
+			"item_name"								"#TFCW_Leech"
 			"show_in_armory"						"1"
-			"moditem" "1"
-			"min_ilevel"	"20"
-			"max_ilevel"	"20"
-			"image_inventory"	"backpack/workshop/weapons/c_models/c_specialist_scattergun/c_specialist_scattergun"
-			"model_player"	"models/workshop/weapons/c_models/c_specialist_scattergun/c_specialist_scattergun.mdl"
-			"attach_to_hands" "1"
+			"item_logname"							"leech"
+			"item_iconname"							"leech"
+			"item_quality"							"rarity2"
+			"moditem" 								"1"
+			"min_ilevel"							"20"
+			"max_ilevel"							"20"
+			"image_inventory"						"backpack/workshop/weapons/c_models/c_specialist_scattergun/c_specialist_scattergun"
+			"model_player"							"models/workshop/weapons/c_models/c_specialist_scattergun/c_specialist_scattergun.mdl"
+			"attach_to_hands"						 "1"
 			"static_attrs"
 			{
 				"min_viewmodel_offset"					"10 0 -10"
@@ -3968,6 +3855,105 @@
 				"sound_single_shot"	"Weapon_Back_Scatter.Single"
 				"sound_burst"		"Weapon_Back_Scatter.SingleCrit"
 			}
+		}
+		//32031 (Reserved) (Moai)
+		//32032 (Reserved) (Deputy)
+		//32033-32034 (Reserved) (Leaf Blower, Scythe)
+		//The Inside Jab 
+		"32035"
+		{
+			"name"								"The Inside Jab"
+			"item_class"						"tf_weapon_revolver_melee"
+			"prefab"							"weapon_revolver cf_restored_item"
+			"show_in_armory"					"1"
+			"item_type_name"					"#TF_Weapon_Revolver"
+			"item_name"							"#TFCW_InsideJab"
+			"item_slot"							"melee"
+			"item_quality"						"rarity2"
+			"moditem" 							"1"
+			"propername"						"1"
+			"min_ilevel"						"1"
+			"max_ilevel"						"1"
+			"item_logname"						"inside_jab"
+			"item_iconname"						"inside_jab"
+			"image_inventory"					"backpack/workshop\weapons\c_models\c_pistol_knife\c_pistol_knife"
+			"image_inventory_size_w"			"128"
+			"image_inventory_size_h"			"82"
+			"inspect_panel_dist" 				"30"
+			"attach_to_hands" 					"1"
+			"model_player"						"models\workshop\weapons\c_models\c_pistol_knife\c_pistol_knife.mdl"
+			"used_by_classes"
+			{
+				"spy"	"1"
+			}
+			"static_attrs"
+			{
+				"min_viewmodel_offset"		"10 0 -6"
+				"keep disguise on attack"			"1"
+				"closerange backattack minicrits"				"1"
+				
+			}
+			"anim_slot"	"ITEM1"
+			"visuals"
+			{
+				"sound_single_shot"	"Weapon_Enforcer.Single"
+				"sound_burst"	"Weapon_Enforcer.SingleCrit"
+				"animation_replacement"
+				{
+					"ACT_VM_DRAW"	"ACT_ITEM1_VM_DRAW"
+					"ACT_VM_IDLE"	"ACT_ITEM1_VM_IDLE"
+					"ACT_VM_PRIMARYATTACK"	"ACT_ITEM1_VM_HITCENTER"
+					"ACT_MELEE_VM_STUN"	"ACT_MELEE_VM_ITEM1_STUN"
+					"ACT_MELEE_VM_INSPECT_START"	"ACT_ITEM1_VM_INSPECT_START"
+					"ACT_MELEE_VM_INSPECT_IDLE"		"ACT_ITEM1_VM_INSPECT_IDLE"
+					"ACT_MELEE_VM_INSPECT_END"		"ACT_ITEM1_VM_INSPECT_END"
+				}
+			}
+			"attributes"
+			{
+				"provide on active"
+				{
+					"attribute_class"	"provide_on_active"
+					"value" "1"
+				}
+				"mod no reload DISPLAY ONLY"
+				{
+					"attribute_class"	"mod_no_reload_display_only"
+					"value"				"1"
+				}
+				"mod max primary clip override"
+				{
+					"attribute_class"	"mod_max_primary_clip_override"
+					"value"	"-1"
+				}
+				"fire rate penalty"
+				{
+					"attribute_class"	"mult_postfiredelay"
+					"value"	"1.6"
+				}
+				"spread penalty"
+				{
+					"attribute_class" 	"mult_spread_scale"
+					"value" "1.3"
+				}
+				"crit mod disabled"
+				{
+					"attribute_class"	"mult_crit_chance"
+					"value"	"0"
+				}
+				"disable fancy class select anim"
+				{
+					"attribute_class"	"disable_fancy_class_select_anim"
+					"value"	"1"
+				}
+				"is community contributed item"
+				{
+					"attribute_class"  "is_community_contributed_item"
+					"value"			   "[U:1:30224581], [U:1:52805773]"
+				}
+			}
+			"mouse_pressed_sound"	"ui/item_knife_small_pickup.wav"
+			"drop_sound"		"ui/item_light_gun_drop.wav"
 		}
 		"34000" 
 		{
