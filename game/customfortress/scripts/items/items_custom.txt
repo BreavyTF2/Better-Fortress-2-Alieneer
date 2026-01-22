@@ -3642,6 +3642,14 @@
 				"heavy"	"1"
 			}
 		}
+		"38"
+		{
+			"used_by_classes"
+			{
+				"pyro"	"1"
+				"heavy"	"1"
+			}
+		}
 		"153"
 		{
 			"used_by_classes"
